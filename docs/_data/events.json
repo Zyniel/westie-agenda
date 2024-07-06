@@ -1,0 +1,16 @@
+{
+  "events": [
+    {
+      "title": "Mar. 13 - BOUM WCS",
+      "bannerUrl": "DKD-BoumWCS.svg"
+    },
+    {
+      "title": "Mar. 13 - Soirée WCS",
+      "bannerUrl": "TDS-Mardi-Tile.svg"
+    },
+    {
+      "title": "Jeu. 15 - BOUM WCS",
+      "bannerUrl": "TDS-Jeudi-Tile.svg"
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+---
+layout: default
+title: Planning WCS
+---
+
+<div class="grid-container">
+    {% for event in site.data.events.events %}
+    <div class="grid-item">
+        <span class="tile-title">{{ event.title }}</span>
+        <img class="tile-image" src="/assets/images/tiles/{{ event.bannerUrl }}" alt="{{ event.title }}"/>
+    </div>
+    {% endfor %}
+</div>
