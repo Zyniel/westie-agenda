@@ -7,7 +7,7 @@ title: Planning WCS
     {% for event in site.data.events.events %}
     <div class="grid-item">
         <span class="tile-title">{{ event.title }}</span>
-        <img class="tile-image" src="/assets/images/tiles/{{ event.bannerUrl }}" alt="{{ event.title }}"/>
+        <img class="tile-image" src="{{ 'assets/images/tiles/' | append: event.bannerUrl | relative_url }}" alt="{{ event.title }}"/>
     </div>
     {% endfor %}
 </div>
