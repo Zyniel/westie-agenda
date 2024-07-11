@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 import pandas as pd
-import json
 import logging
-import argparse
-import requests
 import yaml
 
 
@@ -36,8 +33,6 @@ def main():
 
     # Convert XLSX to JSON
     convert_excel_to_json(config["excel_file"], config["excel_worksheet"], config["json_file"])
-
-    # convert_excel_to_json(args.excel_file, args.sheet_name, args.json_file)
 
 if __name__ == "__main__":
     main()
