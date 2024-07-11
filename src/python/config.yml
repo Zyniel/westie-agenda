@@ -1,4 +1,4 @@
 # config.yml
-excel_file: .//..//..//WCS.xlsx
+excel_file: ./WCS.xslx
 excel_worksheet: "Dernier"
-json_file: .//WCS.json
+json_file: ./data/WCS.json
