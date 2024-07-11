@@ -4,7 +4,6 @@ on: [push, pull_request]
 jobs:
   convert-xlsx-to-json:
   permissions:
-    contents: write
     runs-on: ubuntu-latest
 
     steps:
