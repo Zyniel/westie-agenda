@@ -28,7 +28,7 @@ def main():
     # output.close()
 
     # Load configuration file
-    with open('config.yml', 'r') as file:
+    with open('./src/python/config.yml', 'r') as file:
         config = yaml.safe_load(file)
 
     # Convert XLSX to JSON

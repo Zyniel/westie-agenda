@@ -21,7 +21,7 @@ jobs:
 
       - name: Convert Excel to JSON
         run: |
-          python ./src/python/convert_excel_to_json.py ./WCS.xslx "Dernier" ./data/WCS.json
+          python ./src/python/excel_to_json.py
 
       - name: Commit changes
         run: |
