@@ -2,7 +2,10 @@
 import pandas as pd
 import logging
 import yaml
+import argparse
+from pathlib import Path
 
+__doc__ = "Convert an Excel sheet to JSON."
 
 def convert_excel_to_json(excel_file, sheet_name, json_file):
     try:
@@ -18,21 +21,32 @@ def convert_excel_to_json(excel_file, sheet_name, json_file):
         exit(1)
 
 def main():
-    logging.basicConfig(level=logging.INFO)
 
-    # Download a local copy of the Excel file
-    # file_url = "https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL3gvcyFBcmsySUh5dXNNT1doSjBveENZOTllYzE2bVlZS2c_ZT1KRm11/root/content"
-    # resp = requests.get(file_url)
-    # output = open('WCS-Online.xlsx', 'wb')
-    # output.write(resp.content)
-    # output.close()
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--conf', action='append')
+    args = parser.parse_args()
 
-    # Load configuration file
-    with open('./src/python/config.yml', 'r') as file:
-        config = yaml.safe_load(file)
+    if args.conf is not None:
+        logging.basicConfig(level=logging.INFO)
 
-    # Convert XLSX to JSON
-    convert_excel_to_json(config["excel_file"], config["excel_worksheet"], config["json_file"])
+        # Load configuration file
+        with open(args.conf, 'r') as file:
+            config = yaml.safe_load(file)
+
+        # Download a local copy of the Excel file
+        # file_url = "https://api.onedrive.com/v1.0/shares/u!aHR0cHM6Ly8xZHJ2Lm1zL3gvcyFBcmsySUh5dXNNT1doSjBveENZOTllYzE2bVlZS2c_ZT1KRm11/root/content"
+        # resp = requests.get(file_url)
+        # output = open('WCS-Online.xlsx', 'wb')
+        # output.write(resp.content)
+        # output.close()
+
+        # Create folder for future file if missing
+        p_file = Path(config.json_file)
+        p_file.parent.mkdir(parents=True, exist_ok=True)
+        # Convert XLSX to JSON
+        convert_excel_to_json(config["excel_file"], config["excel_worksheet"], config["json_file"])
+    else:
+        raise Exception("Missing configuration file.")
 
 if __name__ == "__main__":
     main()

@@ -21,7 +21,7 @@ jobs:
 
       - name: Convert Excel to JSON
         run: |
-          python ./src/python/excel_to_json.py
+          python ./src/python/excel_to_json.py --conf ./src/python/config.prod.yml
 
       - name: Commit changes
         run: |
