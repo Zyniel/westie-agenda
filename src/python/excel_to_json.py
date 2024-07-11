@@ -30,7 +30,7 @@ def main():
         logging.basicConfig(level=logging.INFO)
 
         # Load configuration file
-        with open(args.conf, 'r') as file:
+        with open(args.conf[0], 'r') as file:
             config = yaml.safe_load(file)
 
         # Download a local copy of the Excel file
@@ -41,7 +41,7 @@ def main():
         # output.close()
 
         # Create folder for future file if missing
-        p_file = Path(config.json_file)
+        p_file = Path(config["json_file"])
         p_file.parent.mkdir(parents=True, exist_ok=True)
         # Convert XLSX to JSON
         convert_excel_to_json(config["excel_file"], config["excel_worksheet"], config["json_file"])
