@@ -11,6 +11,7 @@ on:
 
 env:
   DEPLOY_ENV: prod
+  GITHUB_ACTIONS: true
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -48,8 +49,6 @@ jobs:
           python ./src/python/excel_to_json.py --conf ./src/python/config.$DEPLOY_ENV.yml
       - name: Move images to site assets
         run: |
-          pwd
-          tree
           cp -R ./images ./docs/assets
           ls -al ./docs/assets
 
