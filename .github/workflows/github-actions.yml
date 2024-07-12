@@ -49,8 +49,9 @@ jobs:
           python ./src/python/excel_to_json.py --conf ./src/python/config.$DEPLOY_ENV.yml
       - name: Move images to site assets
         run: |
+          mkdir -p ./docs/assets/images/tiles
           cp -R ./images/tiles/*.png ./docs/assets/images/tiles
-          ls -al ./docs/assets
+          tree ./docs/assets
 
       # Prepare Jekyll Site
       - name: Setup Pages
