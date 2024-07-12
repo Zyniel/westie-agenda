@@ -48,6 +48,8 @@ jobs:
           python ./src/python/excel_to_json.py --conf ./src/python/config.$DEPLOY_ENV.yml
       - name: Move images to site assets
         run: |
+          pwd
+          tree
           cp -R ./images ./docs/assets
           ls -al ./docs/assets
 
