@@ -46,6 +46,9 @@ jobs:
       - name: Convert Excel to JSON
         run: |
           python ./src/python/excel_to_json.py --conf ./src/python/config.$DEPLOY_ENV.yml
+      - name: Move images to site assets
+        run: |
+          cp -R ./images/* ./docs/assets/images
 
       # Prepare Jekyll Site
       - name: Setup Pages
