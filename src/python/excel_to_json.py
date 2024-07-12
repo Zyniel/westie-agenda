@@ -10,10 +10,10 @@ __doc__ = "Convert an Excel sheet to JSON."
 def convert_excel_to_json(excel_file, sheet_name, json_file):
     try:
         # Read the specific sheet from the Excel file
-        df = pd.read_excel(excel_file, sheet_name=sheet_name)
+        df = pd.read_excel(excel_file, sheet_name=sheet_name, engine='openpyxl')
 
         # Convert the DataFrame to JSON
-        df.to_json(json_file, orient='records', lines=True)
+        df.to_json(json_file, orient='records', indent=4, force_ascii=False)
 
         logging.info(f"Successfully converted {sheet_name} from {excel_file} to {json_file}")
     except Exception as e:

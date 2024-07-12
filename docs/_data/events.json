@@ -1,16 +1,114 @@
-{
-  "events": [
+[
     {
-      "title": "Mar. 13 - BOUM WCS",
-      "bannerUrl": "DKD-BoumWCS.svg"
+        "Date Début":1720396800000,
+        "Heure Début":null,
+        "Date Fin":1720396800000,
+        "Heure Fin":null,
+        "Jour":"Lundi",
+        "Type":"Stage",
+        "Lieu \/ Ecole":"TDS",
+        "Nom":"Intensif Debutant+",
+        "Nom Court":"Intensif Deb+",
+        "URL":"https:\/\/vu.fr\/shDvA",
+        "Sondage":"Lun. 📚 Intensif Deb+",
+        "Calendrier":"Lun. 08 - Intensif Deb+",
+        "Infos + Lien":"Lun. TDS - Intensif Debutant+_x000D_\n> https:\/\/vu.fr\/shDvA",
+        "Image":"TDS-StageEteDeb-Tile.svg"
     },
     {
-      "title": "Mar. 13 - Soirée WCS",
-      "bannerUrl": "TDS-Mardi-Tile.svg"
+        "Date Début":1720483200000,
+        "Heure Début":null,
+        "Date Fin":1720483200000,
+        "Heure Fin":null,
+        "Jour":"Mardi",
+        "Type":"Soirée",
+        "Lieu \/ Ecole":"TDS",
+        "Nom":"After Mardi",
+        "Nom Court":"After TDS",
+        "URL":"https:\/\/vu.fr\/qBIpB",
+        "Sondage":"Mar. 🪩 After TDS",
+        "Calendrier":"Mar. 09 - After TDS",
+        "Infos + Lien":"Mar. TDS - After Mardi_x000D_\n> https:\/\/vu.fr\/qBIpB",
+        "Image":"TDS-Mardi-Ete-Tile.svg"
     },
     {
-      "title": "Jeu. 15 - BOUM WCS",
-      "bannerUrl": "TDS-Jeudi-Tile.svg"
+        "Date Début":1720569600000,
+        "Heure Début":null,
+        "Date Fin":1720569600000,
+        "Heure Fin":null,
+        "Jour":"Mercredi",
+        "Type":"Stage",
+        "Lieu \/ Ecole":"TDS",
+        "Nom":"Intensif Inter+",
+        "Nom Court":"Intensif Inter+",
+        "URL":"https:\/\/vu.fr\/olGDE",
+        "Sondage":"Mer. 📚 Intensif Inter+",
+        "Calendrier":"Mer. 10 - Intensif Inter+",
+        "Infos + Lien":"Mer. TDS - Intensif Inter+_x000D_\n> https:\/\/vu.fr\/olGDE",
+        "Image":"TDS-StageEteInter-Tile.svg"
+    },
+    {
+        "Date Début":1720656000000,
+        "Heure Début":null,
+        "Date Fin":1720656000000,
+        "Heure Fin":null,
+        "Jour":"Jeudi",
+        "Type":"Soirée",
+        "Lieu \/ Ecole":"TDS",
+        "Nom":"After Jeudi",
+        "Nom Court":"After TDS",
+        "URL":"https:\/\/vu.fr\/tKHqr",
+        "Sondage":"Jeu. 🪩 After TDS",
+        "Calendrier":"Jeu. 11 - After TDS",
+        "Infos + Lien":"Jeu. TDS - After Jeudi_x000D_\n> https:\/\/vu.fr\/tKHqr",
+        "Image":"TDS-Jeudi-Ete-Tile.svg"
+    },
+    {
+        "Date Début":1720742400000,
+        "Heure Début":null,
+        "Date Fin":1720742400000,
+        "Heure Fin":null,
+        "Jour":"Vendredi",
+        "Type":"Soirée",
+        "Lieu \/ Ecole":"Factory Club",
+        "Nom":"Soirée RWSB",
+        "Nom Court":"Factory Club",
+        "URL":"https:\/\/vu.fr\/aoJab",
+        "Sondage":"Ven. 🪩 Factory Club",
+        "Calendrier":"Ven. 12 - Factory Club",
+        "Infos + Lien":"Ven. Factory Club - Soirée RWSB_x000D_\n> https:\/\/vu.fr\/aoJab",
+        "Image":"FAC-Vendredi-Tile.svg"
+    },
+    {
+        "Date Début":1720915200000,
+        "Heure Début":null,
+        "Date Fin":1720915200000,
+        "Heure Fin":null,
+        "Jour":"Dimanche",
+        "Type":"Soirée",
+        "Lieu \/ Ecole":"La Station",
+        "Nom":"Happy Sunday",
+        "Nom Court":"Station Danse",
+        "URL":"https:\/\/vu.fr\/goFJh",
+        "Sondage":"Dim. 🪩 Station Danse",
+        "Calendrier":"Dim. 14 - Station Danse",
+        "Infos + Lien":"Dim. La Station - Happy Sunday_x000D_\n> https:\/\/vu.fr\/goFJh",
+        "Image":"LSD-Dimanche-Generic-Tile.svg"
+    },
+    {
+        "Date Début":1720224000000,
+        "Heure Début":null,
+        "Date Fin":1720828800000,
+        "Heure Fin":null,
+        "Jour":"Samedi",
+        "Type":"Evenement",
+        "Lieu \/ Ecole":"Cannes",
+        "Nom":"WOTP",
+        "Nom Court":"WOTP",
+        "URL":"https:\/\/vu.fr\/yaYLj",
+        "Sondage":"WE. 🎟️ WOTP",
+        "Calendrier":"Du 06 au 13 - WOTP",
+        "Infos + Lien":"WE. Cannes - WOTP_x000D_\n> https:\/\/vu.fr\/yaYLj",
+        "Image":"EVT-WOTP2024-Tile.svg"
     }
-  ]
-}
+]
