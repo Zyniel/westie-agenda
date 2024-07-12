@@ -5,3 +5,5 @@ _site
 .run
 divers/*
 chorégraphie/*
+src/powershell/*.log
+src/bash/*.log
