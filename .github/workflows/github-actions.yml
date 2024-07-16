@@ -47,6 +47,19 @@ jobs:
       - name: Convert Excel to JSON
         run: |
           python ./src/python/excel_to_json.py --conf ./src/python/config.$DEPLOY_ENV.yml
+
+      # Prepare Optimized Tiles
+      - name: Convert SVG to PNG using rsvg-convert
+        run: |
+            sudo apt-get -y install librsvg2-bin
+            cd ./images/tiles
+            for i in *.svg;
+            do
+              new_file=${i%.*}.png;
+              rsvg-convert --format="png" --width=720 --output="$new_file" "$i";
+            done;
+
+      # Move Assets to Site
       - name: Move images to site assets
         run: |
           mkdir -p ./docs/assets/images/tiles
