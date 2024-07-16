@@ -71,10 +71,12 @@ jobs:
               rsvg-convert --format="png" --width=720 "$i" > "png_file";
             fi
           done;
+          ls -al ./images/tiles
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Automatic data refresh
+          status_options: '--untracked-files=no'
 
 
   # ===========================================================================
@@ -87,6 +89,8 @@ jobs:
       # Checkout "master"
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.head_ref }}
 
       # Move elements to Assets
       - name: Move images to site assets
