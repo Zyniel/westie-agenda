@@ -42,7 +42,7 @@ jobs:
       # Checkout "master"
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
 
       # Prepare Dataset from Excel file for Site
       - name: Set up Python
@@ -71,8 +71,11 @@ jobs:
               rsvg-convert --format="png" --width=720 "$i" > "png_file";
             fi
           done;
-          env
-          ls -al "$GITHUB_WORKSPACE"
+          tree -s "$GITHUB_WORKSPACE"
+
+      # See here for further info : https://schnerring.net/blog/checking-out-code-committed-within-the-same-github-actions-workflow-run/
+      - name: Update CHANGELOG.md
+        run: echo "Added automatic changes on $(date)" >> CHANGELOG.md
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
@@ -91,7 +94,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ needs.update-changelog.outputs.commit_hash }}
 
       # Move elements to Assets
       - name: Move images to site assets
@@ -100,7 +103,7 @@ jobs:
           cp ./data/WCS.json ./docs/_data/events.json
           echo "Move PNG tiles to Assets"
           mkdir -p ./docs/assets/images/tiles
-          cp -R ./images/tiles/*.png ./docs/assets/images/tiles
+          cp ./images/tiles/*.png ./docs/assets/images/tiles
           tree -a ./docs/assets
 
       # Prepare Jekyll Site
