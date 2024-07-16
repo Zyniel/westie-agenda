@@ -33,6 +33,8 @@ jobs:
   # ===========================================================================
   pre-commit:
     runs-on: ubuntu-latest
+    outputs:
+      commit_hash: ${{ steps.commit-and-push.outputs.commit_hash }}
 
     permissions:
       # Give the default GITHUB_TOKEN write permission to commit and push the changed files back to the repository.
@@ -94,7 +96,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ needs.update-changelog.outputs.commit_hash }}
+          ref: ${{ needs.pre-commit.outputs.commit_hash }}
 
       # Move elements to Assets
       - name: Move images to site assets
