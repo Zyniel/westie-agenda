@@ -55,7 +55,7 @@ jobs:
             cd ./images/tiles
             for i in *.svg;
             do
-              new_file=${i%.*}.test.png;
+              new_file=${i%.*}.png;
               rsvg-convert --format="png" --width=720 "$i" > "$new_file";
             done;
 
@@ -64,7 +64,7 @@ jobs:
         run: |
           mkdir -p ./docs/assets/images/tiles
           cp -R ./images/tiles/*.png ./docs/assets/images/tiles
-          tree ./docs/assets
+          tree -a ./docs/assets
 
       # Prepare Jekyll Site
       - name: Setup Pages
