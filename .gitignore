@@ -9,3 +9,4 @@ src/powershell/*.log
 src/bash/*.log
 docs/assets/images/tiles/*
 docs/assets/images
+~$WCS.xlsx
