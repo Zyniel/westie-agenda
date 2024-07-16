@@ -68,7 +68,7 @@ jobs:
             png_file=${i%.*}.png;
             if [ ! -f /tmp/foo.txt ]; then
               echo "Converting ${i} to ${png_file}"
-              rsvg-convert --format="png" --width=720 "$i" > "png_file";
+              rsvg-convert --format="png" --width=720 "$i" > "${png_file}";
             fi
           done;
           tree -s "$GITHUB_WORKSPACE"
