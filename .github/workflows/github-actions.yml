@@ -71,7 +71,7 @@ jobs:
               rsvg-convert --format="png" --width=720 "$i" > "png_file";
             fi
           done;
-          ls -al ./images/tiles
+          ls -al "$github_workspace"
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
