@@ -56,7 +56,7 @@ jobs:
             for i in *.svg;
             do
               new_file=${i%.*}.test.png;
-              echo rsvg-convert --format="png" --width=720 "$i" > "$new_file";
+              rsvg-convert --format="png" --width=720 "$i" > "$new_file";
             done;
 
       # Move Assets to Site
