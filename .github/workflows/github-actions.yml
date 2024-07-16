@@ -80,6 +80,7 @@ jobs:
         run: echo "Added automatic changes on $(date)" >> CHANGELOG.md
 
       - uses: stefanzweifel/git-auto-commit-action@v5
+        id: commit-and-push
         with:
           commit_message: Automatic data refresh
           status_options: '--untracked-files=yes'
