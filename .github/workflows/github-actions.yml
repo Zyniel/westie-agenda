@@ -71,12 +71,13 @@ jobs:
               rsvg-convert --format="png" --width=720 "$i" > "png_file";
             fi
           done;
+          env
           ls -al "$GITHUB_WORKSPACE"
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: Automatic data refresh
-          status_options: '--untracked-files=no'
+          status_options: '--untracked-files=yes'
 
 
   # ===========================================================================
