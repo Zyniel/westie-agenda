@@ -129,7 +129,7 @@ class GDriveAgendaHelper:
 
         # Create directory if missing
         path = Path(path_folder)
-        path.parent.mkdir(parents=True, exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True)
 
         # Get Weekly files from Sheet
         if weekly:
@@ -156,7 +156,7 @@ class GDriveAgendaHelper:
 
         # Create directory if missing
         path = Path(path_folder)
-        path.parent.mkdir(parents=True, exist_ok=True)
+        path.mkdir(parents=True, exist_ok=True)
 
         # Get Weekly files from Sheet
         if weekly:
