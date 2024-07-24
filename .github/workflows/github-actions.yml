@@ -61,19 +61,19 @@ jobs:
           python ./src/python/excel_to_json.py --conf ./src/python/config.$DEPLOY_ENV.yml
 
       # Prepare Optimized Tiles
-      - name: Convert SVG to PNG using rsvg-convert
-        run: |
-          sudo apt-get -y install librsvg2-bin
-          cd ./images/tiles
-          for i in *.svg;
-          do
-            png_file=${i%.*}.png;
-            if [ ! -f ${png_file} ]; then
-              echo "Converting ${i} to ${png_file}"
-              rsvg-convert --format="png" --width=720 "$i" > "${png_file}";
-            fi
-          done;
-          tree -s "$GITHUB_WORKSPACE"
+#      - name: Convert SVG to PNG using rsvg-convert
+#        run: |
+#          sudo apt-get -y install librsvg2-bin
+#          cd ./images/tiles
+#          for i in *.svg;
+#          do
+#            png_file=${i%.*}.png;
+#            if [ ! -f ${png_file} ]; then
+#              echo "Converting ${i} to ${png_file}"
+#              rsvg-convert --format="png" --width=720 "$i" > "${png_file}";
+#            fi
+#          done;
+#          tree -s "$GITHUB_WORKSPACE"
 
       # See here for further info : https://schnerring.net/blog/checking-out-code-committed-within-the-same-github-actions-workflow-run/
       - name: Update CHANGELOG.md
@@ -103,7 +103,7 @@ jobs:
       - name: Move images to site assets
         run: |
           echo "Move event dataset to Assets"
-          cp ./data/WCS.json ./docs/_data/events.json
+          cp ./data/events.json ./docs/_data/events.json
           echo "Move PNG tiles to Assets"
           mkdir -p ./docs/assets/images/tiles
           cp ./images/tiles/*.png ./docs/assets/images/tiles

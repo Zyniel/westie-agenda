@@ -1,7 +1,7 @@
 # config.prod.yml
 excel_file: ./WCS.xlsx
 excel_worksheet: "Dernier"
-json_file: ./data/WCS.json
+json_file: ./data/events.json
 
 app:
   data_file: ./data/events.json
