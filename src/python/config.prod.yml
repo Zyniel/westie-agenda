@@ -2,3 +2,19 @@
 excel_file: ./WCS.xlsx
 excel_worksheet: "Dernier"
 json_file: ./data/WCS.json
+
+app:
+  data_file: ./data/events.json
+  png_folder: ./images/tiles
+  svg_folder: ./images/tiles-svg
+tinyurl:
+  token: 'qc2HjdgT4VqnnizNMjUfyNpqsrfzb887k8LseANi1XdVlMYq37tOq27QGCZA'
+drive:
+  service_account_key: ./src/python/service_account_key.json
+  png_folder_id: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'
+  svg_folder_id: '1NjholefBcuA-yiGAb3IT_KIp2zHKC5qU'
+sheets:
+  service_account_key: ./src/python/service_account_key.json
+  spreadsheet_id: '1UqPalww9jVR9FDn6WDNxSZbiL9sRsomTKQWBer1CMA8'
+  worksheet_id: 'Semaine'
+  data_range: 'TblSemaine'

@@ -68,7 +68,7 @@ jobs:
           for i in *.svg;
           do
             png_file=${i%.*}.png;
-            if [ ! -f /tmp/foo.txt ]; then
+            if [ ! -f ${png_file} ]; then
               echo "Converting ${i} to ${png_file}"
               rsvg-convert --format="png" --width=720 "$i" > "${png_file}";
             fi
