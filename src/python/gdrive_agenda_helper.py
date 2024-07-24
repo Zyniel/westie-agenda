@@ -126,6 +126,11 @@ class GDriveAgendaHelper:
         PNG files to disk, overwriting existing file if required.
         '''
         existing_files = []
+
+        # Create directory if missing
+        path = Path(path_folder)
+        path.parent.mkdir(parents=True, exist_ok=True)
+
         # Get Weekly files from Sheet
         if weekly:
             existing_files = self.get_files()
@@ -148,6 +153,11 @@ class GDriveAgendaHelper:
         SVG files to disk, overwriting existing file if required.
         '''
         existing_png = []
+
+        # Create directory if missing
+        path = Path(path_folder)
+        path.parent.mkdir(parents=True, exist_ok=True)
+
         # Get Weekly files from Sheet
         if weekly:
             existing_files = self.get_files()
@@ -191,6 +201,7 @@ class GDriveAgendaHelper:
         :param replace: True to overwrite existing files
         '''
         path = Path(path_file)
+        path.parent.mkdir(parents=True, exist_ok=True)
         basename = path.name
         if path.is_file() and not replace:
             log.info("Skipping: '{path}' - File already exists.".format(path=basename))
@@ -199,6 +210,8 @@ class GDriveAgendaHelper:
             log.debug("Downloading and overwriting: '{path}'".format(path=basename))
         else:
             log.debug("Downloading: '{path}'".format(path=basename))
+
+        path.parent.mkdir(parents=True, exist_ok=True)
         with open(path_file, 'w') as f:
             json_data = self.to_json()
             json.dump(json_data, f)
