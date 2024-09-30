@@ -186,13 +186,13 @@ class GDriveAgendaHelper:
         df = df.reset_index()
         return df
 
-    def to_json(self):
+    def to_dict(self):
         '''
         This function converts the DataFrame into a JSON object
         '''
         df = self.to_df()
-        json_data = df.to_json(orient='records', indent=4, force_ascii=False)
-        return json_data
+        dict = df.to_dict(orient='records')
+        return dict
 
     def download_data(self, path_file, replace: bool = False) -> None:
         '''
@@ -212,9 +212,10 @@ class GDriveAgendaHelper:
             log.debug("Downloading: '{path}'".format(path=basename))
 
         path.parent.mkdir(parents=True, exist_ok=True)
-        with open(path_file, 'w') as f:
-            json_data = self.to_json()
-            json.dump(json_data, f)
+        with open(path_file, 'w', encoding='utf-8') as f:
+            d = self.to_dict()
+            json.dump(d, f, ensure_ascii=False, indent=4)
+
 
     def __get_column_values(self, name) -> List:
         '''
