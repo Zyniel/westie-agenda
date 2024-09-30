@@ -355,7 +355,7 @@ class GDriveAgendaHelper:
         # Download all files
         log.info("Downloading JSON data file")
         data_file = Path('.', self.config['app']['data_file'])
-        self.download_data(path_file=data_file.absolute().as_posix(), replace=False)
+        self.download_data(path_file=data_file.absolute().as_posix(), replace=True)
         log.info("Downloading PNG files")
         self.download_png_files(path_folder=self.config['app']['png_folder'], replace=False, weekly=True)
         log.info("Downloading SVG files")
