@@ -17,4 +17,4 @@ sheets:
   service_account_key: ./src/python/service_account_key.json
   spreadsheet_id: '1UqPalww9jVR9FDn6WDNxSZbiL9sRsomTKQWBer1CMA8'
   worksheet_id: 'Semaine'
-  data_range: 'Derniers'
+  data_range: 'TblSemaine'
