@@ -2,9 +2,11 @@
 name: Refresh from GDrive and Build GH Pages
 
 on:
-
   # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+  workflow_dispatch: {}
+  # Allows you to run this workflow programmatically
+  repository_dispatch:
+    types: [gsa_sheets_trigger]
 
 env:
   DEPLOY_ENV: prod
