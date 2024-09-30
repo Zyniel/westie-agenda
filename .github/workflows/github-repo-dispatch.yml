@@ -67,7 +67,7 @@ jobs:
 
       - name: Create Pull Request
         id: cpr
-        uses: peter-evans/create-pull-request@v6
+        uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ secrets.GH_WORKFLOW_PAT_TOKEN }}
           commit-message: Refresh data with Google Drive
@@ -82,8 +82,6 @@ jobs:
             - Updated with *today's* data
           labels: |
             automated pr
-          assignees: Zyniel
-          reviewers: Zyniel
-          team-reviewers: |
-            developers
+          assignees: zyniel
+          reviewers: zyniel
           draft: false
