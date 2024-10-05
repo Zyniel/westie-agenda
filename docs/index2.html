@@ -3,9 +3,9 @@ layout: default
 title: Planning WCS
 ---
 
-<div class=".grid-flex">
+<div class="flex-container">
     {% for event in site.data.events %}
-    <div class="grid-item">
+    <div class="flex-item">
         <span class="tile-title">{{ event.Calendrier }}</span>
         <img class="tile-image" src="{{ 'assets/images/tiles/' | append: event.Image | relative_url }}" alt="{{ event.Calendrier }}"/>
     </div>

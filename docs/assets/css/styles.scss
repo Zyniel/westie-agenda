@@ -36,11 +36,24 @@ body {
   }
 }
 
-.grid-flex {
+.flex-container {
     display: flex;
     flex-wrap: wrap;
     max-width: 1420px;
     margin: 2rem auto;
+}
+
+.grid-flex {
+    justify-items: stretch;
+    span.tile-title {
+        display: block;
+    }
+    img.tile-image {
+      width: 346.36px;
+      height: 201.41px;
+      object-fit: cover;
+      display: block;
+    }
 }
 
 .grid-container {
