@@ -3,11 +3,20 @@ layout: default
 title: Planning WCS
 ---
 
-<div class="grid-container">
+<div class="flex-container">
+    <div class="flex-header"></div>
     {% for event in site.data.events %}
-    <div class="grid-item">
-        <span class="tile-title">{{ event.Calendrier }}</span>
-        <img class="tile-image" src="{{ 'assets/images/tiles/' | append: event.Image | relative_url }}" alt="{{ event.Calendrier }}"/>
+    <div class="flex-item">
+        <span class="tile-title noto-sans-regular">{{ event.Calendrier }}</span>
+        {% if event.URL and event.URL != "" and event.URL != nil %}
+            <a href="{{ event.URL }}" class="tile-image-hl">
+                <img class="tile-image" src="{{ 'assets/images/tiles/' | append: event.Image | relative_url }}" alt="{{ event.Calendrier }}"/>
+            </a>
+        {% else %}
+            <a href="#" class="tile-image-hl">
+                <img class="tile-image" src="{{ 'assets/images/tiles/' | append: event.Image | relative_url }}" alt="{{ event.Calendrier }}"/>
+            </a>
+        {% endif %}
     </div>
     {% endfor %}
 </div>
