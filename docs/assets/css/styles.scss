@@ -36,6 +36,13 @@ body {
   }
 }
 
+.grid-flex {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1420px;
+    margin: 2rem auto;
+}
+
 .grid-container {
     display: grid;
     justify-content: center;
