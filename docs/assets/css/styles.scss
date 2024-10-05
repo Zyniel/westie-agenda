@@ -2,6 +2,7 @@
 ---
 
 @import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 
 $font-stack: Helvetica, sans-serif;
@@ -12,6 +13,14 @@ $bg-color: #171717;
   font-family: "Luckiest Guy", cursive;
   font-weight: 400;
   font-style: normal;
+}
+
+.noto-sans-regular {
+  font-family: "Noto Sans", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 600;
+  font-variation-settings: "wdth" 100;
 }
 
 body {
@@ -39,14 +48,33 @@ body {
 .flex-container {
     display: flex;
     flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 20px;
     max-width: 1420px;
     margin: 2rem auto;
 }
 
-.grid-flex {
+.flex-header {
+    width: 100%;
+}
+
+.flex-footer {
+    justify-content: right;
+    width: 100%;
+}
+
+.img-signature {
+    height: auto;
+    max-width: 150px;
+}
+
+.flex-item {
     justify-items: stretch;
     span.tile-title {
         display: block;
+        font-size: 18px;
     }
     img.tile-image {
       width: 346.36px;
