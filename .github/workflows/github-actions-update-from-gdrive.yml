@@ -84,9 +84,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: commit
     steps:
-      # Checkout "master"
-      - name: Checkout
-        uses: actions/checkout@v4
 
       # Move elements to Assets
       - name: Move images to site assets
