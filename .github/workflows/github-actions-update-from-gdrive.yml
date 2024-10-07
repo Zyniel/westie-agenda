@@ -44,8 +44,8 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: ${{github.event.inputs.id}}
-        run: echo Run identifier ${{ inputs.id }}
+      - name: ${{github.event.client_payload.id}}
+        run: echo Run identifier ${{ github.event.client_payload.id }}
 
       # Checkout "master"
       - name: Checkout
