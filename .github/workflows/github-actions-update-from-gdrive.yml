@@ -7,6 +7,10 @@ on:
   # Allows you to run this workflow programmatically
   repository_dispatch:
     types: [Refresh from GDrive and Deploy Jekyll with GitHub Pages]
+    inputs:
+      id:
+        description: 'Run identifier'
+        required: false
 
 env:
   DEPLOY_ENV: prod
@@ -40,6 +44,9 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: ${{github.event.inputs.id}}
+        run: echo Run identifier ${{ inputs.id }}
+
       # Checkout "master"
       - name: Checkout
         uses: actions/checkout@v4
