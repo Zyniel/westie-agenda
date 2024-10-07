@@ -124,5 +124,41 @@
         "Sondage": "Dim. 🪩 Station Danse",
         "Calendrier": "Dim. 13 - Station Danse",
         "Infos + Lien": "Dim. La Station - Happy Sunday\r\n> https://tinyurl.com/ye29p5mj"
+    },
+    {
+        "index": 7,
+        "Date Début": "11/10/2024",
+        "Heure Début": "20:00:00",
+        "Date Fin": "13/10/2024",
+        "Heure Fin": "20:00:00",
+        "Jour": "Vendredi",
+        "Type": "Evenement",
+        "Lieu / Ecole": "LesLuckyDancers",
+        "Nom": "Intensive JEM",
+        "Nom Court": "Intensive JEM & VT",
+        "URL-Shorten": "https://tinyurl.com/weywwupe",
+        "URL": "https://www.facebook.com/events/844952894274329",
+        "Image": "LLD-StagesJEM-102024-Tile.png",
+        "Sondage": "WE. 🎟️ Intensive JEM & VT",
+        "Calendrier": "Ven. 11 - Intensive JEM & VT",
+        "Infos + Lien": "WE. LesLuckyDancers - Intensive JEM\r\n> https://tinyurl.com/weywwupe"
+    },
+    {
+        "index": 8,
+        "Date Début": "12/10/2024",
+        "Heure Début": "13:30:00",
+        "Date Fin": "13/10/2024",
+        "Heure Fin": "18:00:00",
+        "Jour": "Samedi",
+        "Type": "Evenement",
+        "Lieu / Ecole": "BelleFeeDanse",
+        "Nom": "Friendly Danse",
+        "Nom Court": "Friendly Danse",
+        "URL-Shorten": "https://tinyurl.com/bddhepfx",
+        "URL": "https://www.facebook.com/events/1213598676443991",
+        "Image": "BFD-FriendlyWesty-102024-Tile.png",
+        "Sondage": "WE. 🎟️ Friendly Danse",
+        "Calendrier": "Sam. 12 - Friendly Danse",
+        "Infos + Lien": "WE. BelleFeeDanse - Friendly Danse\r\n> https://tinyurl.com/bddhepfx"
     }
 ]
