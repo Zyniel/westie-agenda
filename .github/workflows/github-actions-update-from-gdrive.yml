@@ -91,6 +91,8 @@ jobs:
       # Checkout "master"
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.commit.outputs.commit_hash }}
 
       # Move elements to Assets
       - name: Move images to site assets
