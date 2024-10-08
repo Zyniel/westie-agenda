@@ -15,7 +15,7 @@
         "Image": "TDS-Mardi-Tile.png",
         "Sondage": "Mar. 🪩 After TDS",
         "Calendrier": "Mar. 08 - After TDS",
-        "Infos + Lien": "Mar. TDS - After Mardi\r\n> https://tinyurl.com/883ujmfd"
+        "Infos + Lien": "Mar. 🪩 After TDS\r\n> https://tinyurl.com/883ujmfd"
     },
     {
         "index": 1,
@@ -33,7 +33,7 @@
         "Image": "TDS-Jeudi-Tile.png",
         "Sondage": "Jeu. 🪩 After TDS",
         "Calendrier": "Jeu. 10 - After TDS",
-        "Infos + Lien": "Jeu. TDS - After Jeudi\r\n> https://tinyurl.com/mr2tmjz3"
+        "Infos + Lien": "Jeu. 🪩 After TDS\r\n> https://tinyurl.com/mr2tmjz3"
     },
     {
         "index": 2,
@@ -45,13 +45,13 @@
         "Type": "Soirée",
         "Lieu / Ecole": "Factory Club",
         "Nom": "Soirée RWSB",
-        "Nom Court": "Soirée RWSB",
+        "Nom Court": "Soirée RWSB Test",
         "URL-Shorten": "https://tinyurl.com/mmd9pztt",
         "URL": "https://www.facebook.com/events/1144333326678800",
         "Image": "FAC-Vendredi-Tile.png",
-        "Sondage": "Ven. 🪩 Soirée RWSB",
-        "Calendrier": "Ven. 11 - Soirée RWSB",
-        "Infos + Lien": "Ven. Factory Club - Soirée RWSB\r\n> https://tinyurl.com/mmd9pztt"
+        "Sondage": "Ven. 🪩 Soirée RWSB Test",
+        "Calendrier": "Ven. 11 - Soirée RWSB Test",
+        "Infos + Lien": "Ven. 🪩 Soirée RWSB Test\r\n> https://tinyurl.com/mmd9pztt"
     },
     {
         "index": 3,
@@ -68,8 +68,8 @@
         "URL": "https://www.facebook.com/events/677615454581759/704574031885901",
         "Image": "CDP-Dimanche-Tile.png",
         "Sondage": "Sam. 🪩 Cosy Danse Party",
-        "Calendrier": "Sam. 12 - Cosy Danse Party",
-        "Infos + Lien": "Sam. ArmandoDanse - Cosy Danse Party\r\n> https://tinyurl.com/4ztmbrh8"
+        "Calendrier": "Du 12 au 13 - Cosy Danse Party",
+        "Infos + Lien": "Sam. 🪩 Cosy Danse Party\r\n> https://tinyurl.com/4ztmbrh8"
     },
     {
         "index": 4,
@@ -87,7 +87,7 @@
         "Image": "AWD-Vendredi-Tile.png",
         "Sondage": "Sam. 🪩 Soirée Dansity",
         "Calendrier": "Sam. 12 - Soirée Dansity",
-        "Infos + Lien": "Sam. AnWa Dance - Soirée Dansity\r\n> https://tinyurl.com/57mddrd"
+        "Infos + Lien": "Sam. 🪩 Soirée Dansity\r\n> https://tinyurl.com/57mddrd"
     },
     {
         "index": 5,
@@ -105,7 +105,7 @@
         "Image": "SD-TGIS-12102024-Tile.png",
         "Sondage": "Sam. 🪩 TGIS",
         "Calendrier": "Sam. 12 - TGIS",
-        "Infos + Lien": "Sam. StudioDiabolo - TGIS\r\n> https://tinyurl.com/2ts4yz78"
+        "Infos + Lien": "Sam. 🪩 TGIS\r\n> https://tinyurl.com/2ts4yz78"
     },
     {
         "index": 6,
@@ -123,7 +123,7 @@
         "Image": "LSD-Dimanche-Tile.png",
         "Sondage": "Dim. 🪩 Station Danse",
         "Calendrier": "Dim. 13 - Station Danse",
-        "Infos + Lien": "Dim. La Station - Happy Sunday\r\n> https://tinyurl.com/ye29p5mj"
+        "Infos + Lien": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj"
     },
     {
         "index": 7,
@@ -140,8 +140,8 @@
         "URL": "https://www.facebook.com/events/844952894274329",
         "Image": "LLD-StagesJEM-102024-Tile.png",
         "Sondage": "WE. 🎟️ Intensive JEM & VT",
-        "Calendrier": "Ven. 11 - Intensive JEM & VT",
-        "Infos + Lien": "WE. LesLuckyDancers - Intensive JEM\r\n> https://tinyurl.com/weywwupe"
+        "Calendrier": "Du 11 au 13 - Intensive JEM & VT",
+        "Infos + Lien": "WE. 🎟️ Intensive JEM & VT\r\n> https://tinyurl.com/weywwupe"
     },
     {
         "index": 8,
@@ -158,7 +158,7 @@
         "URL": "https://www.facebook.com/events/1213598676443991",
         "Image": "BFD-FriendlyWesty-102024-Tile.png",
         "Sondage": "WE. 🎟️ Friendly Danse",
-        "Calendrier": "Sam. 12 - Friendly Danse",
-        "Infos + Lien": "WE. BelleFeeDanse - Friendly Danse\r\n> https://tinyurl.com/bddhepfx"
+        "Calendrier": "Du 12 au 13 - Friendly Danse",
+        "Infos + Lien": "WE. 🎟️ Friendly Danse\r\n> https://tinyurl.com/bddhepfx"
     }
 ]
