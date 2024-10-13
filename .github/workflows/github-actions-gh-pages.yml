@@ -50,6 +50,7 @@ jobs:
           echo "Move PNG tiles to Assets"
           mkdir -p ./docs/assets/images/tiles
           cp ./images/tiles/*.png ./docs/assets/images/tiles
+          cp ./images/tiles/signature-name.svg ./docs/assets/images/signature-name.svg
           tree -a ./docs/assets
 
       # Prepare Jekyll Site
