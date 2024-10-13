@@ -38,9 +38,9 @@
     {
         "index": 2,
         "Date Début": "18/10/2024",
-        "Heure Début": "15:00:00",
+        "Heure Début": "21:00:00",
         "Date Fin": "19/10/2024",
-        "Heure Fin": "21:00:00",
+        "Heure Fin": "02:00:00",
         "Jour": "Vendredi",
         "Type": "Soirée",
         "Lieu / Ecole": "ArmandoDanse",
@@ -50,7 +50,7 @@
         "URL": "https://www.facebook.com/events/677615454581759/677615474581757",
         "Image": "CDP-Dimanche-Tile.png",
         "Sondage": "Ven. 🪩 Cosy Danse Party",
-        "Calendrier": "Du 18 au 19 - Cosy Danse Party",
+        "Calendrier": "Ven. 18 - Cosy Danse Party",
         "Infos + Lien": "Ven. 🪩 Cosy Danse Party\r\n> https://tinyurl.com/5x4drxhz"
     },
     {
@@ -163,10 +163,10 @@
     },
     {
         "index": 9,
-        "Date Début": "25/10/2024",
-        "Heure Début": "19:00:00",
-        "Date Fin": "27/10/2024",
-        "Heure Fin": "03:00:00",
+        "Date Début": "18/10/2024",
+        "Heure Début": "",
+        "Date Fin": "20/10/2024",
+        "Heure Fin": "",
         "Jour": "Vendredi",
         "Type": "Evenement",
         "Lieu / Ecole": "Aix-En-Prov.",
@@ -176,7 +176,7 @@
         "URL": "https://www.facebook.com/events/907460630902640",
         "Image": "EVT-AixOnWest8-Tile.png",
         "Sondage": "WE. 🎟️ Aix On West",
-        "Calendrier": "Ven. 25 - Aix On West",
+        "Calendrier": "Du 18 au 20 - Aix On West",
         "Infos + Lien": "WE. 🎟️ Aix On West\r\n> https://tinyurl.com/2mdr573e"
     },
     {
