@@ -358,9 +358,9 @@ class GDriveAgendaHelper:
         data_file = Path('.', self.config['app']['data_file'])
         self.download_data(path_file=data_file.absolute().as_posix(), replace=True)
         log.info("Downloading PNG files")
-        self.download_png_files(path_folder=self.config['app']['png_folder'], replace=False, weekly=True)
+        self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=True)
         log.info("Downloading SVG files")
-        self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=False, weekly=True)
+        self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=True)
 
 
 def main():
