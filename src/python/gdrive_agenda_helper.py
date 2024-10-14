@@ -5,6 +5,7 @@
 This script forms the quickstart introduction to the zero-touch enrollemnt
 customer API. To learn more, visit https://developer.google.com/zero-touch
 """
+from datetime import datetime, timedelta
 
 import gspread
 import logging
@@ -211,9 +212,21 @@ class GDriveAgendaHelper:
         else:
             log.debug("Downloading: '{path}'".format(path=basename))
 
+        # Identify the first day of the week
+        df = self.to_df()
+        day = df[self.config['sheets']['date_column']].min()
+        dt = datetime.strptime(day, '%d/%m/%Y')
+        week_dt = dt - timedelta(days=dt.weekday())
+        week_day = datetime.strftime(week_dt, '%d/%m')
+        logging.debug(f'Week: {week_day}')
+
+        # Write JSON data to file
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path_file, 'w', encoding='utf-8') as f:
-            d = self.to_dict()
+            d = {
+                "week" : week_day,
+                "events" : self.to_dict()
+            }
             json.dump(d, f, ensure_ascii=False, indent=4)
 
 
@@ -372,7 +385,7 @@ def main():
         logging.basicConfig(level=log.info)
 
         # Load configuration file
-        with open(args.conf[0], 'r') as file:
+        with open(args.conf[0], 'r', encoding='utf-8') as file:
             config = yaml.safe_load(file)
 
         gash = GDriveAgendaHelper(config=config)

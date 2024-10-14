@@ -8,7 +8,9 @@
     <link rel="stylesheet" href="{{ 'assets/css/styles.css' | relative_url }}">
   </head>
   <body>
-    <header class="luckiest-guy-regular">{{ page.title }}</header>
+    <header>
+      {% include header.html %}
+    </header>
     <section>
       {{ content }}
     </section>

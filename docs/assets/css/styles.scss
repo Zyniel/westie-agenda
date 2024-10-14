@@ -31,13 +31,15 @@ body {
   
   header {
 	color: $font-primary-color;
-	font-size: 50px;
+	font-size: 42px;
 	text-align: center;
+	padding-top: 0.75rem;
+	padding-bottom: 0.75rem;
   }
   
   footer {
 	color: $font-primary-color;
-	font-size: 50px;
+	font-size: 20px;
 	text-align: center;
   }
   
@@ -53,11 +55,19 @@ body {
     column-gap: 10px;
     row-gap: 20px;
     max-width: 1420px;
-    margin: 2rem auto;
+    margin: 1rem auto;
 }
 
 .flex-header {
     width: 100%;
+}
+
+.no-header {
+    display: none
+}
+
+.no-footer {
+    display: none
 }
 
 .flex-footer {
