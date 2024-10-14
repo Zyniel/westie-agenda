@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+from datetime import datetime, timedelta
+
 import pandas as pd
 import logging
 import yaml
@@ -7,13 +9,35 @@ from pathlib import Path
 
 __doc__ = "Convert an Excel sheet to JSON."
 
-def convert_excel_to_json(excel_file, sheet_name, json_file):
+def get_first_day_of_week(dt):
+    return dt - timedelta(days=dt.weekday())
+
+def get_last_day_of_week(day):
+    week_start = get_first_day_of_week(day)
+    return week_start + timedelta(days=6)
+
+def convert_excel_to_json(excel_file, sheet_name, json_file, date_column):
     try:
         # Read the specific sheet from the Excel file
         df = pd.read_excel(excel_file, sheet_name=sheet_name, engine='openpyxl')
 
+        # Compute current Week
+        day = df[date_column].min()
+        dt = datetime.strptime(day, '%m/%d/%Y')
+        week_start = get_first_day_of_week(dt)
+        week_end = week_start + timedelta(days=6)
+
         # Convert the DataFrame to JSON
         df.to_json(json_file, orient='records', indent=4, force_ascii=False)
+        # Open JSON again
+        # TODO: Find better to handle Unicode
+        # f = open("job_benefits.json", "a", encoding= 'utf-8')
+
+        # Format JSON adding Week
+        # json_events = {
+        #     "week" : week_start.strftime('%m/%d'),
+        #    "days" :
+        # }
 
         logging.info(f"Successfully converted {sheet_name} from {excel_file} to {json_file}")
     except Exception as e:
@@ -44,7 +68,7 @@ def main():
         p_file = Path(config["json_file"])
         p_file.parent.mkdir(parents=True, exist_ok=True)
         # Convert XLSX to JSON
-        convert_excel_to_json(config["excel_file"], config["excel_worksheet"], config["json_file"])
+        convert_excel_to_json(config["excel_file"], config["excel_worksheet"], config["json_file"], config["date_column"])
     else:
         raise Exception("Missing configuration file.")
 

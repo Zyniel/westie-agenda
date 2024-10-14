@@ -17,3 +17,4 @@ sheets:
   spreadsheet_id: '1UqPalww9jVR9FDn6WDNxSZbiL9sRsomTKQWBer1CMA8'
   worksheet_id: 'Semaine'
   data_range: 'TblSemaine'
+  date_column: 'Date Début'
