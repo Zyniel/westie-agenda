@@ -47,10 +47,10 @@ class GDriveAgendaHelper:
         self.config = config
 
     def connect(self):
-        '''
+        """
         This function creates a Google Sheets and a Google Drive client, both stored for later usage.
         Authentication relies on Service Accounts and API Tokens
-        '''
+        """
         # Connect to Google API using Service Account using  Bearer Token
         gs_client = gspread.service_account(filename=self.config['sheets']['service_account_key'], scopes=self.scopes)
         self.gs_client = gs_client
@@ -69,9 +69,9 @@ class GDriveAgendaHelper:
         self.gd_client = GoogleDrive(gauth)
 
     def fetch_data(self):
-        '''
+        """
         This function connects to Google Sheets and returns values inside the WEEKLY_RANGE range
-        '''
+        """
         self.data = []
 
         # Import data
@@ -79,9 +79,9 @@ class GDriveAgendaHelper:
             self.data = self.gs_sheet.get_values(self.config['sheets']['data_range'])
 
     def fetch_files(self, weekly: bool = False):
-        '''
+        """
         This function connects to Google Drive and returns arrays of file pointers to PNG and SVG files stored remotly
-        '''
+        """
         self.pngs = []
         self.svgs = []
         if self.gd_client is not None:
@@ -106,10 +106,10 @@ class GDriveAgendaHelper:
                     self.svgs.append(file)
 
     def __download_gdrive_file(self, file: GoogleDriveFile, path_file: str, replace: bool = False) -> None:
-        '''
-        This private function takes as input a GoogleDrive file reference, a system fullpath and a replace boolean, to
+        """
+        This private function takes as input a GoogleDrive file reference, a system fullpath and a boolean to force replace, to
         download the remote file on the local system, overwriting existing file if required.
-        '''
+        """
         # Check if file exists - Skip if found unless replace is forced
         path = Path(path_file).as_posix()
         if not Path(path_file).is_file():
@@ -122,10 +122,10 @@ class GDriveAgendaHelper:
             log.info("Skipping: '{path}' - File already exists.".format(path=path))
 
     def download_png_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
-        '''
-        This function takes as input a system folder path, a replace boolean, and a weekly boolean to download remote
+        """
+        This function takes as input a system folder path, a boolean to force replace, and a weekly boolean to download remote
         PNG files to disk, overwriting existing file if required.
-        '''
+        """
         existing_files = []
 
         # Create directory if missing
@@ -149,10 +149,10 @@ class GDriveAgendaHelper:
                     self.__download_gdrive_file(file, path_file=path, replace=replace)
 
     def download_svg_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
-        '''
-        This function takes as input a system folder path, a replace boolean, and a weekly boolean to download remote
+        """
+        This function takes as input a system folder path, a boolean to force replace, and a weekly boolean to download remote
         SVG files to disk, overwriting existing file if required.
-        '''
+        """
         existing_png = []
 
         # Create directory if missing
@@ -178,9 +178,9 @@ class GDriveAgendaHelper:
                     self.__download_gdrive_file(file, path_file=path, replace=replace)
 
     def to_df(self) -> DataFrame:
-        '''
+        """
         This function converts the 2D List of data into a DataFrame object
-        '''
+        """
         data = self.data.copy()
         headers = data.pop(0)
         df = pd.DataFrame(data, columns=headers)
@@ -188,19 +188,19 @@ class GDriveAgendaHelper:
         return df
 
     def to_dict(self):
-        '''
+        """
         This function converts the DataFrame into a JSON object
-        '''
+        """
         df = self.to_df()
-        dict = df.to_dict(orient='records')
-        return dict
+        d = df.to_dict(orient='records')
+        return d
 
     def download_data(self, path_file, replace: bool = False) -> None:
-        '''
+        """
         This function create a JSON file from imported Event Data
         :param path_file: Target JSON file
         :param replace: True to overwrite existing files
-        '''
+        """
         path = Path(path_file)
         path.parent.mkdir(parents=True, exist_ok=True)
         basename = path.name
@@ -231,12 +231,12 @@ class GDriveAgendaHelper:
 
 
     def __get_column_values(self, name) -> List:
-        '''
+        """
         This function returns a serie of values (column) from the Dataframe. This is used to return all potential values
         of a Sheets column.
         :param name: Column name
         :return:
-        '''
+        """
         lst = []
         if len(self.data) > 0:
             df = self.to_df()
@@ -244,115 +244,115 @@ class GDriveAgendaHelper:
         return lst
 
     def get_start_dates(self) -> List:
-        '''
+        """
         This function returns all 'Date Début' values.
         :return: List of strings from 'Date Début' column
-        '''
+        """
         return self.__get_column_values('Date Début')
 
     def get_start_times(self) -> List:
-        '''
+        """
         This function returns all 'Heure Début' values.
         :return: List of strings from 'Heure Début' column
-        '''
+        """
         return self.__get_column_values('Heure Début')
 
     def get_end_dates(self) -> List:
-        '''
+        """
         This function returns all 'Date Fin' values.
         :return: List of strings from 'Date Fin' column
-        '''
+        """
         return self.__get_column_values('Date Fin')
 
     def get_end_times(self) -> List:
-        '''
+        """
         This function returns all 'Heure Fin' values.
         :return: List of strings from 'Heure Fin' column
-        '''
+        """
         return self.__get_column_values('Heure Fin')
 
     def get_days(self) -> List:
-        '''
+        """
         This function returns all 'Jour' values.
         :return: List of strings from 'Jour' column
-        '''
+        """
         return self.__get_column_values('Jour')
 
     def get_types(self) -> List:
-        '''
+        """
         This function returns all 'Type' values.
         :return: List of strings from 'Type' column
-        '''
+        """
         return self.__get_column_values('Type')
 
     def get_end_locs(self) -> List:
-        '''
+        """
         This function returns all 'Lieu / Ecole' values.
         :return: List of strings from 'Lieu / Ecole' column
-        '''
+        """
         return self.__get_column_values('Lieu / Ecole')
 
     def get_polls(self) -> List:
-        '''
+        """
         This function returns all 'Infos + Lien' values.
         :return: List of strings from 'Infos + Lien' column
-        '''
+        """
         return self.__get_column_values('Infos + Lien')
 
     def get_short_names(self) -> List:
-        '''
+        """
         This function returns all 'Nom Court' values.
         :return: List of strings from 'Nom Court' column
-        '''
+        """
         return self.__get_column_values('Nom Court')
 
     def get_names(self) -> List:
-        '''
+        """
         This function returns all 'Nom' values.
         :return: List of strings from 'Nom' column
-        '''
+        """
         return self.__get_column_values('Nom')
 
     def get_short_urls(self) -> List:
-        '''
+        """
         This function returns all 'Url-Shorten' values.
         :return: List of strings from 'Url-Shorten' column
-        '''
+        """
         return self.__get_column_values('Url-Shorten')
 
     def get_urls(self) -> List:
-        '''
+        """
         This function returns all 'Url' values.
         :return: List of strings from 'Url' column
-        '''
+        """
         return self.__get_column_values('Url')
 
     def get_poll_names(self) -> List:
-        '''
+        """
         This function returns all 'Sondage' values.
         :return: List of strings from 'Sondage' column
-        '''
+        """
         return self.__get_column_values('Sondage')
 
     def get_calendar_names(self) -> List:
-        '''
+        """
         This function returns all 'Calendrier' values.
         :return: List of strings from 'Calendrier' column
-        '''
+        """
         return self.__get_column_values('Calendrier')
 
     def get_polls(self) -> List:
-        '''
+        """
         This function returns all 'Infos + Lien' values.
         :return: List of strings from 'Infos + Lien' column
-        '''
+        """
         return self.__get_column_values('Infos + Lien')
 
     def get_files(self) -> List:
-        '''
+        """
         This function returns all 'Image' values.
         :return: List of strings from 'Image' column
-        '''
+        """
         return self.__get_column_values('Image')
 
     def synchronize_gdrive(self):
