@@ -38,24 +38,6 @@
     {
         "index": 2,
         "Date Début": "18/10/2024",
-        "Heure Début": "21:00:00",
-        "Date Fin": "19/10/2024",
-        "Heure Fin": "02:00:00",
-        "Jour": "Vendredi",
-        "Type": "Soirée",
-        "Lieu / Ecole": "ArmandoDanse",
-        "Nom": "Cosy Danse Party",
-        "Nom Court": "Cosy Danse Party",
-        "URL-Shorten": "https://tinyurl.com/5x4drxhz",
-        "URL": "https://www.facebook.com/events/677615454581759/677615474581757",
-        "Image": "CDP-Dimanche-Tile.png",
-        "Sondage": "Ven. 🪩 Cosy Danse Party",
-        "Calendrier": "Ven. 18 - Cosy Danse Party",
-        "Infos + Lien": "Ven. 🪩 Cosy Danse Party\r\n> https://tinyurl.com/5x4drxhz"
-    },
-    {
-        "index": 3,
-        "Date Début": "18/10/2024",
         "Heure Début": "20:00:00",
         "Date Fin": "19/10/2024",
         "Heure Fin": "02:00:00",
@@ -72,7 +54,7 @@
         "Infos + Lien": "Ven. 🪩 Soirée RWSB\r\n> https://tinyurl.com/ywk453rp"
     },
     {
-        "index": 4,
+        "index": 3,
         "Date Début": "18/10/2024",
         "Heure Début": "19:30:00",
         "Date Fin": "19/10/2024",
@@ -90,7 +72,7 @@
         "Infos + Lien": "Ven. 🪩 West In Palaiseau\r\n> https://tinyurl.com/5n7f6wnf"
     },
     {
-        "index": 5,
+        "index": 4,
         "Date Début": "18/10/2024",
         "Heure Début": "20:30:00",
         "Date Fin": "19/10/2024",
@@ -108,7 +90,7 @@
         "Infos + Lien": "Ven. 🪩 Olympiades\r\n> https://tinyurl.com/4zw8cncy"
     },
     {
-        "index": 6,
+        "index": 5,
         "Date Début": "19/10/2024",
         "Heure Début": "20:00:00",
         "Date Fin": "20/10/2024",
@@ -126,7 +108,7 @@
         "Infos + Lien": "Sam. 🪩 La MAS\r\n> https://tinyurl.com/4fk4yz8e"
     },
     {
-        "index": 7,
+        "index": 6,
         "Date Début": "20/10/2024",
         "Heure Début": "15:00:00",
         "Date Fin": "20/10/2024",
@@ -144,7 +126,7 @@
         "Infos + Lien": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj"
     },
     {
-        "index": 8,
+        "index": 7,
         "Date Début": "20/10/2024",
         "Heure Début": "15:00:00",
         "Date Fin": "20/10/2024",
@@ -162,7 +144,7 @@
         "Infos + Lien": "Dim. 📚 Stage TDS\r\n> https://tinyurl.com/2p824y5z"
     },
     {
-        "index": 9,
+        "index": 8,
         "Date Début": "18/10/2024",
         "Heure Début": "",
         "Date Fin": "20/10/2024",
@@ -180,7 +162,7 @@
         "Infos + Lien": "WE. 🎟️ Aix On West\r\n> https://tinyurl.com/2mdr573e"
     },
     {
-        "index": 10,
+        "index": 9,
         "Date Début": "19/10/2024",
         "Heure Début": "",
         "Date Fin": "20/10/2024",
