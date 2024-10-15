@@ -23,6 +23,10 @@ $bg-color: #171717;
   font-variation-settings: "wdth" 100;
 }
 
+html {
+    font-size: 16px;
+}
+
 body {
   font: 100% $font-stack;
   color: $font-primary-color;
@@ -31,15 +35,19 @@ body {
   
   header {
 	color: $font-primary-color;
-	font-size: 42px;
 	text-align: center;
-	padding-top: 0.75rem;
-	padding-bottom: 0.75rem;
+	padding-top: 0.1rem;
+	padding-bottom: 0.1rem;
+
+	h1 {
+        margin-block-start: 0.25em;
+        margin-block-end: 0.25em;
+
+    }
   }
   
   footer {
 	color: $font-primary-color;
-	font-size: 20px;
 	text-align: center;
   }
   
@@ -55,7 +63,7 @@ body {
     column-gap: 10px;
     row-gap: 20px;
     max-width: 1420px;
-    margin: 1rem auto;
+    margin: 0.5rem auto;
 }
 
 .flex-header {
@@ -113,4 +121,19 @@ body {
       object-fit: cover;
       display: block;
     }
+}
+@media (min-width: 320px) {
+  h1, h2, h3, p {
+    font-size: 2.35rem;
+  }
+}
+@media (min-width: 734px) {
+  h1, h2, h3, p {
+    font-size: 3.5rem;
+  }
+}
+@media (min-width: 1024px) {
+  h1, h2, h3, p {
+    font-size: 3.8rem;
+  }
 }
