@@ -93,6 +93,24 @@
         },
         {
             "index": 5,
+            "Date Début": "01/11/2024",
+            "Heure Début": "15:30:00",
+            "Date Fin": "01/11/2024",
+            "Heure Fin": "20:30:00",
+            "Jour": "Vendredi",
+            "Type": "Soirée",
+            "Lieu / Ecole": "La Station",
+            "Nom": "Soirée 1er Nov.",
+            "Nom Court": "Soirée 1er Nov.",
+            "URL-Shorten": "https://tinyurl.com/ye29p5mj",
+            "URL": "http://station-danse.fr/",
+            "Image": "LSD-Vendredi-1erNovFerie-Tile.png",
+            "Sondage": "Ven. 🪩 Soirée 1er Nov.",
+            "Calendrier": "Ven. 01 - Soirée 1er Nov.",
+            "Infos + Lien": "Ven. 🪩 Soirée 1er Nov.\r\n> https://tinyurl.com/ye29p5mj"
+        },
+        {
+            "index": 6,
             "Date Début": "02/11/2024",
             "Heure Début": "19:00:00",
             "Date Fin": "02/11/2024",
@@ -110,7 +128,7 @@
             "Infos + Lien": "Sam. 🪩 Halloween SDC\r\n> https://tinyurl.com/ym2vt8vf"
         },
         {
-            "index": 6,
+            "index": 7,
             "Date Début": "03/11/2024",
             "Heure Début": "15:00:00",
             "Date Fin": "03/11/2024",
@@ -128,7 +146,7 @@
             "Infos + Lien": "Dim. 🪩 La Boum WCS\r\n> https://tinyurl.com/4kc3chct"
         },
         {
-            "index": 7,
+            "index": 8,
             "Date Début": "03/11/2024",
             "Heure Début": "15:00:00",
             "Date Fin": "03/11/2024",
@@ -146,7 +164,7 @@
             "Infos + Lien": "Dim. 🪩 Halloween Sunday\r\n> https://tinyurl.com/ye29p5mj"
         },
         {
-            "index": 8,
+            "index": 9,
             "Date Début": "03/11/2024",
             "Heure Début": "14:00:00",
             "Date Fin": "03/11/2024",
@@ -164,7 +182,7 @@
             "Infos + Lien": "Dim. 📚 Semi-Privés TDS\r\n> https://tinyurl.com/4h8xyyt3"
         },
         {
-            "index": 9,
+            "index": 10,
             "Date Début": "03/12/2024",
             "Heure Début": "15:00:00",
             "Date Fin": "03/11/2024",
@@ -180,42 +198,6 @@
             "Sondage": "Mar. 🪩 Cosy Danse Party",
             "Calendrier": "Mar. 03 - Cosy Danse Party",
             "Infos + Lien": "Mar. 🪩 Cosy Danse Party\r\n> https://tinyurl.com/26mhjemy"
-        },
-        {
-            "index": 10,
-            "Date Début": "31/10/2024",
-            "Heure Début": "21:00:00",
-            "Date Fin": "03/11/2024",
-            "Heure Fin": "23:45:00",
-            "Jour": "Jeudi",
-            "Type": "Evenement",
-            "Lieu / Ecole": "Lyon",
-            "Nom": "Westie's Angels",
-            "Nom Court": "Westie's Angels",
-            "URL-Shorten": "https://tinyurl.com/5b6tarzb",
-            "URL": "https://www.facebook.com/events/919226649499402",
-            "Image": "EVT-WestiesAngels-Tile.png",
-            "Sondage": "WE. 🎟️ Westie's Angels",
-            "Calendrier": "Du 31 au 03 - Westie's Angels",
-            "Infos + Lien": "WE. 🎟️ Westie's Angels\r\n> https://tinyurl.com/5b6tarzb"
-        },
-        {
-            "index": 11,
-            "Date Début": "01/11/2024",
-            "Heure Début": "15:30:00",
-            "Date Fin": "01/11/2024",
-            "Heure Fin": "20:30:00",
-            "Jour": "Vendredi",
-            "Type": "Soirée",
-            "Lieu / Ecole": "La Station",
-            "Nom": "Soirée 1er Nov.",
-            "Nom Court": "Soirée 1er Nov.",
-            "URL-Shorten": "https://tinyurl.com/ye29p5mj",
-            "URL": "http://station-danse.fr/",
-            "Image": "LSD-Vendredi-1erNovFerie-Tile.png",
-            "Sondage": "Ven. 🪩 Soirée 1er Nov.",
-            "Calendrier": "Ven. 01 - Soirée 1er Nov.",
-            "Infos + Lien": "Ven. 🪩 Soirée 1er Nov.\r\n> https://tinyurl.com/ye29p5mj"
         }
     ]
 }
