@@ -1,43 +1,12 @@
-Updated repo from Google Drive on Mon Sep 30 20:37:56 UTC 2024
-Updated repo from Google Drive on Mon Sep 30 23:52:10 UTC 2024
-Updated repo from Google Drive on Tue Oct  1 00:15:42 UTC 2024
-Updated repo from Google Drive on Tue Oct  1 00:27:24 UTC 2024
-Updated repo from Google Drive on Tue Oct  1 00:32:42 UTC 2024
-Updated repo from Google Drive on Tue Oct  1 00:56:27 UTC 2024
-Updated repo from Google Drive on Sat Oct  5 21:10:04 UTC 2024
-Updated repo from Google Drive on Sun Oct  6 15:31:21 UTC 2024
-Updated repo from Google Drive on Sun Oct  6 16:46:33 UTC 2024
-Updated repo from Google Drive on Sun Oct  6 17:30:44 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 00:26:50 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 00:45:21 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 00:57:52 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 01:08:44 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 01:11:14 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:27:15 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:29:15 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:35:15 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:38:11 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:41:35 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:47:15 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 02:55:43 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 13:54:37 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 14:05:16 UTC 2024
-Updated repo from Google Drive on Mon Oct  7 14:08:47 UTC 2024
-Updated repo from Google Drive on Tue Oct  8 21:45:50 UTC 2024
-Updated repo from Google Drive on Tue Oct  8 21:54:06 UTC 2024
-Updated repo from Google Drive on Sun Oct 13 22:58:36 UTC 2024
-Updated repo from Google Drive on Sun Oct 13 23:09:03 UTC 2024
-Updated repo from Google Drive on Sun Oct 13 23:23:19 UTC 2024
-Updated repo from Google Drive on Sun Oct 13 23:29:50 UTC 2024
-Updated repo from Google Drive on Mon Oct 14 12:13:44 UTC 2024
-Updated repo from Google Drive on Mon Oct 14 17:39:34 UTC 2024
-Updated repo from Google Drive on Mon Oct 14 17:45:06 UTC 2024
-Updated repo from Google Drive on Mon Oct 14 18:26:48 UTC 2024
-Updated repo from Google Drive on Mon Oct 21 23:13:22 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 20:48:48 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 20:52:42 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 21:27:48 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 21:34:37 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 21:48:12 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 22:04:10 UTC 2024
-Updated repo from Google Drive on Mon Oct 28 22:08:33 UTC 2024
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## 20241029-2135
+
+### Added
+- Changed CHANGELOG.md standard
+- Changed GitHub Actions to properly populate CHANGELOG.md on dispatch action

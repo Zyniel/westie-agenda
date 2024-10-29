@@ -72,7 +72,15 @@ jobs:
 
       # See here for further info : https://schnerring.net/blog/checking-out-code-committed-within-the-same-github-actions-workflow-run/
       - name: Update CHANGELOG.md
-        run: printf "Updated repo from Google Drive on $(date)\n" >> CHANGELOG.md
+        run: |
+          printf "\r\n" >> CHANGELOG.md
+          printf "## $(date '+%Y%m%d-%H%M%S')\r\n" >> CHANGELOG.md
+          printf "\r\n" >> CHANGELOG.md
+          printf "### Added\r\n" >> CHANGELOG.md
+          printf "\r\n" >> CHANGELOG.md
+          printf "- Updated pictures from Google Drive" >> CHANGELOG.md
+          printf "- Updated events.json from Google Drive" >> CHANGELOG.md
+          printf "" >> CHANGELOG.md
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: commit-and-push
