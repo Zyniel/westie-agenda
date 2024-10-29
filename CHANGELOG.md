@@ -10,3 +10,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - Changed CHANGELOG.md standard
 - Changed GitHub Actions to properly populate CHANGELOG.md on dispatch action
+- Added new banners
+- Added new template
