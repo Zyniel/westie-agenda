@@ -3,6 +3,7 @@ _site
 .jekyll-metadata
 .idea
 .run
+images/banners
 venv/*
 divers/*
 chorégraphie/*
