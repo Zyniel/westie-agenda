@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 20241029-2240
+
+### Added
+- Removed banners folder - unused in the process
+
+
+## 20241029-2232
+
+### Added
+- Fixed issue with GitHub CHANGELOG.md management
+
+
 ## 20241029-2135
 
 ### Added
