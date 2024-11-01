@@ -42,7 +42,8 @@ class GDriveAgendaHelper:
         self.scopes = SCOPES
         self.gs_client = None
         self.gs_spreadsheet = None
-        self.gs_sheet = None
+        self.gs_data_sheet = None
+        self.gs_config_sheet = None
         self.gd_client = None
         self.config = config
 
@@ -54,11 +55,13 @@ class GDriveAgendaHelper:
         # Connect to Google API using Service Account using  Bearer Token
         gs_client = gspread.service_account(filename=self.config['sheets']['service_account_key'], scopes=self.scopes)
         self.gs_client = gs_client
-        # Access Spreadsheet, Load Worksheet,
+        # Access Spreadsheet, Load Worksheets
         gs_spreadsheet = self.gs_client.open_by_key(self.config['sheets']['spreadsheet_id'])
         self.gs_spreadsheet = gs_spreadsheet
-        gs_sheet = gs_spreadsheet.worksheet(self.config['sheets']['worksheet_id'])
-        self.gs_sheet = gs_sheet
+        gs_data_sheet = gs_spreadsheet.worksheet(self.config['sheets']['data']['worksheet_id'])
+        self.gs_data_sheet = gs_data_sheet
+        gs_config_sheet = gs_spreadsheet.worksheet(self.config['sheets']['config']['worksheet_id'])
+        self.gs_config_sheet = gs_config_sheet
 
         # Connect to Google DRIVE API using Service Account using  Bearer Token
         gauth = GoogleAuth()
@@ -75,8 +78,15 @@ class GDriveAgendaHelper:
         self.data = []
 
         # Import data
-        if self.gs_sheet is not None:
-            self.data = self.gs_sheet.get_values(self.config['sheets']['data_range'])
+        if self.gs_data_sheet is not None:
+            self.data = self.gs_data_sheet.get_values(self.config['sheets']['data']['data_range'])
+
+            # Identify the first day of the week
+            df = self.to_df()
+            day = df[self.config['sheets']['data']['date_column']].min()
+            dt = datetime.strptime(day, '%d/%m/%Y')
+            self.week_dt = dt - timedelta(days=dt.weekday())
+            logging.debug(f'Week: {self.week_dt}')
 
     def fetch_files(self, weekly: bool = False):
         """
@@ -212,23 +222,53 @@ class GDriveAgendaHelper:
         else:
             log.debug("Downloading: '{path}'".format(path=basename))
 
-        # Identify the first day of the week
-        df = self.to_df()
-        day = df[self.config['sheets']['date_column']].min()
-        dt = datetime.strptime(day, '%d/%m/%Y')
-        week_dt = dt - timedelta(days=dt.weekday())
-        week_day = datetime.strftime(week_dt, '%d/%m')
-        logging.debug(f'Week: {week_day}')
-
         # Write JSON data to file
         path.parent.mkdir(parents=True, exist_ok=True)
         with open(path_file, 'w', encoding='utf-8') as f:
             d = {
-                "week" : week_day,
-                "events" : self.to_dict()
+                "week": datetime.strftime(self.week_dt, '%d/%m'),
+                "events": self.to_dict()
             }
             json.dump(d, f, ensure_ascii=False, indent=4)
 
+    def download_links(self, path_file, replace: bool = False) -> None:
+        """
+        This function create a JSON file from imported Event Data
+        :param path_file: Target JSON file
+        :param replace: True to overwrite existing files
+        """
+        path = Path(path_file)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        basename = path.name
+        if path.is_file() and not replace:
+            log.info("Skipping: '{path}' - File already exists.".format(path=basename))
+            return
+        elif path.is_file():
+            log.debug("Downloading and overwriting: '{path}'".format(path=basename))
+        else:
+            log.debug("Downloading: '{path}'".format(path=basename))
+
+        # Write JSON data to file
+        values = self.__get_column_values('Infos + Lien')
+        path.parent.mkdir(parents=True, exist_ok=True)
+
+        # Get links pre/post strings
+        pre_text_cell = self.get_config(self.config['sheets']['config']['pre_links_cell'])
+        post_text_cell = self.get_config(self.config['sheets']['config']['post_links_cell'])
+        pre_text = pre_text_cell.first()
+        post_text = post_text_cell.first()
+
+        # Build weekly links text
+        links = []
+        if pre_text != "":
+            links.append(pre_text)
+        links.extend(values)
+        if post_text != "":
+            links.append(post_text)
+
+        # Write weekly links file
+        with open(path_file, 'w', encoding='utf-8', newline='') as f:
+            f.writelines('\r\n'.join(links))
 
     def __get_column_values(self, name) -> List:
         """
@@ -355,7 +395,20 @@ class GDriveAgendaHelper:
         """
         return self.__get_column_values('Image')
 
-    def synchronize_gdrive(self):
+    def get_config(self, key):
+        """
+        This function returns the value of specified ranges in the config worksheet
+        :param key: Parameter key to lookup
+        :return: Value of the parameter
+        """
+        value = ""
+        try:
+            value = self.gs_config_sheet.get(key)
+        except:
+            value = ""
+        return value
+
+    def synchronize_gdrive(self) -> None :
         # Connect to Google Drive and Google Sheet and store both Clients
         log.info("Connecting to Goggle Services")
         self.connect()
@@ -366,12 +419,18 @@ class GDriveAgendaHelper:
         log.info("Reading Drive files")
         self.fetch_files()
 
-        # Download all files
-        log.info("Downloading JSON data file")
+        # Manage Content - Download / Create / Upload files
+        log.info("Creating JSON data file")
         data_file = Path('.', self.config['app']['data_file'])
         self.download_data(path_file=data_file.absolute().as_posix(), replace=True)
+
+        log.info("Creating URLS file")
+        urls_files = Path('.', self.config['app']['export_folder'], datetime.strftime(self.week_dt, '%Y%m%d') + '.txt')
+        self.download_links(path_file=urls_files.absolute().as_posix(), replace=True)
+
         log.info("Downloading PNG files")
         self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=True)
+
         log.info("Downloading SVG files")
         self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=True)
 

@@ -15,6 +15,13 @@ drive:
 sheets:
   service_account_key: ./src/python/service_account_key.json
   spreadsheet_id: '1UqPalww9jVR9FDn6WDNxSZbiL9sRsomTKQWBer1CMA8'
-  worksheet_id: 'Semaine'
-  data_range: 'TblSemaine'
-  date_column: 'Date Début'
+  data:
+    worksheet_id: 'Semaine'
+    data_range: 'TblSemaine'
+    date_column: 'Date Début'
+  config:
+    worksheet_id: 'Config'
+    pre_survey_cell: 'Rng_PreSurvey'
+    post_survey_cell: 'Rng_PostSurvey'
+    pre_links_cell: 'Rng_PreLinks'
+    post_links_cell: 'Rng_PostLinks'
