@@ -144,6 +144,42 @@
             "Sondage": "WE. 🎟️ Westie Pink City",
             "Calendrier": "Ven. 08 - Westie Pink City",
             "Infos + Lien": "WE. 🎟️ Westie Pink City\r\n> https://tinyurl.com/7tznkke6"
+        },
+        {
+            "index": 8,
+            "Date Début": "11/11/2024",
+            "Heure Début": "16:30:00",
+            "Date Fin": "11/11/2024",
+            "Heure Fin": "19:30:00",
+            "Jour": "Lundi",
+            "Type": "Soirée",
+            "Lieu / Ecole": "TDS",
+            "Nom": "Après-Midi WCS",
+            "Nom Court": "Après-Midi TDS",
+            "URL-Shorten": "https://tinyurl.com/mv85zrer",
+            "URL": "https://www.facebook.com/events/585347240502116/",
+            "Image": "TDS-ApresMidi-20241111-Tile.png",
+            "Sondage": "Lun. 🪩 Après-Midi TDS",
+            "Calendrier": "Lun. 11 - Après-Midi TDS",
+            "Infos + Lien": "Lun. 🪩 Après-Midi TDS\r\n> https://tinyurl.com/mv85zrer"
+        },
+        {
+            "index": 9,
+            "Date Début": "11/11/2024",
+            "Heure Début": "20:00:00",
+            "Date Fin": "11/11/2024",
+            "Heure Fin": "21:30:00",
+            "Jour": "Lundi",
+            "Type": "Stage",
+            "Lieu / Ecole": "TDS",
+            "Nom": "Stage Inter.",
+            "Nom Court": "Stage Inter. TDS",
+            "URL-Shorten": "https://tinyurl.com/3t5kcda7",
+            "URL": "https://www.facebook.com/events/580522201287754/",
+            "Image": "TDS-Stages-Inter-20241111-Tile.png",
+            "Sondage": "Lun. 📚 Stage Inter. TDS",
+            "Calendrier": "Lun. 11 - Stage Inter. TDS",
+            "Infos + Lien": "Lun. 📚 Stage Inter. TDS\r\n> https://tinyurl.com/3t5kcda7"
         }
     ]
 }
