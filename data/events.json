@@ -62,7 +62,7 @@
             "index": 3,
             "Date Début": "23/11/2024",
             "Heure Début": "20:30:00",
-            "Date Fin": "23/11/2024",
+            "Date Fin": "24/11/2024",
             "Heure Fin": "02:00:00",
             "Jour": "Samedi",
             "Type": "Soirée",
@@ -75,15 +75,15 @@
             "Sondage": "Sam. 🪩 Olympiades",
             "Calendrier": "Sam. 23 - Olympiades",
             "Infos + Lien": "Sam. 🪩 Olympiades\r\n> https://tinyurl.com/bdfke4wc",
-            "Order": "500"
+            "Order": "600"
         },
         {
             "index": 4,
-            "Date Début": "24/11/2024",
+            "Date Début": "23/11/2024",
             "Heure Début": "20:00:00",
             "Date Fin": "24/11/2024",
             "Heure Fin": "02:00:00",
-            "Jour": "Dimanche",
+            "Jour": "Samedi",
             "Type": "Soirée",
             "Lieu / Ecole": "Cnx. Swing",
             "Nom": "La MAS",
@@ -91,10 +91,10 @@
             "URL-Shorten": "https://tinyurl.com/4zr767jn",
             "URL": "https://www.facebook.com/events/598230182636362/",
             "Image": "MAS-LaSoirée-LudoCharlotte-Tile.png",
-            "Sondage": "Dim. 🪩 La MAS",
-            "Calendrier": "Dim. 24 - La MAS",
-            "Infos + Lien": "Dim. 🪩 La MAS\r\n> https://tinyurl.com/4zr767jn",
-            "Order": "800"
+            "Sondage": "Sam. 🪩 La MAS",
+            "Calendrier": "Sam. 23 - La MAS",
+            "Infos + Lien": "Sam. 🪩 La MAS\r\n> https://tinyurl.com/4zr767jn",
+            "Order": "500"
         },
         {
             "index": 5,
@@ -113,7 +113,7 @@
             "Sondage": "Dim. 🪩 Station Danse",
             "Calendrier": "Dim. 24 - Station Danse",
             "Infos + Lien": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
-            "Order": "600"
+            "Order": "700"
         },
         {
             "index": 6,
@@ -132,7 +132,7 @@
             "Sondage": "Dim. 🪩 Dimanche WCS",
             "Calendrier": "Dim. 24 - Dimanche WCS",
             "Infos + Lien": "Dim. 🪩 Dimanche WCS\r\n> https://tinyurl.com/58k5s3kb",
-            "Order": "700"
+            "Order": "800"
         },
         {
             "index": 7,
