@@ -56,7 +56,7 @@
             "Sondage": "Ven. 🪩 Soirée RWSB",
             "Calendrier": "Ven. 22 - Soirée RWSB",
             "Infos + Lien": "Ven. 🪩 Soirée RWSB\r\n> https://tinyurl.com/bdxr6ck8",
-            "Order": "400"
+            "Order": "300"
         },
         {
             "index": 3,
@@ -75,7 +75,7 @@
             "Sondage": "Sam. 🪩 Olympiades",
             "Calendrier": "Sam. 23 - Olympiades",
             "Infos + Lien": "Sam. 🪩 Olympiades\r\n> https://tinyurl.com/bdfke4wc",
-            "Order": "600"
+            "Order": "500"
         },
         {
             "index": 4,
@@ -113,15 +113,15 @@
             "Sondage": "Dim. 🪩 Station Danse",
             "Calendrier": "Dim. 24 - Station Danse",
             "Infos + Lien": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
-            "Order": "700"
+            "Order": "600"
         },
         {
             "index": 6,
-            "Date Début": "22/11/2024",
+            "Date Début": "24/11/2024",
             "Heure Début": "18:00:00",
             "Date Fin": "24/11/2024",
             "Heure Fin": "22:00:00",
-            "Jour": "Vendredi",
+            "Jour": "Dimanche",
             "Type": "Soirée",
             "Lieu / Ecole": "DK'Danse",
             "Nom": "Dimanche WCS",
@@ -129,10 +129,10 @@
             "URL-Shorten": "https://tinyurl.com/58k5s3kb",
             "URL": "https://www.facebook.com/events/2259943464348015",
             "Image": "DKD-Dimanche-Tile.png",
-            "Sondage": "Ven. 🪩 Dimanche WCS",
-            "Calendrier": "Ven. 22 - Dimanche WCS",
-            "Infos + Lien": "Ven. 🪩 Dimanche WCS\r\n> https://tinyurl.com/58k5s3kb",
-            "Order": "300"
+            "Sondage": "Dim. 🪩 Dimanche WCS",
+            "Calendrier": "Dim. 24 - Dimanche WCS",
+            "Infos + Lien": "Dim. 🪩 Dimanche WCS\r\n> https://tinyurl.com/58k5s3kb",
+            "Order": "700"
         },
         {
             "index": 7,
@@ -151,7 +151,7 @@
             "Sondage": "WE. 🎟️ Friendly Samedi",
             "Calendrier": "Sam. 23 - Friendly Samedi",
             "Infos + Lien": "WE. 🎟️ Friendly Samedi\r\n> https://tinyurl.com/mppeyjcc",
-            "Order": "10500"
+            "Order": "10400"
         }
     ]
 }
