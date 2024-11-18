@@ -60,22 +60,22 @@
         },
         {
             "index": 3,
-            "Date Début": "23/11/2024",
+            "Date Début": "22/11/2024",
             "Heure Début": "20:30:00",
-            "Date Fin": "24/11/2024",
+            "Date Fin": "23/11/2024",
             "Heure Fin": "02:00:00",
-            "Jour": "Samedi",
+            "Jour": "Vendredi",
             "Type": "Soirée",
             "Lieu / Ecole": "Sens. Danse",
             "Nom": "Olympiades",
             "Nom Court": "Olympiades",
             "URL-Shorten": "https://tinyurl.com/bdfke4wc",
             "URL": "https://www.facebook.com/events/981319306334689/1234616651004952",
-            "Image": "SDS-Vendredi-Octobre-Tile.png",
-            "Sondage": "Sam. 🪩 Olympiades",
-            "Calendrier": "Sam. 23 - Olympiades",
-            "Infos + Lien": "Sam. 🪩 Olympiades\r\n> https://tinyurl.com/bdfke4wc",
-            "Order": "600"
+            "Image": "SDS-Vendredi-2024-Tile.png",
+            "Sondage": "Ven. 🪩 Olympiades",
+            "Calendrier": "Ven. 22 - Olympiades",
+            "Infos + Lien": "Ven. 🪩 Olympiades\r\n> https://tinyurl.com/bdfke4wc",
+            "Order": "400"
         },
         {
             "index": 4,
@@ -94,7 +94,7 @@
             "Sondage": "Sam. 🪩 La MAS",
             "Calendrier": "Sam. 23 - La MAS",
             "Infos + Lien": "Sam. 🪩 La MAS\r\n> https://tinyurl.com/4zr767jn",
-            "Order": "500"
+            "Order": "600"
         },
         {
             "index": 5,
@@ -151,7 +151,7 @@
             "Sondage": "WE. 🎟️ Friendly Samedi",
             "Calendrier": "Sam. 23 - Friendly Samedi",
             "Infos + Lien": "WE. 🎟️ Friendly Samedi\r\n> https://tinyurl.com/mppeyjcc",
-            "Order": "10400"
+            "Order": "10500"
         }
     ]
 }
