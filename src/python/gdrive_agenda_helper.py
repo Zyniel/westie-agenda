@@ -79,11 +79,11 @@ class GDriveAgendaHelper:
 
         # Import data
         if self.gs_data_sheet is not None:
-            self.data = self.gs_data_sheet.get_values(self.config['sheets']['data']['data_range'])
+            self.data = self.gs_data_sheet.get_values(self.config['sheets']['data']['named_ranges']['data_range'])
 
             # Identify the first day of the week
             df = self.to_df()
-            day = df[self.config['sheets']['data']['date_column']].min()
+            day = df[self.config['sheets']['data']['columns']['start_time']].min()
             dt = datetime.strptime(day, '%d/%m/%Y')
             self.week_dt = dt - timedelta(days=dt.weekday())
             logging.debug(f'Week: {self.week_dt}')

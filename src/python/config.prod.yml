@@ -43,6 +43,5 @@ sheets:
       survey_text: 'Sondage'
       planning_text: 'Planning'
       infos_text: 'Infos'
-
   config:
     worksheet_id: 'Config'
