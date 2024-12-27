@@ -270,6 +270,13 @@ class GDriveAgendaHelper:
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
             f.writelines('\r\n'.join(links))
 
+    def read_config(self):
+        """
+
+        :return:
+        """
+
+
     def __get_column_values(self, name) -> List:
         """
         This function returns a serie of values (column) from the Dataframe. This is used to return all potential values
@@ -288,7 +295,7 @@ class GDriveAgendaHelper:
         This function returns all 'Date Début' values.
         :return: List of strings from 'Date Début' column
         """
-        return self.__get_column_values('Date Début')
+        return self.__get_column_values(self.config['sheets']['config']['worksheet_id'])
 
     def get_start_times(self) -> List:
         """

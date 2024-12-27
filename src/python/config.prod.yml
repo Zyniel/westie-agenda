@@ -14,14 +14,35 @@ drive:
   svg_folder_id: '1NjholefBcuA-yiGAb3IT_KIp2zHKC5qU'
 sheets:
   service_account_key: ./src/python/service_account_key.json
-  spreadsheet_id: '1UqPalww9jVR9FDn6WDNxSZbiL9sRsomTKQWBer1CMA8'
-  data:
-    worksheet_id: 'Semaine'
-    data_range: 'TblSemaine'
-    date_column: 'Date Début'
-  config:
-    worksheet_id: 'Config'
+  spreadsheet_id: '14li6xxH3nWr3S9GvBvR_vXDdYl0zdwOUFnOnrw0sees'
+  named_ranges:
+    week_range: 'TblSemaine'
+    config_range: 'TblConfig'
     pre_survey_cell: 'RNG_PRESURVEY'
     post_survey_cell: 'RNG_POSTSURVEY'
     pre_links_cell: 'RNG_PRELINKS'
     post_links_cell: 'RNG_POSTLINKS'
+  data:
+    worksheet_id: 'Semaine'
+    columns:
+      start_time: 'Date Début'
+      end_date: 'Heure Début'
+      end_time: 'Date Fin'
+      start_day: 'Heure Fin'
+      type: 'Type'
+      owner: 'Organisateur'
+      place: 'Salle'
+      location: 'Lieu'
+      city: 'Ville'
+      address: 'Adresse'
+      event_name: 'Nom'
+      event_shortname: 'Nom Court'
+      url: 'Lien Court'
+      short_url: 'Lien'
+      image: 'Image'
+      survey_text: 'Sondage'
+      planning_text: 'Planning'
+      infos_text: 'Infos'
+
+  config:
+    worksheet_id: 'Config'
