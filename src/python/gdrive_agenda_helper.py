@@ -250,7 +250,7 @@ class GDriveAgendaHelper:
             log.debug("Downloading: '{path}'".format(path=basename))
 
         # Write JSON data to file
-        values = self.__get_column_values('Infos + Lien')
+        values = self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
         path.parent.mkdir(parents=True, exist_ok=True)
 
         # Get links pre/post strings

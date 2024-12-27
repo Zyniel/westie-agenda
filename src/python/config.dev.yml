@@ -43,5 +43,6 @@ sheets:
       survey_text: 'Sondage'
       planning_text: 'Planning'
       infos_text: 'Infos'
+      order: 'Ordre'
   config:
     worksheet_id: 'Config'
