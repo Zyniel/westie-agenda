@@ -38,12 +38,15 @@ class GDriveAgendaHelper:
         self.pngs = []
         self.svgs = []
         self.data = []
+        self.params = []
         self.df = None
+        self.df_params = None
         self.scopes = SCOPES
         self.gs_client = None
         self.gs_spreadsheet = None
         self.gs_data_sheet = None
         self.gs_config_sheet = None
+        self.gs_whatsapp_sheet = None
         self.gd_client = None
         self.config = config
 
@@ -62,6 +65,8 @@ class GDriveAgendaHelper:
         self.gs_data_sheet = gs_data_sheet
         gs_config_sheet = gs_spreadsheet.worksheet(self.config['sheets']['config']['worksheet_id'])
         self.gs_config_sheet = gs_config_sheet
+        gs_whatsapp_sheet = gs_spreadsheet.worksheet(self.config['sheets']['whatsapp']['worksheet_id'])
+        self.gs_whatsapp_sheet = gs_whatsapp_sheet
 
         # Connect to Google DRIVE API using Service Account using  Bearer Token
         gauth = GoogleAuth()
@@ -71,9 +76,31 @@ class GDriveAgendaHelper:
             scopes=SCOPES)
         self.gd_client = GoogleDrive(gauth)
 
+    def fetch_properties(self):
+        """
+        This function connects to Google Sheets and returns values inside the CONFIG Sheet
+        """
+        self.params = []
+
+        # Import properties
+        if self.params is not None:
+            self.params = self.gs_config_sheet.get_all_values()
+            self.df_params = self.to_df(self.params)
+
+    def fetch_whatsapp(self):
+        """
+        This function connects to Google Sheets and returns values inside the CONFIG Sheet
+        """
+        self.whatsapp = []
+
+        # Import properties
+        if self.whatsapp is not None:
+            self.whatsapp = self.gs_config_sheet.get_all_values()
+            self.df_whatsapp = self.to_df(self.params)
+
     def fetch_data(self):
         """
-        This function connects to Google Sheets and returns values inside the WEEKLY_RANGE range
+        This function connects to Google Sheets and returns values inside the SEMAINE Sheet
         """
         self.data = []
 
@@ -83,8 +110,8 @@ class GDriveAgendaHelper:
             self.data = self.gs_data_sheet.get_all_values()
 
             # Identify the first day of the week
-            df = self.to_df()
-            day = df[self.config['sheets']['data']['columns']['start_time']].min()
+            self.df = self.to_df(self.data)
+            day = self.df[self.config['sheets']['data']['columns']['start_time']].min()
             dt = datetime.strptime(day, '%d/%m/%Y')
             self.week_dt = dt - timedelta(days=dt.weekday())
             logging.debug(f'Week: {self.week_dt}')
@@ -188,22 +215,21 @@ class GDriveAgendaHelper:
                 else:
                     self.__download_gdrive_file(file, path_file=path, replace=replace)
 
-    def to_df(self) -> DataFrame:
+    def to_df(self, list) -> DataFrame:
         """
         This function converts the 2D List of data into a DataFrame object
         """
-        data = self.data.copy()
+        data = list.copy()
         headers = data.pop(0)
         df = pd.DataFrame(data, columns=headers)
         df = df.reset_index()
         return df
 
-    def to_dict(self):
+    def to_dict(self, dataframe):
         """
         This function converts the DataFrame into a JSON object
         """
-        df = self.to_df()
-        d = df.to_dict(orient='records')
+        d = dataframe.to_dict(orient='records')
         return d
 
     def download_data(self, path_file, replace: bool = False) -> None:
@@ -228,7 +254,7 @@ class GDriveAgendaHelper:
         with open(path_file, 'w', encoding='utf-8') as f:
             d = {
                 "week": datetime.strftime(self.week_dt, '%d/%m'),
-                "events": self.to_dict()
+                "events": self.to_dict(self.df)
             }
             json.dump(d, f, ensure_ascii=False, indent=4)
 
@@ -249,34 +275,26 @@ class GDriveAgendaHelper:
         else:
             log.debug("Downloading: '{path}'".format(path=basename))
 
-        # Write JSON data to file
-        values = self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
-        path.parent.mkdir(parents=True, exist_ok=True)
+        # Get all values from the Google Sheets
+        values = self.gs_whatsapp_sheet.get_all_values()
 
-        # Get links pre/post strings
-        pre_text_cell = self.get_config(self.config['sheets']['config']['pre_links_cell'])
-        post_text_cell = self.get_config(self.config['sheets']['config']['post_links_cell'])
-        pre_text = pre_text_cell.first()
-        post_text = post_text_cell.first()
+        # Convert values to a DataFrame
+        df = self.to_df(values)
 
-        # Build weekly links text
-        links = []
-        if pre_text != "":
-            links.append(pre_text)
-        links.extend(values)
-        if post_text != "":
-            links.append(post_text)
+        # Check if the DataFrame has the expected column
+        links_column = self.config['sheets']['whatsapp']['columns']['infos']
+        if links_column not in df.columns:
+            raise ValueError(f"Column '{links_column}' not found in DataFrame")
 
-        # Write weekly links file
+        # Access the first value of the links column
+        links = df[links_column].iloc[0]
+
+        # Check if the value is not empty or None
+        if pd.isnull(links) or links == '':
+            raise ValueError(f"The first value in column '{links_column}' is empty or None")
+
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
-            f.writelines('\r\n'.join(links))
-
-    def read_config(self):
-        """
-
-        :return:
-        """
-
+             f.writelines(links)
 
     def __get_column_values(self, name) -> List:
         """
@@ -287,8 +305,7 @@ class GDriveAgendaHelper:
         """
         lst = []
         if len(self.data) > 0:
-            df = self.to_df()
-            lst = df[name].tolist()
+            lst = self.df[name].tolist()
         return lst
 
     def get_start_dates(self) -> List:
@@ -303,105 +320,127 @@ class GDriveAgendaHelper:
         This function returns all 'Heure Début' values.
         :return: List of strings from 'Heure Début' column
         """
-        return self.__get_column_values('Heure Début')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
 
     def get_end_dates(self) -> List:
         """
         This function returns all 'Date Fin' values.
         :return: List of strings from 'Date Fin' column
         """
-        return self.__get_column_values('Date Fin')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
 
     def get_end_times(self) -> List:
         """
         This function returns all 'Heure Fin' values.
         :return: List of strings from 'Heure Fin' column
         """
-        return self.__get_column_values('Heure Fin')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
 
     def get_days(self) -> List:
         """
         This function returns all 'Jour' values.
         :return: List of strings from 'Jour' column
         """
-        return self.__get_column_values('Jour')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
 
     def get_types(self) -> List:
         """
         This function returns all 'Type' values.
         :return: List of strings from 'Type' column
         """
-        return self.__get_column_values('Type')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
 
-    def get_end_locs(self) -> List:
+    def get_owners(self) -> List:
         """
-        This function returns all 'Lieu / Ecole' values.
-        :return: List of strings from 'Lieu / Ecole' column
+        This function returns all 'Organisateur' values.
+        :return: List of strings from column
         """
-        return self.__get_column_values('Lieu / Ecole')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['owner'])
 
-    def get_polls(self) -> List:
+    def get_places(self) -> List:
         """
         This function returns all 'Infos + Lien' values.
-        :return: List of strings from 'Infos + Lien' column
+        :return: List of strings from column
         """
-        return self.__get_column_values('Infos + Lien')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['place'])
+
+    def get_locations(self) -> List:
+        """
+        This function returns all 'Lieu / Ecole' values.
+        :return: List of strings from column
+        """
+        return self.__get_column_values(self.config['sheets']['data']['columns']['location'])
+
+    def get_cities(self) -> List:
+        """
+        This function returns all 'Lieu / Ecole' values.
+        :return: List of strings from column
+        """
+        return self.__get_column_values(self.config['sheets']['data']['columns']['city'])
+
+
+    def get_addresses(self) -> List:
+        """
+        This function returns all 'Lieu / Ecole' values.
+        :return: List of strings from column
+        """
+        return self.__get_column_values(self.config['sheets']['data']['columns']['address'])
 
     def get_short_names(self) -> List:
         """
         This function returns all 'Nom Court' values.
-        :return: List of strings from 'Nom Court' column
+        :return: List of strings from column
         """
-        return self.__get_column_values('Nom Court')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['event_shortname'])
 
     def get_names(self) -> List:
         """
         This function returns all 'Nom' values.
-        :return: List of strings from 'Nom' column
+        :return: List of strings from column
         """
-        return self.__get_column_values('Nom')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['event_name'])
 
     def get_short_urls(self) -> List:
         """
-        This function returns all 'Url-Shorten' values.
-        :return: List of strings from 'Url-Shorten' column
+        This function returns all 'Lien Court' values.
+        :return: List of strings from column
         """
-        return self.__get_column_values('Url-Shorten')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['short_url'])
 
     def get_urls(self) -> List:
         """
         This function returns all 'Url' values.
-        :return: List of strings from 'Url' column
+        :return: List of strings from column
         """
-        return self.__get_column_values('Url')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['url'])
 
     def get_poll_names(self) -> List:
         """
         This function returns all 'Sondage' values.
-        :return: List of strings from 'Sondage' column
+        :return: List of strings from column
         """
-        return self.__get_column_values('Sondage')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['survey_text'])
 
     def get_calendar_names(self) -> List:
         """
-        This function returns all 'Calendrier' values.
-        :return: List of strings from 'Calendrier' column
+        This function returns all 'Planning' values.
+        :return: List of strings from column
         """
-        return self.__get_column_values('Calendrier')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['planning_text'])
 
-    def get_polls(self) -> List:
+    def get_poll_infos(self) -> List:
         """
-        This function returns all 'Infos + Lien' values.
-        :return: List of strings from 'Infos + Lien' column
+        This function returns all 'Infos' values.
+        :return: List of strings from column
         """
-        return self.__get_column_values('Infos + Lien')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['infos_text'])
 
     def get_files(self) -> List:
         """
         This function returns all 'Image' values.
-        :return: List of strings from 'Image' column
+        :return: List of strings from column
         """
-        return self.__get_column_values('Image')
+        return self.__get_column_values(self.config['sheets']['data']['columns']['image'])
 
     def get_config(self, key):
         """
@@ -411,7 +450,18 @@ class GDriveAgendaHelper:
         """
         value = ""
         try:
-            value = self.gs_config_sheet.get(key)
+            # Ensure the DataFrame contains the expected columns
+            if 'Parametre' not in self.df_params.columns or 'Valeur' not in self.df_params.columns:
+                raise ValueError("DataFrame must contain 'Parametre' and 'Valeur' columns")
+
+            # Access the value of the specified property
+            value = self.df_params[self.df_params['Parametre'] == key]['Valeur']
+
+            # Check if the property exists and return its value
+            if not value.empty:
+                return value.iloc[0]
+            else:
+                raise KeyError(f"Property '{key}' not found in DataFrame")
         except:
             value = ""
         return value
@@ -424,6 +474,8 @@ class GDriveAgendaHelper:
         # Pull references to Spreadsheet Data and Drive Files
         log.info("Reading Sheets data")
         self.fetch_data()
+        log.info("Reading Config data")
+        self.fetch_properties()
         log.info("Reading Drive files")
         self.fetch_files()
 

@@ -37,8 +37,8 @@ sheets:
       address: 'Adresse'
       event_name: 'Nom'
       event_shortname: 'Nom Court'
-      url: 'Lien Court'
-      short_url: 'Lien'
+      short_url: 'Lien Court'
+      url: 'Lien'
       image: 'Image'
       survey_text: 'Sondage'
       planning_text: 'Planning'
@@ -46,3 +46,11 @@ sheets:
       order: 'Ordre'
   config:
     worksheet_id: 'Config'
+    columns:
+      parameter: 'Parametre'
+      value: 'Valeur'
+  whatsapp:
+    worksheet_id: 'WhatsApp'
+    columns:
+      infos: 'Liens'
+      survey: 'Choix'
