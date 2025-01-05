@@ -8,14 +8,18 @@
     <link rel="stylesheet" href="{{ 'assets/css/styles.css' | relative_url }}">
   </head>
   <body>
-    <header>
-      {% include header.html %}
-    </header>
-    <section>
-      {{ content }}
-    </section>
-    <footer>
-      {% include footer.html %} 
-    </footer>
+    <div id="container">
+      <header>
+        {% include header.html %}
+      </header>
+      <main>
+        <section>
+          {{ content }}
+        </section>
+      </main>
+      <footer>
+        {% include footer.html %}
+      </footer>
+    </div>
   </body>
 </html>
