@@ -22,7 +22,7 @@
             "Sondage": "Mar. 🪩 After TDS",
             "Planning": "Mar. 07 - After TDS",
             "Infos": "Mar. 🪩 After TDS\r\n> https://tinyurl.com/hzp9m9ex",
-            "Ordre": "50500"
+            "Ordre": "50600"
         },
         {
             "index": 1,
@@ -45,7 +45,7 @@
             "Sondage": "Jeu. 🪩 After TDS",
             "Planning": "Jeu. 09 - After TDS",
             "Infos": "Jeu. 🪩 After TDS\r\n> https://tinyurl.com/mwa73y7b",
-            "Ordre": "50600"
+            "Ordre": "50700"
         },
         {
             "index": 2,
@@ -68,7 +68,7 @@
             "Sondage": "Ven. 🪩 West In Palaiseau",
             "Planning": "Ven. 10 - West In Palaiseau",
             "Infos": "Ven. 🪩 West In Palaiseau\r\n> https://tinyurl.com/yc282amp",
-            "Ordre": "50700"
+            "Ordre": "50800"
         },
         {
             "index": 3,
@@ -91,7 +91,7 @@
             "Sondage": "Ven. 🪩 Factory Club (RWSB)",
             "Planning": "Ven. 10 - Factory Club (RWSB)",
             "Infos": "Ven. 🪩 Factory Club (RWSB)\r\n> https://tinyurl.com/ywk453rp",
-            "Ordre": "50800"
+            "Ordre": "50900"
         },
         {
             "index": 4,
@@ -114,7 +114,7 @@
             "Sondage": "Ven. 🪩 La MAS",
             "Planning": "Ven. 10 - La MAS",
             "Infos": "Ven. 🪩 La MAS\r\n> https://tinyurl.com/2tybsz49",
-            "Ordre": "50800"
+            "Ordre": "50900"
         },
         {
             "index": 5,
@@ -137,7 +137,30 @@
             "Sondage": "Sam. 🪩 La BOUM WCS",
             "Planning": "Sam. 11 - La BOUM WCS",
             "Infos": "Sam. 🪩 La BOUM WCS\r\n> https://tinyurl.com/59ct35ua",
-            "Ordre": "51000"
+            "Ordre": "51100"
+        },
+        {
+            "index": 6,
+            "Date Début": "12/01/2025",
+            "Heure Début": "15:00:00",
+            "Date Fin": "12/01/2025",
+            "Heure Fin": "21:00:00",
+            "Jour": "Dim.",
+            "Type": "Soirée",
+            "Organisateur": "La Station",
+            "Salle": "La Station Danse",
+            "Lieu": "",
+            "Ville": "Vitry-sur-Seine",
+            "Adresse": "13 Rue Pierre Sémard",
+            "Nom": "Happy Sunday",
+            "Nom Court": "Station Danse",
+            "Lien Court": "https://tinyurl.com/ye29p5mj",
+            "Lien": "http://station-danse.fr/",
+            "Image": "LSD-Dimanche-Generic-Tile.png",
+            "Sondage": "Dim. 🪩 Station Danse",
+            "Planning": "Dim. 12 - Station Danse",
+            "Infos": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
+            "Ordre": "51200"
         }
     ]
 }
