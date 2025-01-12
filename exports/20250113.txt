@@ -5,18 +5,18 @@ Jeu. 🪩 After TDS
 > https://tinyurl.com/2t9djxz4
 Ven. 🪩 Olympiades
 > https://tinyurl.com/3h7zmd2u
-WE. 🎟️ Avignon City Swing
-> https://tinyurl.com/3bm6hcj4
 Sam. 🪩 La BOUM WCS
 > https://tinyurl.com/bdzmjnm9
 Sam. 🪩 Cosy Danse Party
 > https://tinyurl.com/44s6vfzc
 Sam. 🪩 La MAS
 > https://tinyurl.com/y64yk5td
-WE. 🎟️ Winter WiN 5
-> https://tinyurl.com/ythany8m
 Dim. 🪩 Station Danse
 > https://tinyurl.com/ye29p5mj
+WE. 🎟️ Avignon City Swing
+> https://tinyurl.com/3bm6hcj4
+WE. 🎟️ Winter WiN 5
+> https://tinyurl.com/ythany8m
 
 *Expérimental - En cours de dev'*
 https://zyniel.github.io/westie-agenda/
