@@ -1,31 +1,8 @@
 {
-    "week": "06/01",
+    "week": "13/01",
     "events": [
         {
             "index": 0,
-            "Date Début": "12/01/2025",
-            "Heure Début": "15:00:00",
-            "Date Fin": "12/01/2025",
-            "Heure Fin": "21:00:00",
-            "Jour": "Dim.",
-            "Type": "Soirée",
-            "Organisateur": "La Station",
-            "Salle": "La Station Danse",
-            "Lieu": "",
-            "Ville": "Vitry-sur-Seine",
-            "Adresse": "13 Rue Pierre Sémard",
-            "Nom": "Happy Sunday",
-            "Nom Court": "Station Danse",
-            "Lien Court": "https://tinyurl.com/ye29p5mj",
-            "Lien": "http://station-danse.fr/",
-            "Image": "LSD-Dimanche-Generic-Tile.png",
-            "Sondage": "Dim. 🪩 Station Danse",
-            "Planning": "Dim. 12 - Station Danse",
-            "Infos": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
-            "Ordre": "50400"
-        },
-        {
-            "index": 1,
             "Date Début": "14/01/2025",
             "Heure Début": "21:00:00",
             "Date Fin": "15/01/2025",
@@ -45,10 +22,10 @@
             "Sondage": "Mar. 🪩 After TDS",
             "Planning": "Mar. 14 - After TDS",
             "Infos": "Mar. 🪩 After TDS\r\n> https://tinyurl.com/357yf729",
-            "Ordre": "50500"
+            "Ordre": "50400"
         },
         {
-            "index": 2,
+            "index": 1,
             "Date Début": "16/01/2025",
             "Heure Début": "21:00:00",
             "Date Fin": "17/01/2025",
@@ -68,10 +45,10 @@
             "Sondage": "Jeu. 🪩 After TDS",
             "Planning": "Jeu. 16 - After TDS",
             "Infos": "Jeu. 🪩 After TDS\r\n> https://tinyurl.com/2t9djxz4",
-            "Ordre": "50600"
+            "Ordre": "50500"
         },
         {
-            "index": 3,
+            "index": 2,
             "Date Début": "17/01/2025",
             "Heure Début": "20:30:00",
             "Date Fin": "18/01/2025",
@@ -91,7 +68,30 @@
             "Sondage": "Ven. 🪩 Olympiades",
             "Planning": "Ven. 17 - Olympiades",
             "Infos": "Ven. 🪩 Olympiades\r\n> https://tinyurl.com/3h7zmd2u",
-            "Ordre": "50800"
+            "Ordre": "50700"
+        },
+        {
+            "index": 3,
+            "Date Début": "17/01/2025",
+            "Heure Début": "",
+            "Date Fin": "19/01/2025",
+            "Heure Fin": "",
+            "Jour": "Ven.",
+            "Type": "Evenement",
+            "Organisateur": "Rocking Club Avignonnais",
+            "Salle": "Grand Hôtel de Nimes",
+            "Lieu": "",
+            "Ville": "Nîmes",
+            "Adresse": "202 Rue Nicolas Ledoux",
+            "Nom": "Avignon City Swing",
+            "Nom Court": "Avignon City Swing",
+            "Lien Court": "https://tinyurl.com/3bm6hcj4",
+            "Lien": "https://www.facebook.com/events/8731817290196829",
+            "Image": "EVT-AvignonCitySwing2025-Tile.png",
+            "Sondage": "WE. 🎟️ Avignon City Swing",
+            "Planning": "Ven. 17 - Avignon City Swing",
+            "Infos": "WE. 🎟️ Avignon City Swing\r\n> https://tinyurl.com/3bm6hcj4",
+            "Ordre": "60600"
         },
         {
             "index": 4,
@@ -114,7 +114,7 @@
             "Sondage": "Sam. 🪩 La BOUM WCS",
             "Planning": "Sam. 18 - La BOUM WCS",
             "Infos": "Sam. 🪩 La BOUM WCS\r\n> https://tinyurl.com/bdzmjnm9",
-            "Ordre": "51000"
+            "Ordre": "50900"
         },
         {
             "index": 5,
@@ -137,7 +137,7 @@
             "Sondage": "Sam. 🪩 Cosy Danse Party",
             "Planning": "Sam. 18 - Cosy Danse Party",
             "Infos": "Sam. 🪩 Cosy Danse Party\r\n> https://tinyurl.com/44s6vfzc",
-            "Ordre": "51000"
+            "Ordre": "50900"
         },
         {
             "index": 6,
@@ -160,33 +160,10 @@
             "Sondage": "Sam. 🪩 La MAS",
             "Planning": "Sam. 18 - La MAS",
             "Infos": "Sam. 🪩 La MAS\r\n> https://tinyurl.com/y64yk5td",
-            "Ordre": "51200"
+            "Ordre": "51100"
         },
         {
             "index": 7,
-            "Date Début": "17/01/2025",
-            "Heure Début": "",
-            "Date Fin": "19/01/2025",
-            "Heure Fin": "",
-            "Jour": "Ven.",
-            "Type": "Evenement",
-            "Organisateur": "Rocking Club Avignonnais",
-            "Salle": "Grand Hôtel de Nimes",
-            "Lieu": "",
-            "Ville": "Nîmes",
-            "Adresse": "202 Rue Nicolas Ledoux",
-            "Nom": "Avignon City Swing",
-            "Nom Court": "Avignon City Swing",
-            "Lien Court": "https://tinyurl.com/3bm6hcj4",
-            "Lien": "https://www.facebook.com/events/8731817290196829",
-            "Image": "EVT-AvignonCitySwing2025-Tile.png",
-            "Sondage": "WE. 🎟️ Avignon City Swing",
-            "Planning": "Ven. 17 - Avignon City Swing",
-            "Infos": "WE. 🎟️ Avignon City Swing\r\n> https://tinyurl.com/3bm6hcj4",
-            "Ordre": "60700"
-        },
-        {
-            "index": 8,
             "Date Début": "18/01/2025",
             "Heure Début": "",
             "Date Fin": "19/01/2025",
@@ -206,7 +183,30 @@
             "Sondage": "WE. 🎟️ Winter WiN 5",
             "Planning": "Sam. 18 - Winter WiN 5",
             "Infos": "WE. 🎟️ Winter WiN 5\r\n> https://tinyurl.com/ythany8m",
-            "Ordre": "60900"
+            "Ordre": "60800"
+        },
+        {
+            "index": 8,
+            "Date Début": "19/01/2025",
+            "Heure Début": "15:00:00",
+            "Date Fin": "19/01/2025",
+            "Heure Fin": "21:00:00",
+            "Jour": "Dim.",
+            "Type": "Soirée",
+            "Organisateur": "La Station",
+            "Salle": "La Station Danse",
+            "Lieu": "",
+            "Ville": "Vitry-sur-Seine",
+            "Adresse": "13 Rue Pierre Sémard",
+            "Nom": "Happy Sunday",
+            "Nom Court": "Station Danse",
+            "Lien Court": "https://tinyurl.com/ye29p5mj",
+            "Lien": "http://station-danse.fr/",
+            "Image": "LSD-Dimanche-Generic-Tile.png",
+            "Sondage": "Dim. 🪩 Station Danse",
+            "Planning": "Dim. 19 - Station Danse",
+            "Infos": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
+            "Ordre": "51200"
         }
     ]
 }
