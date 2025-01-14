@@ -10,5 +10,5 @@ chorégraphie/*
 src/powershell/*.log
 src/bash/*.log
 docs/assets/images/tiles/*
-src/python/service_account_key.json
+src/python/*service_account_key.json
 ~$WCS.xlsx
