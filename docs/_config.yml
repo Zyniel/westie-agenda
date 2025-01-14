@@ -32,6 +32,10 @@ theme: null
 plugins:
   - jekyll-tidy
 
+# Content
+content:
+  cdn_url: "https://ik.imagekit.io/templewesties/temple-westies/tiles/"
+
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
 # to override the default setting.
