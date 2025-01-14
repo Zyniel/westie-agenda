@@ -9,11 +9,11 @@ app:
   svg_folder: ./images/tiles-svg
   export_folder: ./exports
 drive:
-  service_account_key: ./src/python/service_account_key.json
+  service_account_key: ./src/python/google_service_account_key.json
   png_folder_id: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'
   svg_folder_id: '1NjholefBcuA-yiGAb3IT_KIp2zHKC5qU'
 sheets:
-  service_account_key: ./src/python/service_account_key.json
+  service_account_key: ./src/python/google_service_account_key.json
   spreadsheet_id: '14li6xxH3nWr3S9GvBvR_vXDdYl0zdwOUFnOnrw0sees'
   named_ranges:
     week_range: 'TblSemaine'
@@ -54,3 +54,10 @@ sheets:
     columns:
       infos: 'Liens'
       survey: 'Choix'
+chrome:
+  user_dir_folder: 'I:\git\westie-agenda\chrome\'
+imagekit:
+  public_key: 'public_qPe0Bz3r3v+RJi5u7+byZp/TcKQ='
+  url_endpoint: 'https://ik.imagekit.io/templewesties'
+  png_folder: '/temple-westies/tiles'
+  svg_folder: '/temple-westies/tiles-svg'

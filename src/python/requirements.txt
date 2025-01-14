@@ -5,3 +5,4 @@ PyDrive2==1.20.0
 PyYAML==6.0.2
 pyopenssl==24.2.1
 cryptography==43.0.3
+imagekitio==4.1.0

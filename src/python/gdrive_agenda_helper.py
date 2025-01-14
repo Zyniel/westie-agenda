@@ -5,6 +5,7 @@
 This script forms the quickstart introduction to the zero-touch enrollemnt
 customer API. To learn more, visit https://developer.google.com/zero-touch
 """
+import os
 from datetime import datetime, timedelta
 
 import gspread
@@ -16,11 +17,14 @@ import argparse
 
 from typing import List
 from pathlib import Path
+
+
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
 from pydrive2.files import GoogleDriveFile
-from pandas.core.frame import DataFrame
+from imagekitio import ImageKit
+from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
 __doc__ = "Convert an Excel sheet to JSON."
 
@@ -30,6 +34,31 @@ SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/a
 # Define logger
 log = logging.getLogger("gsheet-to-json")
 logging.basicConfig(level=logging.DEBUG)
+
+
+def to_dict(dataframe) -> dict:
+    """
+    Returns a 2D Dictionary based on the DataFrame object.
+
+    :param dataframe: The DataFrame to be converted to a Dictionary
+    :return: Dictionnary object of data from the DataFrame
+    """
+    d = dataframe.to_dict(orient='records')
+    return d
+
+
+def to_df(lst) -> pd.DataFrame:
+    """
+    This function converts the 2D List of data into a DataFrame object.
+
+    :param lst: The 2D list of data to be converted into a DataFrame.
+    :return: DataFrame object created from the 2D list.
+    """
+    data = lst.copy()
+    headers = data.pop(0)
+    df = pd.DataFrame(data, columns=headers)
+    df = df.reset_index()
+    return df
 
 
 class GDriveAgendaHelper:
@@ -48,6 +77,7 @@ class GDriveAgendaHelper:
         self.gs_config_sheet = None
         self.gs_whatsapp_sheet = None
         self.gd_client = None
+        self.ik_client = None
         self.config = config
 
     def connect(self):
@@ -76,6 +106,15 @@ class GDriveAgendaHelper:
             scopes=SCOPES)
         self.gd_client = GoogleDrive(gauth)
 
+        # Connect to ImageKit
+        imagekit = ImageKit(
+
+            private_key=os.environ['IK_SERVICE_ACCOUNT'],
+            public_key=self.config['imagekit']['public_key'],
+            url_endpoint = self.config['imagekit']['url_endpoint']
+        )
+        self.ik_client = imagekit
+
     def fetch_properties(self):
         """
         This function connects to Google Sheets and returns values inside the CONFIG Sheet
@@ -85,18 +124,7 @@ class GDriveAgendaHelper:
         # Import properties
         if self.params is not None:
             self.params = self.gs_config_sheet.get_all_values()
-            self.df_params = self.to_df(self.params)
-
-    def fetch_whatsapp(self):
-        """
-        This function connects to Google Sheets and returns values inside the CONFIG Sheet
-        """
-        self.whatsapp = []
-
-        # Import properties
-        if self.whatsapp is not None:
-            self.whatsapp = self.gs_config_sheet.get_all_values()
-            self.df_whatsapp = self.to_df(self.params)
+            self.df_params = to_df(self.params)
 
     def fetch_data(self):
         """
@@ -106,11 +134,10 @@ class GDriveAgendaHelper:
 
         # Import data
         if self.gs_data_sheet is not None:
-
             self.data = self.gs_data_sheet.get_all_values()
 
             # Identify the first day of the week
-            self.df = self.to_df(self.data)
+            self.df = to_df(self.data)
             day = self.df[self.config['sheets']['data']['columns']['start_time']].min()
             dt = datetime.strptime(day, '%d/%m/%Y')
             self.week_dt = dt - timedelta(days=dt.weekday())
@@ -145,9 +172,14 @@ class GDriveAgendaHelper:
 
     def __download_gdrive_file(self, file: GoogleDriveFile, path_file: str, replace: bool = False) -> None:
         """
-        This private function takes as input a GoogleDrive file reference, a system fullpath and a boolean to force replace, to
-        download the remote file on the local system, overwriting existing file if required.
+        This private function downloads a GoogleDrive file to the local system.
+
+        :param file: GoogleDrive file reference to be downloaded.
+        :param path_file: The full path where the file will be saved locally.
+        :param replace: If True, existing files will be overwritten. Default is False.
+        :return: None
         """
+
         # Check if file exists - Skip if found unless replace is forced
         path = Path(path_file).as_posix()
         if not Path(path_file).is_file():
@@ -159,78 +191,134 @@ class GDriveAgendaHelper:
         else:
             log.info("Skipping: '{path}' - File already exists.".format(path=path))
 
+    def __upload_file_to_cdn(self, path_file: str = '.', replace: bool = False) -> None:
+        """
+        This private function takes as input a local file path, and a boolean to force replace, and uploads the file to
+        the remote CDN through API calls.
+
+        :param path_file: String path iof the file to upload
+        :param replace: Boolean switch to force replacement
+        """
+        # Check if file exists - Skip if found unless replace is forced
+        path = Path(path_file)
+        basename = Path(path_file).name
+
+        if not path.is_file() or (path.is_file() and replace):
+            if replace:
+                log.debug("Uploading and replacing: '{basename}'".format(basename=basename))
+            else:
+                log.debug("Uploading: '{basename}'".format(basename=basename))
+
+            with path.open('rb') as file:
+                upload = self.ik_client.upload_file(
+                    file=file,
+                    file_name=basename,
+                    options=UploadFileRequestOptions(
+                        use_unique_file_name=False,
+                        folder=self.config['imagekit']['png_folder'],
+                        overwrite_file=True,
+                    )
+                )
+                # TODO: Add upload validation
+                log.debug("Uploaded to CDN: {basename} (id: {id})".format(basename=basename,id=upload.file_id))
+        else:
+            log.info("Skipping: '{path}' - File already exists.".format(path=path))
+
+
     def download_png_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
         """
-        This function takes as input a system folder path, a boolean to force replace, and a weekly boolean to download remote
-        PNG files to disk, overwriting existing file if required.
-        """
-        existing_files = []
+        Download PNG files to disk.
 
-        # Create directory if missing
+        :param path_folder: The system folder path where PNG files will be downloaded. Default is the current directory.
+        :param replace: If True, existing files will be overwritten. Default is False.
+        :param weekly: If True, only download PNG files referenced weekly. Default is False.
+        :return: None
+        """
+        logging.info("Starting download of PNG files.")
+
         path = Path(path_folder)
         path.mkdir(parents=True, exist_ok=True)
+        logging.info(f"Directory created: {path_folder}")
 
-        # Get Weekly files from Sheet
-        if weekly:
-            existing_files = self.get_files()
-        # Only download weekly referenced files.
-        # Replace file only if forced.
-        if self.pngs is not None:
+        existing_files = self.get_files() if weekly else []
+        logging.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+
+        if self.pngs:
             for file in self.pngs:
                 basename = file['title']
-                path = Path(path_folder, basename).as_posix()
-                if weekly:
-                    filtered_elements = filter(lambda x: x == basename, existing_files)
-                    if list(filtered_elements):
-                        self.__download_gdrive_file(file, path_file=path, replace=replace)
-                else:
-                    self.__download_gdrive_file(file, path_file=path, replace=replace)
+                file_path = Path(path_folder, basename).as_posix()
+                if not weekly or basename in existing_files:
+                    self.__download_gdrive_file(file, path_file=file_path, replace=replace)
+                    logging.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
+
+            path = Path(path_folder)
+            path.mkdir(parents=True, exist_ok=True)
+            logging.info(f"Directory created: {path_folder}")
+
+            existing_files = self.get_files() if weekly else []
+            logging.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+
+            if self.pngs:
+                for file in self.pngs:
+                    basename = file['title']
+                    file_path = Path(path_folder, basename).as_posix()
+                    if not weekly or basename in existing_files:
+                        self.__download_gdrive_file(file, path_file=file_path, replace=replace)
+
 
     def download_svg_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
         """
-        This function takes as input a system folder path, a boolean to force replace, and a weekly boolean to download remote
-        SVG files to disk, overwriting existing file if required.
-        """
-        existing_png = []
+        Download SVG files to disk.
 
-        # Create directory if missing
+        :param path_folder: The system folder path where SVG files will be downloaded. Default is the current directory.
+        :param replace: If True, existing files will be overwritten. Default is False.
+        :param weekly: If True, only download SVG files referenced weekly. Default is False.
+        :return: None.
+        """
         path = Path(path_folder)
         path.mkdir(parents=True, exist_ok=True)
+        logging.info(f"Directory created: {path_folder}")
 
-        # Get Weekly files from Sheet
-        if weekly:
-            existing_files = self.get_files()
-            for basename in existing_files:
-                existing_png.append(Path(basename).with_suffix('.svg').name)
-        # Only download weekly referenced files.
-        # Replace file only if forced.
-        if self.svgs is not None:
+        existing_files = self.get_files() if weekly else []
+        existing_svg = [Path(basename).with_suffix('.svg').name for basename in existing_files]
+        logging.info(f"Weekly mode: {weekly}. Number of existing SVG files: {len(existing_svg)}")
+
+        if self.svgs:
             for file in self.svgs:
                 basename = file['title']
-                path = Path(path_folder, basename).as_posix()
-                if weekly:
-                    filtered_elements = filter(lambda x: x == basename, existing_png)
-                    if list(filtered_elements):
-                        self.__download_gdrive_file(file, path_file=path, replace=replace)
+                file_path = Path(path_folder, basename).as_posix()
+                if not weekly or basename in existing_svg:
+                    self.__download_gdrive_file(file, path_file=file_path, replace=replace)
                 else:
-                    self.__download_gdrive_file(file, path_file=path, replace=replace)
+                    logging.info(f"Skipped file: {basename}")
 
-    def to_df(self, list) -> DataFrame:
-        """
-        This function converts the 2D List of data into a DataFrame object
-        """
-        data = list.copy()
-        headers = data.pop(0)
-        df = pd.DataFrame(data, columns=headers)
-        df = df.reset_index()
-        return df
 
-    def to_dict(self, dataframe):
+    def upload_png_files_to_cdn(self, path_folder: str = '.', replace: bool = False, weekly: bool = False):
         """
-        This function converts the DataFrame into a JSON object
+        This function uploads PNG tiles to CDN.
+
+        :param path_folder: Source folder for content.
+        :param replace: Switch to overwrite any existing remote reference.
+        :param weekly: Switch to only consider weekly files instead of whole scope.
+        :return: None
         """
-        d = dataframe.to_dict(orient='records')
-        return d
+        logging.info("Starting upload of PNG files to CDN.")
+
+        # Get Weekly files from Sheet
+        existing_files = self.get_files() if weekly else []
+        logging.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+
+        # Directory containing images
+        directory = Path(path_folder)
+
+        # Loop through files and upload
+        for path_image in directory.glob('*.png'):
+            basename = path_image.name
+            absolute_path = path_image.absolute().as_posix()
+            if not weekly or basename in existing_files:
+                self.__upload_file_to_cdn(path_file=absolute_path, replace=replace)
+            else:
+                logging.info(f"Skipped file: {basename}")
 
     def download_data(self, path_file, replace: bool = False) -> None:
         """
@@ -254,7 +342,7 @@ class GDriveAgendaHelper:
         with open(path_file, 'w', encoding='utf-8') as f:
             d = {
                 "week": datetime.strftime(self.week_dt, '%d/%m'),
-                "events": self.to_dict(self.df)
+                "events": to_dict(self.df)
             }
             json.dump(d, f, ensure_ascii=False, indent=4)
 
@@ -279,7 +367,7 @@ class GDriveAgendaHelper:
         values = self.gs_whatsapp_sheet.get_all_values()
 
         # Convert values to a DataFrame
-        df = self.to_df(values)
+        df = to_df(values)
 
         # Check if the DataFrame has the expected column
         links_column = self.config['sheets']['whatsapp']['columns']['infos']
@@ -294,7 +382,7 @@ class GDriveAgendaHelper:
             raise ValueError(f"The first value in column '{links_column}' is empty or None")
 
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
-             f.writelines(links)
+            f.writelines(links)
 
     def __get_column_values(self, name) -> List:
         """
@@ -377,7 +465,6 @@ class GDriveAgendaHelper:
         :return: List of strings from column
         """
         return self.__get_column_values(self.config['sheets']['data']['columns']['city'])
-
 
     def get_addresses(self) -> List:
         """
@@ -466,7 +553,7 @@ class GDriveAgendaHelper:
             value = ""
         return value
 
-    def synchronize_gdrive(self) -> None :
+    def synchronize_gdrive(self) -> None:
         # Connect to Google Drive and Google Sheet and store both Clients
         log.info("Connecting to Goggle Services")
         self.connect()
@@ -493,6 +580,9 @@ class GDriveAgendaHelper:
 
         log.info("Downloading SVG files")
         self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=True)
+
+        log.info("Uploading PNG files to CDN")
+        self.upload_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=True)
 
 
 def main():
