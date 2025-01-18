@@ -34,7 +34,8 @@ plugins:
 
 # Content
 content:
-  cdn_url: "https://ik.imagekit.io/templewesties/westie-agenda/tiles/"
+  cdn_image_url: "https://ik.imagekit.io/templewesties/westie-agenda/tiles/"
+  cdn_preview_url: "https://ik.imagekit.io/templewesties/westie-agenda/preview/"
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list

@@ -10,11 +10,11 @@ title: Planning WCS
         <span class="tile-title noto-sans-regular">{{ event.Planning }}</span>
         {% if event.Lien and event.Lien != "" and event.Lien != nil %}
             <a href="{{ event.Lien }}" class="tile-image-hl">
-                <img class="tile-image" src="{{ site.content.cdn_url | append: event.Image }}" alt="{{ event.Planning }}"/>
+                <img class="tile-image" src="{{ site.content.cdn_image_url | append: event.Image }}" alt="{{ event.Planning }}"/>
             </a>
         {% else %}
             <a href="#" class="tile-image-hl">
-                <img class="tile-image" src="{{ site.content.cdn_url | append: event.Image }}" alt="{{ event.Planning }}"/>
+                <img class="tile-image" src="{{ site.content.cdn_image_url | append: event.Image }}" alt="{{ event.Planning }}"/>
             </a>
         {% endif %}
     </div>
