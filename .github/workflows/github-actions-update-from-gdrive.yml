@@ -47,7 +47,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha }}
+          ref: ${{ github.head_ref }}
 
       - name: Create Google Services JSON File
         env:
@@ -90,6 +90,8 @@ jobs:
         with:
           commit_message: Automatic data refresh
           status_options: '--untracked-files=yes'
+          push_options: '--force'
+          add_options: '-u'
 
   # ===========================================================================
   # Build job
@@ -110,9 +112,6 @@ jobs:
         run: |
           echo "Move event dataset to Assets"
           cp ./data/events.json ./docs/_data/events.json
-          echo "Move PNG tiles to Assets"
-          mkdir -p ./docs/assets/images/tiles
-          cp ./images/tiles/*.png ./docs/assets/images/tiles
           tree -a ./docs/assets
 
       # Prepare Jekyll Site

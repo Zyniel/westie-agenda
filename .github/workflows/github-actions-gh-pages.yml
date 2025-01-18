@@ -47,9 +47,6 @@ jobs:
         run: |
           echo "Move event dataset to Assets"
           cp ./data/events.json ./docs/_data/events.json
-          echo "Move PNG tiles to Assets"
-          mkdir -p ./docs/assets/images/tiles
-          cp ./images/tiles/*.png ./docs/assets/images/tiles
           tree -a ./docs/assets
 
       # Prepare Jekyll Site
