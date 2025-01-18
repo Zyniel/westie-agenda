@@ -8,12 +8,14 @@ title: WhatsApp
     <div id="survey-zone">
         <div class="zone-title luckiest-guy-regular">Sondage</div>
         <div id="survey-data">
+            {% if site.data.events["event-title"] != "" %}
             <div class="event-title event-item copyable">
                 <div class="event-item-text copyable-text">{{ site.data.events["survey-title"] }}</div>
                 <button class="event-item-btn copyable-btn">
                     <i class="fa fa-clone" title="Copy"></i>
                 </button>
             </div>
+            {% endif %}
             {% for event in site.data.events.events %}
             <div class="event-item copyable">
                 <div class="event-item-text copyable-text">{{ event.Sondage }}</div>
@@ -22,12 +24,14 @@ title: WhatsApp
                 </button>
             </div>
             {% endfor %}
+            {% if site.data.events["event-title"] != "" %}
             <div class="event-footer event-item copyable">
                 <div class="event-item-text copyable-text">{{ site.data.events["survey-footer"] }}</div>
                 <button class="event-item-btn copyable-btn">
                     <i class="fa fa-clone" title="Copy"></i>
                 </button>
             </div>
+            {% endif %}
         </div>
     </div>
 
