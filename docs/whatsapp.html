@@ -1,0 +1,32 @@
+---
+layout: default
+title: WhatsApp
+---
+
+<div id="whatsapp-page">
+    <!-- First Zone -->
+    <div id="survey-zone">
+        <h2>{{ site.data.events["survey-title"] }}</h2>
+        {% for event in site.data.events.events %}
+        <div class="event-item">
+            {{ event.Sondage }}
+        </div>
+        {% endfor %}
+        <div class="footer">
+            {{ site.data.events["survey-footer"] }}
+        </div>
+    </div>
+
+    <!-- Second Zone -->
+    <div id="links-zone">
+        <h2>{{ site.data.events["links-title"] }}</h2>
+        {% for event in site.data.events.events %}
+        <div class="event-item">
+            {{ event.Infos }}
+        </div>
+        {% endfor %}
+        <div class="footer">
+            {{ site.data.events["links-footer"] }}
+        </div>
+    </div>
+</div>
