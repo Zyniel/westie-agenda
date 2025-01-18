@@ -8,6 +8,14 @@ app:
   png_folder: ./images/tiles
   svg_folder: ./images/tiles-svg
   export_folder: ./exports
+community:
+  name: 'Test Westies (2024)'
+  survey_recipients:
+    - 'Test Coast Swing (2024/2025)'
+  planning_recipients:
+    - 'Test Coast Swing (2024/2025)'
+  send_survey : true
+  send_planning : true
 drive:
   service_account_key: ./src/python/google_service_account_key.json
   png_folder_id: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'

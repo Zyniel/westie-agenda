@@ -18,7 +18,7 @@ import argparse
 from typing import List
 from pathlib import Path
 
-
+from pandas import Series, DataFrame
 from pydrive2.auth import GoogleAuth
 from pydrive2.drive import GoogleDrive
 from oauth2client.service_account import ServiceAccountCredentials
@@ -35,15 +35,17 @@ SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/a
 log = logging.getLogger("gsheet-to-json")
 logging.basicConfig(level=logging.DEBUG)
 
-
-def to_dict(dataframe) -> dict:
+def to_dict(dataframe: DataFrame | Series) -> dict:
     """
     Returns a 2D Dictionary based on the DataFrame object.
 
     :param dataframe: The DataFrame to be converted to a Dictionary
     :return: Dictionnary object of data from the DataFrame
     """
-    d = dataframe.to_dict(orient='records')
+    if isinstance(dataframe,DataFrame):
+        d = dataframe.to_dict(orient='records')
+    else:
+        d = dataframe.to_dict()
     return d
 
 
@@ -108,7 +110,6 @@ class GDriveAgendaHelper:
 
         # Connect to ImageKit
         imagekit = ImageKit(
-
             private_key=os.environ['IK_SERVICE_ACCOUNT'],
             public_key=self.config['imagekit']['public_key'],
             url_endpoint = self.config['imagekit']['url_endpoint']
@@ -337,18 +338,22 @@ class GDriveAgendaHelper:
         else:
             log.debug("Downloading: '{path}'".format(path=basename))
 
-        # Write JSON data to file
-        path.parent.mkdir(parents=True, exist_ok=True)
+        # Build JSON combined data and write it to file
         with open(path_file, 'w', encoding='utf-8') as f:
             d = {
                 "week": datetime.strftime(self.week_dt, '%d/%m'),
-                "events": to_dict(self.df)
+                "events": to_dict(self.df),
+                "survey-title" : self.get_config('pre-survey-text').strip(),
+                "survey-footer" : self.get_config('post-survey-text').strip(),
+                "links-title" : self.get_config('pre-links-text').strip(),
+                "links-footer" : self.get_config('post-links-text').strip()
             }
             json.dump(d, f, ensure_ascii=False, indent=4)
 
     def download_links(self, path_file, replace: bool = False) -> None:
         """
         This function create a JSON file from imported Event Data
+
         :param path_file: Target JSON file
         :param replace: True to overwrite existing files
         """
@@ -536,24 +541,26 @@ class GDriveAgendaHelper:
         :return: Value of the parameter
         """
         value = ""
+        param_header = self.config['sheets']['config']['columns']['parameter']
+        value_header = self.config['sheets']['config']['columns']['value']
         try:
             # Ensure the DataFrame contains the expected columns
-            if 'Parametre' not in self.df_params.columns or 'Valeur' not in self.df_params.columns:
-                raise ValueError("DataFrame must contain 'Parametre' and 'Valeur' columns")
+            if param_header not in self.df_params.columns or value_header not in self.df_params.columns:
+                raise ValueError("DataFrame must contain param_header and value_header columns")
 
             # Access the value of the specified property
-            value = self.df_params[self.df_params['Parametre'] == key]['Valeur']
+            value = self.df_params[self.df_params[param_header] == key][value_header]
 
             # Check if the property exists and return its value
             if not value.empty:
                 return value.iloc[0]
             else:
                 raise KeyError(f"Property '{key}' not found in DataFrame")
-        except:
+        except Exception as e:
             value = ""
         return value
 
-    def synchronize_gdrive(self) -> None:
+    def process(self) -> None:
         # Connect to Google Drive and Google Sheet and store both Clients
         log.info("Connecting to Goggle Services")
         self.connect()
@@ -598,7 +605,7 @@ def main():
             config = yaml.safe_load(file)
 
         gash = GDriveAgendaHelper(config=config)
-        gash.synchronize_gdrive()
+        gash.process()
 
 
 if __name__ == '__main__':
