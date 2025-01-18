@@ -8,7 +8,7 @@ title: WhatsApp
     <div id="survey-zone">
         <div class="zone-title luckiest-guy-regular">Sondage</div>
         <div id="survey-data">
-            {% if site.data.events["event-title"] != "" %}
+            {% if site.data.events["survey-title"] and site.data.events["survey-title"] != '' %}
             <div class="event-title event-item copyable">
                 <div class="event-item-text copyable-text">{{ site.data.events["survey-title"] }}</div>
                 <button class="event-item-btn copyable-btn">
@@ -24,7 +24,7 @@ title: WhatsApp
                 </button>
             </div>
             {% endfor %}
-            {% if site.data.events["event-title"] != "" %}
+            {% if site.data.events["survey-footer"] and site.data.events["survey-footer"] != '' %}
             <div class="event-footer event-item copyable">
                 <div class="event-item-text copyable-text">{{ site.data.events["survey-footer"] }}</div>
                 <button class="event-item-btn copyable-btn">
@@ -42,21 +42,21 @@ title: WhatsApp
             <div class="links-item copyable">
                 <div class="links-item-text copyable-text">
                     <!-- If exists, inserts title and append a newline -->
-                    {% if site.data.events["links-title"] != "" %}
+                    {% if site.data.events["links-title"] and site.data.events["links-title"] != '' %}
                         <div class="links-title">{{ site.data.events["links-title"] | newline_to_br }}</div>
                         <br>
                     {% endif %}
                     <!-- Loop events and process only if at least one event exists -->
                     {% for event in site.data.events.events %}
-                    {%- if forloop.length > 0 -%}
-                        <div class="links-text">
-                            {{ event.Infos | newline_to_br }}
-                            {% unless forloop.last %}{% endunless -%}
-                        </div>
-                    {%- endif -%}
+                        {%- if forloop.length > 0 -%}
+                            <div class="links-text">
+                                {{ event.Infos | newline_to_br }}
+                                {% unless forloop.last %}{% endunless -%}
+                            </div>
+                        {%- endif -%}
                     {% endfor %}
                     <!-- If exists, inserts foofter and prepend a newline -->
-                    {% if site.data.events["links-footer"] != "" %}
+                    {% if site.data.events["links-footer"] and site.data.events["links-footer"] != '' %}
                         <br>
                         <div class="links-footer">{{ site.data.events["links-footer"] | newline_to_br }}</div>
                     {% endif %}
