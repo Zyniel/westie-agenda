@@ -20,7 +20,7 @@ $bg-color: #171717;
   font-optical-sizing: auto;
   font-style: normal;
   font-weight: 600;
-  font-variation-settings: "wdth" 100;
+  font-variation-settings: "width" 100;
 }
 
 html {
@@ -32,7 +32,7 @@ body {
   color: $font-primary-color;
   background-color: $bg-color;
   text-align: center;
-  
+
   header {
 	color: $font-primary-color;
 	text-align: center;
@@ -42,15 +42,14 @@ body {
 	h1 {
         margin-block-start: 0.25em;
         margin-block-end: 0.25em;
-
     }
   }
-  
+
   footer {
 	color: $font-primary-color;
 	text-align: center;
   }
-  
+
   section {
   }
 }
@@ -103,26 +102,6 @@ body {
     }
 }
 
-.grid-container {
-    display: grid;
-    justify-content: center;
-    grid-template-columns: 346.36px 346.36px;
-    grid-template-rows: 225.86px 225.86px;
-    column-gap: 10px;
-    row-gap: 15px;
-}
-.grid-item {
-    justify-items: stretch;
-    span.tile-title {
-        display: block;
-    }
-    img.tile-image {
-      width: 346.36px;
-      height: 201.41px;
-      object-fit: cover;
-      display: block;
-    }
-}
 @media (min-width: 320px) {
   h1, h2, h3, p {
     font-size: 2.35rem;
@@ -137,4 +116,137 @@ body {
   h1, h2, h3, p {
     font-size: 3.8rem;
   }
+}
+
+#whatsapp-page {
+    margin: 0.5rem auto;
+
+    #survey-zone, #links-zone {
+        margin-bottom: 30px;
+    }
+
+    .zone-title {
+        position: relative;
+        display: inline-block;
+
+        padding-top:4px;
+        padding-bottom:4px;
+        padding-left:10px;
+        padding-right:10px;
+        margin:6px;
+
+        font-size:26px;
+        color:#000000;
+
+        background:#ffd800;
+        border:1px solid #ffd800;
+        border-radius:6px;
+        display:flex;
+    }
+
+    .event-item,
+    .links-item {
+        position: relative;
+        display: inline-block;
+
+        padding:4px;
+        margin:6px;
+        background:#1e1e1e;
+        border:1px solid #1e1e1e;
+        border-radius:6px;
+        display:flex;
+
+        .event-item-text,
+        .links-item-text {
+            padding:4px;
+            padding-right: 20px;
+            font-size:16px;
+            color:#dcd7c9;
+            border:none;
+            outline:none;
+        }
+
+        .links-item {
+            text-align: left;
+        }
+
+        .links-item-text {
+            text-align: left;
+
+            .links-title p {
+                font-size: inherit;
+                margin-block-end: 1em;
+            }
+
+            .links-text p {
+                font-size: inherit;
+                margin-block-start: 0em;
+                margin-block-end: 0em;
+            }
+
+            .links-footer p {
+                font-size: inherit;
+                font-size: inherit;
+                margin-block-start: 1em;
+            }
+        }
+
+        .event-item-btn,
+        .links-item-btn {
+            position: absolute;
+            right: 10px;
+
+            padding:4px;
+            background:#ffd800;
+            color:#fff;
+            font-size:18px;
+            border:none;
+            outline:none;
+            border-radius:6px;
+            cursor: pointer;
+        }
+    }
+
+    .copyable {
+
+        button.copyable-btn {
+            color: #000000;
+        }
+
+        button.copyable-btn:active {
+            background:#f39c12;
+
+        }
+
+        button.copyable-btn:before {
+            content: "Copied";
+            position: absolute;
+            color: #000000;
+            top:5px;
+            right:50px;
+            background:#f39c12;
+            padding:8px 10px;
+            border-radius: 20px;
+            font-size:15px;
+            display:none;
+        }
+
+        button.copyable-btn:after {
+            content: "";
+            position: absolute;
+            top:-20px;
+            right:25px;
+            width:10px;
+            height:10px;
+            background:#5c81dc;
+            transform:rotate(45deg);
+            display:none;
+        }
+
+        .active button.copyable-btn:before,
+        .active button.copyable-btn:after {
+            display:block
+        }
+
+    }
 }
