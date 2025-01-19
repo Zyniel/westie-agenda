@@ -142,8 +142,10 @@ body {
         border:0px;
         border-radius:6px;
         display:flex;
-
-        vertical-align: middle;
+        flex-wrap: wrap;
+        justify-content:flex-start;
+        align-content: center;
+        align-items: flex-start;
     }
 
     .event-item,
