@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en-US' }}">
+  <head>
+    <base href="{{site.baseurl}}">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Link Preview with Open Graph -->
+    <meta property="og:title" content="Westie Agenda - Assistant WhatsApp">
+    <meta property="og:description" content="La console pour faciliter la saisie des sondages et plannings.">
+    <meta property="og:url" content="https://zyniel.github.io/westie-agenda">
+    <meta property="og:type" content="website">
+
+    <title>{{ page.title }} - {{ site.title }}</title>
+    <link rel="stylesheet" href="{{ 'assets/css/styles.css' | relative_url }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+
+    <!-- Latest compiled and minified CSS -->
+
+  </head>
+  <body>
+    <div id="container">
+      <header>
+        {% include header.html %}
+      </header>
+      <main>
+        <section>
+          {{ content }}
+        </section>
+      </main>
+      <footer>
+        {% include footer.html %}
+      </footer>
+    </div>
+  </body>
+</html>
