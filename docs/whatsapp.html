@@ -1,5 +1,5 @@
 ---
-layout: default
+layout: admin
 title: WhatsApp
 ---
 
@@ -18,7 +18,7 @@ title: WhatsApp
             {% endif %}
             {% for event in site.data.events.events %}
             <div class="event-item copyable">
-                <div class="event-item-text copyable-text">{{ event.Sondage }}</div>
+                <div class="event-item-text copyable-text">{{ event["Sondage"] }}</div>
                 <button class="event-item-btn copyable-btn">
                     <i class="fa fa-clone" title="Copy"></i>
                 </button>
@@ -43,22 +43,27 @@ title: WhatsApp
                 <div class="links-item-text copyable-text">
                     <!-- If exists, inserts title and append a newline -->
                     {% if site.data.events["links-title"] and site.data.events["links-title"] != '' %}
-                        <div class="links-title">{{ site.data.events["links-title"] | newline_to_br }}</div>
-                        <br>
+                        <div class="links-title">
+                            <span>{{ site.data.events["links-title"] | newline_to_br }}</span>
+                            <br>
+                        </div>
                     {% endif %}
                     <!-- Loop events and process only if at least one event exists -->
                     {% for event in site.data.events.events %}
                         {%- if forloop.length > 0 -%}
                             <div class="links-text">
-                                {{ event.Infos | newline_to_br }}
-                                {% unless forloop.last %}{% endunless -%}
+                                <span>{{ event["Sondage"] }}</span>
+                                <br>
+                                <span>{{ '> ' | append: event["Lien Court"] }}</span>
                             </div>
                         {%- endif -%}
                     {% endfor %}
                     <!-- If exists, inserts foofter and prepend a newline -->
                     {% if site.data.events["links-footer"] and site.data.events["links-footer"] != '' %}
-                        <br>
-                        <div class="links-footer">{{ site.data.events["links-footer"] | newline_to_br }}</div>
+                        <div class="links-footer">
+                            <br>
+                            <span>{{ site.data.events["links-footer"] | newline_to_br }}</span>
+                        </div>
                     {% endif %}
                 </div>
                 <button class="links-item-btn copyable-btn">
