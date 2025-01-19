@@ -127,10 +127,9 @@ body {
 
     .zone-title {
         position: relative;
-        display: inline-block;
 
-        padding-top:4px;
-        padding-bottom:4px;
+        padding-top:5px;
+        padding-bottom:5px;
         padding-left:10px;
         padding-right:10px;
         margin:6px;
@@ -140,17 +139,18 @@ body {
         color:#000000;
 
         background:#ffd800;
-        border:1px solid #ffd800;
+        border:0px;
         border-radius:6px;
         display:flex;
+
+        vertical-align: middle;
     }
 
     .event-item,
     .links-item {
         position: relative;
-        display: inline-block;
 
-        padding:4px;
+        padding:5px;
         margin:6px;
         background:#1e1e1e;
         border:1px solid #1e1e1e;
@@ -159,7 +159,7 @@ body {
 
         .event-item-text,
         .links-item-text {
-            padding:4px;
+            padding:5px;
             padding-right: 20px;
             font-size:16px;
             color:#dcd7c9;
