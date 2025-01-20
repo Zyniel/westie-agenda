@@ -5,7 +5,7 @@ _site
 .run
 .env
 images/banners
-chrome
+chrome/*
 venv/*
 src/powershell/*.log
 docs/assets/images/tiles/*

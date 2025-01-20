@@ -63,7 +63,7 @@ sheets:
       infos: 'Liens'
       survey: 'Choix'
 chrome:
-  user_dir_folder: '/tmp/to/be/defined'
+  user_dir_folder: './chrome'
 imagekit:
   public_key: 'public_qPe0Bz3r3v+RJi5u7+byZp/TcKQ='
   url_endpoint: 'https://ik.imagekit.io/templewesties'
