@@ -5,14 +5,19 @@ from enum import Enum
 from pathlib import Path
 import time
 from typing import Tuple
+import pyperclip
+
 
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common import TimeoutException, NoSuchElementException
-from selenium.webdriver import Keys
+from selenium.webdriver import Keys, ActionChains
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+from selenium.webdriver.chrome.service import Service as ChromeService
+from undetected_chromedriver import WebElement
+from webdriver_manager.chrome import ChromeDriverManager
 
 
 # display = Display(visible=True, size=(1200, 1200))
@@ -56,7 +61,7 @@ class WhatsAppWebClient(object):
         self._current_panel = None
 
         # set options as you wish
-        chrome_options = uc.ChromeOptions()
+        self.chrome_options = uc.ChromeOptions()
 
         # Add your options as needed
         options = [
@@ -77,13 +82,14 @@ class WhatsAppWebClient(object):
         ]
 
         for option in options:
-            chrome_options.add_argument(option)
+            self.chrome_options.add_argument(option)
 
         if self.config['chrome']['user_dir_folder']:
-            chrome_options.add_argument("--user-data-dir=" + self.config['chrome']['user_dir_folder'])
+            self.chrome_options.add_argument("--user-data-dir=" + self.config['chrome']['user_dir_folder'])
 
+    def startup(self):
         # setup Edge Driver
-        self.browser = uc.Chrome(options=chrome_options)
+        self.browser = uc.Chrome(options=self.chrome_options, service=ChromeService(ChromeDriverManager().install()))
         self.wait = WebDriverWait(self.browser, 20)
         self.ChatMenu = ChatsPage(self.browser)
 
@@ -220,7 +226,7 @@ class WhatsAppPage(object):
         sidebar = self.wait.until(EC.presence_of_element_located(self.key_element))
         logging.debug('Main Page loaded !')
 
-    def click_communities_sidebar_button(self) -> None:
+    def _click_communities_sidebar_button(self) -> None:
         """
         Clicks the "Communities" sidebar button to reach Communities dedicated page.
 
@@ -230,7 +236,7 @@ class WhatsAppPage(object):
         element.click()
         logging.debug('Clicked "Communities" in Sidebar')
 
-    def click_chats_sidebar_button(self) -> None:
+    def _click_chats_sidebar_button(self) -> None:
         """
         Clicks the "Chats" sidebar button to reach Chats dedicated page.
 
@@ -240,7 +246,7 @@ class WhatsAppPage(object):
         element.click()
         logging.debug('Clicked "Chats" in Sidebar')
 
-    def click_channels_sidebar_button(self) -> None:
+    def _click_channels_sidebar_button(self) -> None:
         """
         Clicks the "Channels" sidebar button to reach Channels dedicated page.
 
@@ -250,7 +256,7 @@ class WhatsAppPage(object):
         element.click()
         logging.debug('Clicked "Channel" in Sidebar')
 
-    def click_status_sidebar_button(self) -> None:
+    def _click_status_sidebar_button(self) -> None:
         """
         Clicks the "Status" sidebar button to reach Status dedicated page.
 
@@ -260,7 +266,7 @@ class WhatsAppPage(object):
         element.click()
         logging.debug('Clicked "Status" in Sidebar')
 
-    def click_settings_sidebar_button(self) -> None:
+    def _click_settings_sidebar_button(self) -> None:
         """
         Clicks the "Settings" sidebar button to reach WhatsApp application settings page.
 
@@ -270,7 +276,7 @@ class WhatsAppPage(object):
         element.click()
         logging.debug('Clicked "Settings" in Sidebar')
 
-    def click_profile_sidebar_button(self) -> None:
+    def _click_profile_sidebar_button(self) -> None:
         """
         Clicks the "Profile" sidebar button to reach current user profile page.
 
@@ -326,6 +332,14 @@ class ChatsPage(WhatsAppPage):
         By.XPATH,
         '(//*[@id="app"]//div[./span[starts-with(@data-icon,"send")]])[1]'
     )
+    by_chat_close_draft_button = (
+        By.XPATH,
+        '(//*[@id="app"]//div[./span[starts-with(@data-icon,"x")]])[1]'
+    )
+    by_chat_editor_pen_button = (
+        By.XPATH,
+        '(//*[@id="app"]//div[./span[starts-with(@data-icon,"media-editor-drawing")]])[1]'
+    )
     # Poll Entries / Elements
     by_new_poll_popup = (
         By.XPATH,
@@ -355,7 +369,7 @@ class ChatsPage(WhatsAppPage):
 
         self.driver = driver
 
-    def click_menu_button(self) -> None:
+    def _click_menu_button(self) -> None:
         """
         Clicks the "Menu" panel button.
 
@@ -365,7 +379,7 @@ class ChatsPage(WhatsAppPage):
         element.click()
         logging.debug('Clicked "Menu" in Chat Panel')
 
-    def click_new_chat_button(self) -> None:
+    def _click_new_chat_button(self) -> None:
         """
         Clicks the "New Conversation" panel button to start a new conversation workflow.
 
@@ -375,7 +389,7 @@ class ChatsPage(WhatsAppPage):
         element.click()
         logging.debug('Clicked "New Chat" in Chat Panel')
 
-    def click_new_poll_button(self) -> None:
+    def _click_new_poll_button(self) -> None:
         """
         Clicks the "New Conversation" panel button to start a new conversation workflow.
 
@@ -391,7 +405,26 @@ class ChatsPage(WhatsAppPage):
         element.click()
         logging.debug('Clicked "New Poll" in Chat Panel')
 
-    def fill_poll(self, title: str, entries: list[str], multi: bool) -> None:
+    def _set_text(self, element: WebElement, text: str) -> None:
+        """
+        Copy/Paste text into a WebElement to bypass Emoji and DMP character issues using ChromeDriver
+
+        :param element: target element to populate
+        :param text: Text to copy/paste
+        :return: None
+        """
+        pyperclip.copy(text)
+        element.click()
+        act = ActionChains(self.driver)
+        act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
+
+    def _cancel_draft(self):
+        # Select the new Poll entry
+        element = self.wait.until(EC.element_to_be_clickable(self.by_chat_close_draft_button))
+        element.click()
+        logging.debug('Clicked "X" in Chat Panel')
+
+    def _fill_poll(self, title: str, entries: list[str], multi: bool) -> None:
         """
 
         :param title:
@@ -408,19 +441,32 @@ class ChatsPage(WhatsAppPage):
         # Type text message
         # TODO: Implement poll title cleanup
         element_title = self.wait.until(EC.visibility_of_element_located(self.by_new_poll_title))
-        element_title.send_keys(title)
+        # element_title.send_keys(title)
+        # Handle emojis...
+        self._set_text(element_title, title)
         logging.debug(f"Added Title entry: {title} in Poll Popup")
         del element_title
 
-        # Type il all entries
+        # Type in all entries
         i = 0
         for entry in entries:
-            element_entries = self.wait.until(EC.visibility_of_all_elements_located(self.by_new_poll_entries))
-            element_entry = element_entries[i]
-            # TODO: Implement poll entry cleanup
-            element_entry.send_keys(entry)
-            logging.debug(f"Added Poll entry: {entry} in Poll Popup")
-            i = i + 1
+            inserted = False
+            retries = 10
+            retry = 1
+            while not inserted and retry <= retries:
+                try:
+                    element_entries = self.wait.until(EC.visibility_of_all_elements_located(self.by_new_poll_entries))
+                    element_entry = element_entries[i]
+                    # TODO: Implement poll entry cleanup
+                    # element_entry.send_keys(entry)
+                    # Handle emojis...
+                    self._set_text(element_entry, entry)
+                    logging.debug(f"Added Poll entry: {entry} in Poll Popup")
+                    i = i + 1
+                    inserted = True
+                except Exception as e:
+                    retry = retry + 1
+                    time.sleep(0.5)
 
         # Set Multi-Answer
         element_multi = self.wait.until(EC.element_to_be_clickable(self.by_new_poll_multi_switch))
@@ -436,6 +482,12 @@ class ChatsPage(WhatsAppPage):
             logging.debug(f"Poll Multi-answer already configured properly in Poll Popup")
         del element_multi
 
+    def _click_send_poll(self):
+        """
+        Clicks the "Send poll" button through Web Browser actions
+
+        :return: None
+        """
         element_send = self.wait.until(EC.element_to_be_clickable(self.by_new_poll_send_button))
         element_send.click()
         logging.debug('Clicked "Send Poll Chat" in Poll Popup')
@@ -443,17 +495,34 @@ class ChatsPage(WhatsAppPage):
 
         # Wait until the focus is given back to the input window
         self.wait.until(EC.none_of(EC.presence_of_element_located(self.by_new_poll_popup)))
+        time.sleep(2)
         logging.debug('Waited for Poll Popup to disappear')
 
-    def send_poll(self, to: str, title: str, entries: list[str], multi: bool) -> None:
-        # Find target group or user in the list
-        self.find_by_name(to)
-        # Open the "New Poll" popup
-        self.click_new_poll_button()
-        # Send Poll
-        self.fill_poll(title, entries, multi)
+    def _click_send_message(self, has_images: bool):
+        """
+        Clicks the "Send message" button through Web Browser actions
 
-    def clear_search_box(self):
+        :return: None
+        """
+        if has_images:
+            # Send using keypress
+            element_send = self.wait.until(
+                EC.presence_of_element_located(self.by_chat_send_button))
+            element_send.click()
+            logging.debug('Clicked "Chat \'>\'" in Chat Panel')
+
+            # Wait until the focus is given back to the input window
+            self.wait.until(EC.none_of(EC.presence_of_element_located(self.by_chat_editor_pen_button)))
+            time.sleep(2)
+
+        else:
+            input_box = self.wait.until(EC.element_to_be_clickable(self.by_input_box))
+            input_box.click()
+            input_box.send_keys(Keys.ENTER)
+            logging.debug('Typed "ENTER" to send message in Chat Panel')
+            time.sleep(2)
+
+    def _clear_search_box(self):
         """
         Clears the search bar.
 
@@ -466,7 +535,7 @@ class ChatsPage(WhatsAppPage):
         search_box.send_keys(Keys.BACKSPACE)
         logging.debug('Cleared "Search Bar" in Chat Panel')
 
-    def find_by_name(self, name: str) -> bool:
+    def _find_by_name(self, name: str) -> bool:
         """
         Uses the search bar to find a user chat or a group chat by name.
 
@@ -476,7 +545,7 @@ class ChatsPage(WhatsAppPage):
         search_box = self.wait.until(
             EC.presence_of_element_located(self.by_search_box)
         )
-        self.clear_search_box()
+        self._clear_search_box()
         search_box.send_keys(name)
         search_box.send_keys(Keys.ENTER)
         logging.debug('Entered new search for text "{name}" in "Search Bar" in Chat Panel'.format(name=name))
@@ -492,7 +561,7 @@ class ChatsPage(WhatsAppPage):
             logging.info(f'Could not find chat "{name}"')
             return False
 
-    def clear_input_box(self, locator: Tuple[str, str]):
+    def _clear_input_box(self, locator: Tuple[str, str]):
         """
         Clears the input box for messaging.
 
@@ -505,7 +574,65 @@ class ChatsPage(WhatsAppPage):
         input_box.send_keys(Keys.BACKSPACE)
         logging.debug('Cleared "Input Box" in Chat Panel')
 
-    def send_message(self, to: str, text: str, images: list[Path]) -> None:
+    def _type_message(self, text: str, images: list[Path]) -> None:
+        """
+        Type a text message to a specific user.
+        Images may be added as attachments.
+
+        :param text: Message to send
+        :param images: List of files to attach
+        :return: None
+        """
+        # Get the focus on the input
+        self._clear_input_box(self.by_input_box)
+        input_box = self.wait.until(EC.presence_of_element_located(self.by_input_box))
+        input_box.click()
+        self._set_text(input_box, text)
+        # input_box.send_keys(text)
+        time.sleep(1)
+
+        # Open the submenu first as creating a new Poll is not a exposed action
+        element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
+        element.click()
+        logging.debug('Clicked "Chat \'+\'" in Chat Panel')
+
+        # Get the input field
+        input_images = self.wait.until(
+            EC.presence_of_element_located(self.by_chat_submenu_upload_images)
+        )
+        # Add images to the input field
+        for image in images:
+            input_images.send_keys(Path(image).as_posix())
+            # Wait until upload is finished
+            self.wait.until(
+                EC.visibility_of_element_located(self.by_chat_send_button)
+            )
+
+    def search_user_or_group(self, to: str) -> bool:
+        """
+        Search for a user / group by name. Return True is found, False otherwise.
+
+        :param to: User or group name to search for.
+        :return: True is found, False otherwise.
+        """
+        # Find target group or user in the list
+        return self._find_by_name(to)
+
+    def create_and_send_new_poll(self, to: str, title: str, entries: list[str], multi: bool) -> None:
+        # Position on Chat Panel
+        self._click_chats_sidebar_button()
+        # Find recipient and proceed to message input
+        if self._find_by_name(to):
+            # Get the focus on the input
+            self._clear_input_box(self.by_input_box)
+            # Open the "New Poll" popup
+            self._click_new_poll_button()
+            # Fill poll with data
+            self._fill_poll(title, entries, multi)
+            # Send poll
+            self._click_send_poll()
+
+    def create_and_send_new_message(self, to: str, text: str, images: list[Path]) -> None:
         """
         Send a text message to a specific user.
         Images may be added as attachments.
@@ -515,40 +642,15 @@ class ChatsPage(WhatsAppPage):
         :param images: List of files to attach
         :return: None
         """
-        # Find target group or user in the list
-        self.find_by_name(to)
+        # Position on Chat Panel
+        self._click_chats_sidebar_button()
 
-        # Get the focus on the input
-        self.clear_input_box(self.by_input_box)
-        input_box = self.wait.until(EC.presence_of_element_located(self.by_input_box))
-        input_box.send_keys(text)
-        time.sleep(1)
-
-        # Append images if necessary then Submit using button
-        # or Submit using "ENTER" keypress
-        if images and len(images) > 0:
-            # Open the submenu first as creating a new Poll is not a exposed action
-            element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
-            element.click()
-            logging.debug('Clicked "Chat \'+\'" in Chat Panel')
-
-            # Get the input field
-            input_images = self.wait.until(
-                EC.presence_of_element_located(self.by_chat_submenu_upload_images)
-            )
-            # Add images to the input field
-            for image in images:
-                input_images.send_keys(Path(image).as_posix())
-                # Wait until upload is finished
-                self.wait.until(
-                    EC.visibility_of_element_located(self.by_chat_send_button)
-                )
-            # Send using button
-            send_element = self.wait.until(
-                EC.visibility_of_element_located(self.by_chat_send_button)
-            )
-            send_element.click()
-
-        else:
-            # Send using keypress
-            input_box.send_keys(Keys.ENTER)
+        # Find recipient and proceed to message input
+        if self._find_by_name(to):
+            # Get the focus on the input
+            self._clear_input_box(self.by_input_box)
+            # Type message and attach images (optional)
+            self._type_message(text, images)
+            # Send message - send mechanic depends on the presence of attachments
+            has_images = (images and len(images) > 0)
+            self._click_send_message(has_images)
