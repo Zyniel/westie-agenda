@@ -9,6 +9,7 @@ import pyperclip
 
 
 import undetected_chromedriver as uc
+from pyvirtualdisplay import Display
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common import TimeoutException, NoSuchElementException
 from selenium.webdriver import Keys, ActionChains
@@ -20,8 +21,8 @@ from undetected_chromedriver import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-# display = Display(visible=True, size=(1200, 1200))
-# display.start()
+display = Display(visible=True, size=(1200, 1200))
+display.start()
 
 # class syntax
 class AppPage(Enum):
@@ -66,17 +67,16 @@ class WhatsAppWebClient(object):
         # Add your options as needed
         options = [
             # Define window size here
-            "--window-size=1200,1200",
-            "--ignore-certificate-errors"
-            "--disable-infobars"
-            "start-maximized"
-            "--disable-extensions"
+            "--window-size=1920,1080",
+            "--ignore-certificate-errors",
+            "--disable-infobars",
+            "start-maximized",
+            "--disable-extensions",
+            "--disable-gpu",
+            "--no-sandbox",
             # "--headless",
-            # "--disable-gpu",
-            # "--window-size=1920,1200",
             # "--ignore-certificate-errors",
             # "--disable-extensions",
-            # "--no-sandbox",
             # "--disable-dev-shm-usage",
             # '--remote-debugging-port=9222'
         ]
