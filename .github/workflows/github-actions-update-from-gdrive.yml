@@ -62,6 +62,7 @@ jobs:
         with:
           python-version: '3.x' # Latest stable
           cache: 'pip' # caching pip dependencies
+          cache-dependency-path: './src/python/requirements.builder.txt'
           run: |
             python -m pip install --upgrade pip
             pip install -r ./src/python/requirements.builder.txt
