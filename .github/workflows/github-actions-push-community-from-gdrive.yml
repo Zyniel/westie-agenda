@@ -55,13 +55,12 @@ jobs:
         with:
           python-version: '3.x' # Latest stable
           cache: 'pip' # caching pip dependencies
-          cache-dependency-path: '**/requirements.builder.txt'
+          cache-dependency-path: '**/requirements.*.txt'
       - name: Install dependencies
         run: |
-          pip install -r ./src/python/requirements.builder.txt
+          pip install -r ./src/python/requirements.notifier.txt
       - name: Pull Google Drive Content
         env:
-          GOOGLE_SERVICES_JSON: ${{ secrets.GS_SERVICE_ACCOUNT }}
-          IK_SERVICE_ACCOUNT: ${{ secrets.IK_SERVICE_ACCOUNT }}
+          GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT}}
         run: |
           python ./src/python/community_notifier.py --conf ./src/python/config.$DEPLOY_ENV.yml
