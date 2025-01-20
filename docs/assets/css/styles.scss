@@ -13,6 +13,12 @@ $bg-color: #171717;
   font-family: "Luckiest Guy", cursive;
   font-weight: 400;
   font-style: normal;
+}
+
+.luckiest-guy-regular {
+  font-family: Helvetica, sans-serif;
+  font-weight: 400;
+  font-style: normal;
   -webkit-transform-origin-y: bottom;
 }
 
@@ -145,6 +151,10 @@ body {
         justify-content:flex-start;
         align-content: center;
         align-items: baseline;
+
+        font-family: Helvetica;
+        font-weight: 600;
+;
     }
 
     .event-item,

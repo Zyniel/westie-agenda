@@ -3,12 +3,10 @@ _site
 .jekyll-metadata
 .idea
 .run
+.env
 images/banners
+chrome
 venv/*
-divers/*
-chorégraphie/*
 src/powershell/*.log
-src/bash/*.log
 docs/assets/images/tiles/*
 src/python/*service_account_key.json
-~$WCS.xlsx
