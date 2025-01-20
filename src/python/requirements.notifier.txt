@@ -3,3 +3,4 @@ undetected_chromedriver==3.5.5
 webdriver_manager==4.0.1
 PyYAML==6.0.2
 pyperclip==1.9.0
+setuptools==75.8.0
