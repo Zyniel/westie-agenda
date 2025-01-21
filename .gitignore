@@ -4,6 +4,7 @@ _site
 .idea
 .run
 .env
+test/*
 images/banners
 chrome/*
 !chrome/__profile
