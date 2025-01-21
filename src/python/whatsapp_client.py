@@ -5,7 +5,9 @@ from enum import Enum
 from pathlib import Path
 import time
 from typing import Tuple
-import pandas as pd
+import subprocess
+import os
+from sys import platform
 
 
 import undetected_chromedriver as uc
@@ -27,6 +29,14 @@ logging.basicConfig(level=logging.DEBUG)
 
 display = Display(visible=False, size=(1920, 1080))
 display.start()
+
+def copy2clip(text: str):
+    if platform == "linux" or platform == "linux2":
+        cmd='echo '+text.strip()+'|clip'
+        subprocess.check_call(cmd, shell=True)
+    elif platform == "win32":
+        command = 'echo ' + text.strip() + '| clip'
+        os.system(command)
 
 # class syntax
 class AppPage(Enum):
@@ -477,10 +487,15 @@ class ChatsPage(WhatsAppPage):
         :param text: Text to copy/paste
         :return: None
         """
+        # Alternative to populate clipboard
+        # p = Popen(['xsel','-pi'], stdin=PIPE)
+        # p.communicate(input=text)
+        # element.click()
+        # act = ActionChains(self.driver)
+        # act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
 
         # Alternative to populate clipboard
-        df=pd.DataFrame([text])
-        df.to_clipboard(index=False,header=False)
+        copy2clip(text)
         element.click()
         act = ActionChains(self.driver)
         act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
