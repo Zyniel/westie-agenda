@@ -1,9 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 import argparse
 import json
-import logging
-
 import yaml
-from logging import log
+import logging
 
 from src.python.whatsapp_gmail_login_handler import WhatsAppGmailLoginHandler
 from whatsapp_client import WhatsAppWebClient, ChatsPage

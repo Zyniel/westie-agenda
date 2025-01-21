@@ -1,6 +1,7 @@
-import os
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# import os
 import smtplib
-import ssl
 from email import encoders
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
