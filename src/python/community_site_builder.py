@@ -26,13 +26,13 @@ from pydrive2.files import GoogleDriveFile
 from imagekitio import ImageKit
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
-__doc__ = "Convert an Excel sheet to JSON."
+__doc__ = "Synchronize events between the remote Google Drive/Sheets and the Repo to build the GitHub Page"
 
 # A single auth scope is used for the zero-touch enrollment customer API.
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
 
 # Define logger
-log = logging.getLogger("gsheet-to-json")
+log = logging.getLogger('com.zyniel.dance.westie-agenda.site-builder')
 logging.basicConfig(level=logging.DEBUG)
 
 def to_dict(dataframe: DataFrame | Series) -> dict:
@@ -142,7 +142,7 @@ class GDriveAgendaHelper:
             day = self.df[self.config['sheets']['data']['columns']['start_time']].min()
             dt = datetime.strptime(day, '%d/%m/%Y')
             self.week_dt = dt - timedelta(days=dt.weekday())
-            logging.debug(f'Week: {self.week_dt}')
+            log.debug(f'Week: {self.week_dt}')
 
     def fetch_files(self, weekly: bool = False):
         """
@@ -235,14 +235,14 @@ class GDriveAgendaHelper:
         :param weekly: If True, only download PNG files referenced weekly. Default is False.
         :return: None
         """
-        logging.info("Starting download of PNG files.")
+        log.info("Starting download of PNG files.")
 
         path = Path(path_folder)
         path.mkdir(parents=True, exist_ok=True)
-        logging.info(f"Directory created: {path_folder}")
+        log.info(f"Directory created: {path_folder}")
 
         existing_files = self.get_files() if weekly else []
-        logging.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
 
         if self.pngs:
             for file in self.pngs:
@@ -250,14 +250,14 @@ class GDriveAgendaHelper:
                 file_path = Path(path_folder, basename).as_posix()
                 if not weekly or basename in existing_files:
                     self.__download_gdrive_file(file, path_file=file_path, replace=replace)
-                    logging.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
+                    log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
 
             path = Path(path_folder)
             path.mkdir(parents=True, exist_ok=True)
-            logging.info(f"Directory created: {path_folder}")
+            log.info(f"Directory created: {path_folder}")
 
             existing_files = self.get_files() if weekly else []
-            logging.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+            log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
 
             if self.pngs:
                 for file in self.pngs:
@@ -278,11 +278,11 @@ class GDriveAgendaHelper:
         """
         path = Path(path_folder)
         path.mkdir(parents=True, exist_ok=True)
-        logging.info(f"Directory created: {path_folder}")
+        log.info(f"Directory created: {path_folder}")
 
         existing_files = self.get_files() if weekly else []
         existing_svg = [Path(basename).with_suffix('.svg').name for basename in existing_files]
-        logging.info(f"Weekly mode: {weekly}. Number of existing SVG files: {len(existing_svg)}")
+        log.info(f"Weekly mode: {weekly}. Number of existing SVG files: {len(existing_svg)}")
 
         if self.svgs:
             for file in self.svgs:
@@ -291,7 +291,7 @@ class GDriveAgendaHelper:
                 if not weekly or basename in existing_svg:
                     self.__download_gdrive_file(file, path_file=file_path, replace=replace)
                 else:
-                    logging.info(f"Skipped file: {basename}")
+                    log.info(f"Skipped file: {basename}")
 
 
     def upload_png_files_to_cdn(self, path_folder: str = '.', replace: bool = False, weekly: bool = False):
@@ -303,11 +303,11 @@ class GDriveAgendaHelper:
         :param weekly: Switch to only consider weekly files instead of whole scope.
         :return: None
         """
-        logging.info("Starting upload of PNG files to CDN.")
+        log.info("Starting upload of PNG files to CDN.")
 
         # Get Weekly files from Sheet
         existing_files = self.get_files() if weekly else []
-        logging.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
 
         # Directory containing images
         directory = Path(path_folder)
@@ -319,7 +319,7 @@ class GDriveAgendaHelper:
             if not weekly or basename in existing_files:
                 self.__upload_file_to_cdn(path_file=absolute_path, replace=replace)
             else:
-                logging.info(f"Skipped file: {basename}")
+                log.info(f"Skipped file: {basename}")
 
     def download_data(self, path_file, replace: bool = False) -> None:
         """
@@ -598,7 +598,7 @@ def main():
     args = parser.parse_args()
 
     if args.conf is not None:
-        logging.basicConfig(level=log.info)
+        logging.basicConfig(level=logging.INFO)
 
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:

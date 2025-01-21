@@ -16,6 +16,10 @@ community:
     - 'Test Coast Swing (2024/2025)'
   send_survey : true
   send_planning : true
+mail:
+  to: 'cabannes.francois.dancer@gmail.com'
+  sender: 'cabannes.francois.dancer@gmail.com'
+  subject: '[TW] Enter QR Code to login'
 drive:
   service_account_key: ./src/python/google_service_account_key.json
   png_folder_id: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'
@@ -64,6 +68,7 @@ sheets:
       survey: 'Choix'
 chrome:
   user_dir_folder: './chrome'
+  virtual_display: true
 imagekit:
   public_key: 'public_qPe0Bz3r3v+RJi5u7+byZp/TcKQ='
   url_endpoint: 'https://ik.imagekit.io/templewesties'

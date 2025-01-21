@@ -1,11 +1,14 @@
+import base64
 import logging
 import sys
 from datetime import time
+from email.mime.multipart import MIMEMultipart
 from enum import Enum
 from pathlib import Path
 import time
 from typing import Tuple
 import pyperclip
+import pyqrcode
 
 
 import undetected_chromedriver as uc
@@ -20,10 +23,11 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from undetected_chromedriver import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 
+__doc__ = "WhatsApp Web custom client."
 
-# display = Display(visible=True, size=(1920, 1080))
-display = Display(visible=False, size=(1920, 1080))
-display.start()
+log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
+logging.basicConfig(level=logging.DEBUG)
+
 
 # class syntax
 class AppPage(Enum):
@@ -34,21 +38,42 @@ class AppPage(Enum):
     UNKNOWN = 99
 
 
+class WhatsAppLoginHandler(object):
+    qrcode = None
+    config = None
+
+    def __init__(self, config):
+        self.config = config
+
+    def notify(self):
+        pass
+
+
 class WhatsAppWebClient(object):
     browser = None
     config = None
     wait = None
+    notifiers : list[WhatsAppLoginHandler] = []
+
     by_initial_startup = (
         By.ID,
         'wa_web_initial_startup'
     )
     by_auth_page = (
-        By.XPATH,
-        '//div[contains(@class,"_akau") and @data-ref]'
+        By.CSS_SELECTOR,
+        'input#auto-logout-toggle'
     )
     by_loading_page = (
         By.XPATH,
         '//progress[@max="100"]'
+    )
+    by_qrcode_refreshed = (
+        By.XPATH,
+        "//div[@data-ref and .//canvas]"
+    )
+    by_qrcode_refresh_button = (
+        By.XPATH,
+        "//div[@data-ref]//button"
     )
     by_main_page = (
         By.XPATH,
@@ -86,9 +111,14 @@ class WhatsAppWebClient(object):
             self.chrome_options.add_argument(option)
 
         if self.config['chrome']['user_dir_folder']:
-            self.chrome_options.add_argument("--user-data-dir=" + self.config['chrome']['user_dir_folder'])
+            user_dir = Path(self.config['chrome']['user_dir_folder']).absolute().as_posix()
+            self.chrome_options.add_argument("--user-data-dir=" + user_dir)
 
     def startup(self):
+        if self.config['chrome']['virtual_display']:
+            display = Display(visible=False, size=(1920, 1080))
+            display.start()
+
         # setup Edge Driver
         self.browser = uc.Chrome(version_main= 131, options=self.chrome_options, service=ChromeService(ChromeDriverManager().install()))
         self.wait = WebDriverWait(self.browser, 20)
@@ -133,28 +163,66 @@ class WhatsAppWebClient(object):
         self.browser.get("https://web.whatsapp.com/")
 
     def login(self):
-        try:
+        self.browser.get("https://web.whatsapp.com/")
+        self.browser.maximize_window()
 
-            self.browser.get("https://web.whatsapp.com/")
-            self.browser.maximize_window()
-            self.wait = WebDriverWait(driver=self.browser, timeout=200)
-
-            # wait 5s until leanding page displays
+        logged = False
+        retries = 20
+        retry = 1
+        while not logged and retry <= retries:
             try:
-                landing = WebDriverWait(driver=self.browser, timeout=20).until(
-                    EC.presence_of_element_located((By.XPATH, '//div[@class="landing-main"]'))
-                )
-                if landing:
-                    print("Scan QR Code, And then Enter")
-                    input()
-                    print("Logged In")
-            except TimeoutException as e:
-                print("No need to authenticate !")
+                # Wait until Main Page or Login Page has been reached
+                log.info('Checking WhatsApp Web authentication status :')
+                element_page = self.wait.until(EC.any_of(
+                    EC.visibility_of_element_located(self.by_auth_page),
+                    EC.visibility_of_element_located(self.by_main_page)))
 
-        except Exception as e:
-            logging.info("There was some error while logging in.")
-            logging.info(sys.exc_info()[0])
-            exit()
+                current_page = self.check_current_page()
+
+                if current_page == AppPage.MAIN:
+                    log.info('> Already logged in !')
+                    logged = True
+                elif current_page == AppPage.LOGIN:
+                    log.info('> Not logged. Proceeding to QR Code dispatch.')
+
+                    # Wait until the QR code image is located
+                    # QR code needs refresh
+                    try:
+                        qr_button = self.browser.find_element(*self.by_qrcode_refresh_button)
+                        log.info('QR Code needs refresh. Requesting new QR code.')
+                        qr_button.click()
+                        log.info('Waiting for refresh.')
+                        # TODO: Identify the "In reload div ... but too fast ..."
+                        time.sleep(5)
+                        page = self.wait.until(EC.visibility_of_element_located(self.by_qrcode_refreshed))
+                        log.info('New QR code available !')
+
+                    except NoSuchElementException as e:
+                        log.info('QR code is visible !')
+
+                    # QR code is available
+                    qr_div =  self.wait.until(EC.visibility_of_element_located(self.by_qrcode_refreshed))
+                    qr_canvas = qr_div.find_element(By.TAG_NAME, 'canvas')
+                    qr_code_base64 = qr_canvas.screenshot_as_base64
+                    # Save the QR code image to a file
+                    qr_code_image_path = "qr_code.png"
+                    with open(qr_code_image_path, "wb") as f:
+                        f.write(base64.b64decode(qr_code_base64))
+
+                    # Trigger notification listeners
+                    for notifier in self.notifiers:
+                        path = Path(qr_code_image_path).absolute().as_posix()
+                        notifier.qrcode = path
+                        notifier.notify()
+
+                else:
+                    raise ValueError('Unknown page ! Quitting.')
+            except TimeoutException as e:
+                log.info(f'Unknown error or QR code analysis. Retrying. ${retry}/${retries}')
+            finally:
+                retries = retries + 1
+                time.sleep(10)
+
 
     def search(self, string):
         # identify contact / group
@@ -225,7 +293,7 @@ class WhatsAppPage(object):
 
     def wait_until_loaded(self):
         sidebar = self.wait.until(EC.presence_of_element_located(self.key_element))
-        logging.debug('Main Page loaded !')
+        log.debug('Main Page loaded !')
 
     def _click_communities_sidebar_button(self) -> None:
         """
@@ -235,7 +303,7 @@ class WhatsAppPage(object):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_communities_button))
         element.click()
-        logging.debug('Clicked "Communities" in Sidebar')
+        log.debug('Clicked "Communities" in Sidebar')
 
     def _click_chats_sidebar_button(self) -> None:
         """
@@ -245,7 +313,7 @@ class WhatsAppPage(object):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_chats_button))
         element.click()
-        logging.debug('Clicked "Chats" in Sidebar')
+        log.debug('Clicked "Chats" in Sidebar')
 
     def _click_channels_sidebar_button(self) -> None:
         """
@@ -255,7 +323,7 @@ class WhatsAppPage(object):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_channels_button))
         element.click()
-        logging.debug('Clicked "Channel" in Sidebar')
+        log.debug('Clicked "Channel" in Sidebar')
 
     def _click_status_sidebar_button(self) -> None:
         """
@@ -265,7 +333,7 @@ class WhatsAppPage(object):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_status_button))
         element.click()
-        logging.debug('Clicked "Status" in Sidebar')
+        log.debug('Clicked "Status" in Sidebar')
 
     def _click_settings_sidebar_button(self) -> None:
         """
@@ -275,7 +343,7 @@ class WhatsAppPage(object):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_settings_button))
         element.click()
-        logging.debug('Clicked "Settings" in Sidebar')
+        log.debug('Clicked "Settings" in Sidebar')
 
     def _click_profile_sidebar_button(self) -> None:
         """
@@ -285,7 +353,7 @@ class WhatsAppPage(object):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_profile_button))
         element.click()
-        logging.debug('Clicked "Profile" in Sidebar')
+        log.debug('Clicked "Profile" in Sidebar')
 
 
 class ChatsPage(WhatsAppPage):
@@ -378,7 +446,7 @@ class ChatsPage(WhatsAppPage):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_menu_button))
         element.click()
-        logging.debug('Clicked "Menu" in Chat Panel')
+        log.debug('--> Clicked "Menu" in Chat Panel')
 
     def _click_new_chat_button(self) -> None:
         """
@@ -388,7 +456,7 @@ class ChatsPage(WhatsAppPage):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_new_chat_button))
         element.click()
-        logging.debug('Clicked "New Chat" in Chat Panel')
+        log.debug('--> Clicked "New Chat" in Chat Panel')
 
     def _click_new_poll_button(self) -> None:
         """
@@ -399,12 +467,12 @@ class ChatsPage(WhatsAppPage):
         # Open the submenu first as creating a new Poll is not a exposed action
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
         element.click()
-        logging.debug('Clicked "Chat \'+\'" in Chat Panel')
+        log.debug('--> Clicked "Chat \'+\'" in Chat Panel')
 
         # Select the new Poll entry
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_poll_button))
         element.click()
-        logging.debug('Clicked "New Poll" in Chat Panel')
+        log.debug('--> Clicked "New Poll" in Chat Panel')
 
     def _set_text(self, element: WebElement, text: str) -> None:
         """
@@ -423,7 +491,8 @@ class ChatsPage(WhatsAppPage):
         # Select the new Poll entry
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_close_draft_button))
         element.click()
-        logging.debug('Clicked "X" in Chat Panel')
+        log.debug(f'--> Clicked "X" to close Draft')
+        log.info('Removed previous draft')
 
     def _fill_poll(self, title: str, entries: list[str], multi: bool) -> None:
         """
@@ -445,7 +514,8 @@ class ChatsPage(WhatsAppPage):
         # element_title.send_keys(title)
         # Handle emojis...
         self._set_text(element_title, title)
-        logging.debug(f"Added Title entry: {title} in Poll Popup")
+        log.debug(f'--> Copy/Pasted text to poll "Title" field.')
+        log.info(f"Added Title entry: {title} in Poll Popup")
         del element_title
 
         # Type in all entries
@@ -462,7 +532,9 @@ class ChatsPage(WhatsAppPage):
                     # element_entry.send_keys(entry)
                     # Handle emojis...
                     self._set_text(element_entry, entry)
-                    logging.debug(f"Added Poll entry: {entry} in Poll Popup")
+                    log.debug(f'--> Copy/Pasted text to poll "Entry" field.')
+                    log.info(f"Added Poll entry: {entry} in Poll Popup")
+
                     i = i + 1
                     inserted = True
                 except Exception as e:
@@ -474,13 +546,15 @@ class ChatsPage(WhatsAppPage):
         # Enable switch
         if multi and element_multi.get_attribute("aria-checked") == "false":
             element_multi.click()
-            logging.debug(f"Enabled multi-answer in Poll Popup")
+            log.debug(f'--> Clicked and Enabled Slider "Multiple Answers"')
+            log.info("Enabled multi-answer in Poll Popup")
         # Disable switch
         elif not multi and element_multi.get_attribute("aria-checked") == "true":
             element_multi.click()
-            logging.debug(f"Disabled multi-answer in Poll Popup")
+            log.debug(f'--> Clicked and Disabled Slider "Multiple Answers"')
+            log.info(f"Disabled multi-answer in Poll Popup")
         else:
-            logging.debug(f"Poll Multi-answer already configured properly in Poll Popup")
+            log.debug(f"Poll Multi-answer already configured properly in Poll Popup")
         del element_multi
 
     def _click_send_poll(self):
@@ -491,13 +565,13 @@ class ChatsPage(WhatsAppPage):
         """
         element_send = self.wait.until(EC.element_to_be_clickable(self.by_new_poll_send_button))
         element_send.click()
-        logging.debug('Clicked "Send Poll Chat" in Poll Popup')
+        log.debug('--> Clicked "Send Poll Chat" in Poll Popup')
         del element_send
 
         # Wait until the focus is given back to the input window
         self.wait.until(EC.none_of(EC.presence_of_element_located(self.by_new_poll_popup)))
         time.sleep(2)
-        logging.debug('Waited for Poll Popup to disappear')
+        log.debug('--> Waited for Poll Popup to disappear')
 
     def _click_send_message(self, has_images: bool):
         """
@@ -510,7 +584,7 @@ class ChatsPage(WhatsAppPage):
             element_send = self.wait.until(
                 EC.presence_of_element_located(self.by_chat_send_button))
             element_send.click()
-            logging.debug('Clicked "Chat \'>\'" in Chat Panel')
+            log.debug('--> Clicked "Chat \'>\'" in Chat Panel')
 
             # Wait until the focus is given back to the input window
             self.wait.until(EC.none_of(EC.presence_of_element_located(self.by_chat_editor_pen_button)))
@@ -520,7 +594,7 @@ class ChatsPage(WhatsAppPage):
             input_box = self.wait.until(EC.element_to_be_clickable(self.by_input_box))
             input_box.click()
             input_box.send_keys(Keys.ENTER)
-            logging.debug('Typed "ENTER" to send message in Chat Panel')
+            log.debug('Typed "ENTER" to send message in Chat Panel')
             time.sleep(2)
 
     def _clear_search_box(self):
@@ -534,7 +608,7 @@ class ChatsPage(WhatsAppPage):
         search_box.click()
         search_box.send_keys(Keys.CONTROL + 'a')
         search_box.send_keys(Keys.BACKSPACE)
-        logging.debug('Cleared "Search Bar" in Chat Panel')
+        log.debug('Cleared "Search Bar" in Chat Panel')
 
     def _find_by_name(self, name: str) -> bool:
         """
@@ -543,23 +617,27 @@ class ChatsPage(WhatsAppPage):
         :param name: The name of the chat to search for.
         :return: True if the chat was found, False otherwise.
         """
+        log.info(f'New User/Group contact search : {name}')
         search_box = self.wait.until(
             EC.presence_of_element_located(self.by_search_box)
         )
         self._clear_search_box()
+        log.debug(f'--> Cleared "Search By" input box.')
         search_box.send_keys(name)
+        log.debug(f'--> Input text to "Search By" input box.')
+        time.sleep(1)
         search_box.send_keys(Keys.ENTER)
-        logging.debug('Entered new search for text "{name}" in "Search Bar" in Chat Panel'.format(name=name))
+        log.debug(f'--> Pressed "ENTER" to submit "Search By"')
         try:
             # Check exact profile was found
-            opened_chat = self.shortwait.until(
+            opened_chat = self.wait.until(
                 EC.presence_of_element_located((By.XPATH, self.xpath_opened_chat.format(name=name)))
             )
             if opened_chat:
-                logging.info(f'Successfully fetched chat "{name}"')
+                log.info(f'Found contact "{name}" !')
                 return True
         except TimeoutException:
-            logging.info(f'Could not find chat "{name}"')
+            log.info(f'Could not find contact "{name}" !')
             return False
 
     def _clear_input_box(self, locator: Tuple[str, str]):
@@ -573,7 +651,6 @@ class ChatsPage(WhatsAppPage):
         input_box.click()
         input_box.send_keys(Keys.CONTROL + 'a')
         input_box.send_keys(Keys.BACKSPACE)
-        logging.debug('Cleared "Input Box" in Chat Panel')
 
     def _type_message(self, text: str, images: list[Path]) -> None:
         """
@@ -586,16 +663,20 @@ class ChatsPage(WhatsAppPage):
         """
         # Get the focus on the input
         self._clear_input_box(self.by_input_box)
+        log.debug(f'--> Cleared "Message" input box.')
+
         input_box = self.wait.until(EC.presence_of_element_located(self.by_input_box))
         input_box.click()
+        log.debug(f'--> Clicked inside "Message" input box.')
         self._set_text(input_box, text)
+        log.debug(f'--> Copy/Pasted text to "Message" input box.')
         # input_box.send_keys(text)
         time.sleep(1)
 
         # Open the submenu first as creating a new Poll is not a exposed action
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
         element.click()
-        logging.debug('Clicked "Chat \'+\'" in Chat Panel')
+        log.debug('--> Clicked "Chat \'+\'" in Chat Panel')
 
         # Get the input field
         input_images = self.wait.until(
@@ -604,10 +685,12 @@ class ChatsPage(WhatsAppPage):
         # Add images to the input field
         for image in images:
             input_images.send_keys(Path(image).as_posix())
+
             # Wait until upload is finished
             self.wait.until(
                 EC.visibility_of_element_located(self.by_chat_send_button)
             )
+            log.debug(f'--> Injected new image inside! ${image}')
 
     def search_user_or_group(self, to: str) -> bool:
         """
@@ -632,6 +715,8 @@ class ChatsPage(WhatsAppPage):
             self._fill_poll(title, entries, multi)
             # Send poll
             self._click_send_poll()
+        else:
+            log.warning(f"Poll not sent. Could not find group/user: ${to}")
 
     def create_and_send_new_message(self, to: str, text: str, images: list[Path]) -> None:
         """
@@ -655,3 +740,5 @@ class ChatsPage(WhatsAppPage):
             # Send message - send mechanic depends on the presence of attachments
             has_images = (images and len(images) > 0)
             self._click_send_message(has_images)
+        else:
+            log.warning(f"Message not sent. Could not find group/user: ${to}")

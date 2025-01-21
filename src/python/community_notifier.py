@@ -5,13 +5,17 @@ import logging
 import yaml
 from logging import log
 
+from src.python.whatsapp_gmail_login_handler import WhatsAppGmailLoginHandler
 from whatsapp_client import WhatsAppWebClient, ChatsPage
 
-__doc__ = ""
+__doc__ = "Publish Plannings and Surveys to groups using WhatsApp Web automation."
 
 # Define logger
-log = logging.getLogger("community_helper")
+log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
 logging.basicConfig(level=logging.DEBUG)
+logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
+logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.WARNING)
+logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.WARNING)
 
 class CommunityHelper:
     config = None
@@ -59,7 +63,7 @@ class CommunityHelper:
                     prepare_message.append('\r\n' + planning_footer)
                 # Join the non-empty strings with CRLF
                 planning_message = "\r\n".join(prepare_message)
-                logging.debug('Done preparing Planning message and content.')
+                log.debug('Done preparing Planning message and content.')
 
             if self.config['community']['send_survey']:
                 # Prepare text
@@ -72,10 +76,17 @@ class CommunityHelper:
 
                 # Prepare images attachments
 
-                logging.debug('Done preparing Planning message and content.')
+                log.debug('Done preparing Planning message and content.')
+
+            # Configure Handler
+            gmail_handler = WhatsAppGmailLoginHandler(self.config)
+            gmail_handler.to = self.config['mail']['sender']
+            gmail_handler.subject = self.config['mail']['subject']
+            gmail_handler.sender = self.config['mail']['sender']
 
         except Exception as e:
-            logging.exception('Failed to get data to broadcast.')
+            log.exception('Failed to get data to broadcast.')
+            raise e
 
 
         # ---------------------------------------------------------------------
@@ -86,26 +97,45 @@ class CommunityHelper:
         # Step 03: Broadcast to WhatsApp
         # ---------------------------------------------------------------------
         try:
+            # Register email notifier
+            self.whatsapp_client.notifiers.append(gmail_handler)
             # Open WhatsApp
             self.whatsapp_client.startup()
-            self.whatsapp_client.open_web_app()
+            # self.whatsapp_client.open_web_app()
+            self.whatsapp_client.login()
 
             # Access Chat page
             chat_page = ChatsPage(self.whatsapp_client.browser)
+        except Exception as e:
+            log.exception('Failed to initialise WhatsApp Web Client !!')
+            raise e
 
-            # Send survey as poll
-            for recipient in self.config['community']['survey_recipients']:
-                chat_page.create_and_send_new_poll(recipient, title=survey_title, entries=survey_entries, multi=True)
-
-            # Send survey as poll
+        try:
+            # Send Information
+            # TODO: Fin a way to combine recipients list and iterate by recipient
             for recipient in self.config['community']['planning_recipients']:
-                chat_page.create_and_send_new_message(to=recipient, text=planning_message, images=planning_images)
+                log.info(f"Sending events Information to: {recipient}")
+                try:
+                    chat_page.create_and_send_new_message(to=recipient, text=planning_message, images=planning_images)
+                    log.warning("Successfully sent Information !")
+                except Exception as e:
+                    log.warning("Failed to send events Information!")
+
+            # Send Polls
+            for recipient in self.config['community']['survey_recipients']:
+                try:
+                    log.info("Sending events Poll to: {recipient}")
+                    chat_page.create_and_send_new_poll(recipient, title=survey_title, entries=survey_entries, multi=True)
+                    log.warning("Successfully sent events Poll !")
+                except Exception as e:
+                    log.warning("Failed to send events Poll !")
 
             # Close WhatsApp
             self.whatsapp_client.close_and_quit()
 
         except Exception as e:
-            logging.exception('Failed to fetch configuration !')
+            log.exception('Failed to send all data to recipients !!')
+            raise e
 
 
     def get_planning_title(self):
@@ -175,7 +205,7 @@ def main():
     args = parser.parse_args()
 
     if args.conf is not None:
-        logging.basicConfig(level=log.info)
+        logging.basicConfig(level=logging.INFO)
 
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:
