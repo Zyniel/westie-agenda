@@ -5,7 +5,7 @@ import json
 import yaml
 import logging
 
-from src.python.whatsapp_gmail_login_handler import WhatsAppGmailLoginHandler
+from whatsapp_gmail_login_handler import WhatsAppGmailLoginHandler
 from whatsapp_client import WhatsAppWebClient, ChatsPage
 
 __doc__ = "Publish Plannings and Surveys to groups using WhatsApp Web automation."

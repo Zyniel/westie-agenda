@@ -1,14 +1,11 @@
 import base64
 import logging
-import sys
 from datetime import time
-from email.mime.multipart import MIMEMultipart
 from enum import Enum
 from pathlib import Path
 import time
 from typing import Tuple
 import pyperclip
-import pyqrcode
 
 
 import undetected_chromedriver as uc
