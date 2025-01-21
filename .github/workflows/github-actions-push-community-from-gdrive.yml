@@ -59,6 +59,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r ./src/python/requirements.notifier.txt
+          sudo apt install x11-utils gnumeric
       - name: Pull Google Drive Content
         env:
           GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT}}
