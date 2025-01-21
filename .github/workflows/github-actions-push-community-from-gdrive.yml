@@ -65,7 +65,7 @@ jobs:
           CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD}}
         run: |
           sudo apt-get install p7zip-full
-          unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/_profile/
+          unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
           tree -f .
       - name: Pull Google Drive Content
         env:
