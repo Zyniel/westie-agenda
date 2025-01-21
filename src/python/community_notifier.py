@@ -118,7 +118,7 @@ class CommunityHelper:
                     chat_page.create_and_send_new_message(to=recipient, text=planning_message, images=planning_images)
                     log.info("Successfully sent Information !")
                 except Exception as e:
-                    log.warning("Failed to send events Information!")
+                    log.exception("Failed to send events Information!")
 
             # Send Polls
             for recipient in self.config['community']['survey_recipients']:
@@ -127,7 +127,7 @@ class CommunityHelper:
                     chat_page.create_and_send_new_poll(recipient, title=survey_title, entries=survey_entries, multi=True)
                     log.info("Successfully sent events Poll !")
                 except Exception as e:
-                    log.warning("Failed to send events Poll !")
+                    log.exception("Failed to send events Poll !")
 
             # Close WhatsApp
             self.whatsapp_client.close_and_quit()
