@@ -21,7 +21,8 @@ from undetected_chromedriver import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 
 
-display = Display(visible=True, size=(1920, 1080))
+# display = Display(visible=True, size=(1920, 1080))
+display = Display(visible=False, size=(1920, 1080))
 display.start()
 
 # class syntax
