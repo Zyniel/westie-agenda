@@ -6,7 +6,7 @@ from enum import Enum
 from pathlib import Path
 import time
 from typing import Tuple
-import pyperclip
+import pandas as pd
 
 
 import undetected_chromedriver as uc
@@ -479,7 +479,10 @@ class ChatsPage(WhatsAppPage):
         :param text: Text to copy/paste
         :return: None
         """
-        pyperclip.copy(text)
+
+        # Alternative to populate clipboard
+        df=pd.DataFrame([text])
+        df.to_clipboard(index=False,header=False)
         element.click()
         act = ActionChains(self.driver)
         act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
