@@ -13,9 +13,9 @@ __doc__ = "Publish Plannings and Surveys to groups using WhatsApp Web automation
 # Define logger
 log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
 logging.basicConfig(level=logging.DEBUG)
-logging.getLogger('urllib3.connectionpool').setLevel(logging.WARNING)
-logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.WARNING)
-logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.WARNING)
+logging.getLogger('urllib3.connectionpool').setLevel(logging.DEBUG)
+logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.DEBUG)
+logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.DEBUG)
 
 class CommunityHelper:
     config = None
