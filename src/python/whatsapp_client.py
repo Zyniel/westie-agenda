@@ -1,5 +1,6 @@
 import base64
 import logging
+import os
 from datetime import time
 from enum import Enum
 from pathlib import Path
@@ -25,6 +26,9 @@ __doc__ = "WhatsApp Web custom client."
 log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
 logging.basicConfig(level=logging.DEBUG)
 
+if os.environ['FORCE_VIRTUALDISPLAY'] == 1:
+    display = Display(visible=False, size=(1920, 1080))
+    display.start()
 
 # class syntax
 class AppPage(Enum):
@@ -112,10 +116,6 @@ class WhatsAppWebClient(object):
             self.chrome_options.add_argument("--user-data-dir=" + user_dir)
 
     def startup(self):
-        if self.config['chrome']['virtual_display']:
-            display = Display(visible=False, size=(1920, 1080))
-            display.start()
-
         # setup Edge Driver
         self.browser = uc.Chrome(version_main= 131, options=self.chrome_options, service=ChromeService(ChromeDriverManager().install()))
         self.wait = WebDriverWait(self.browser, 20)

@@ -13,8 +13,7 @@ __doc__ = "Publish Plannings and Surveys to groups using WhatsApp Web automation
 # Define logger
 log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
 logging.basicConfig(level=logging.DEBUG)
-logging.getLogger('urllib3.connectionpool').setLevel(logging.DEBUG)
-logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.DEBUG)
+logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
 logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.DEBUG)
 
 class CommunityHelper:
@@ -117,7 +116,7 @@ class CommunityHelper:
                 log.info(f"Sending events Information to: {recipient}")
                 try:
                     chat_page.create_and_send_new_message(to=recipient, text=planning_message, images=planning_images)
-                    log.warning("Successfully sent Information !")
+                    log.info("Successfully sent Information !")
                 except Exception as e:
                     log.warning("Failed to send events Information!")
 
@@ -126,7 +125,7 @@ class CommunityHelper:
                 try:
                     log.info("Sending events Poll to: {recipient}")
                     chat_page.create_and_send_new_poll(recipient, title=survey_title, entries=survey_entries, multi=True)
-                    log.warning("Successfully sent events Poll !")
+                    log.info("Successfully sent events Poll !")
                 except Exception as e:
                     log.warning("Failed to send events Poll !")
 
