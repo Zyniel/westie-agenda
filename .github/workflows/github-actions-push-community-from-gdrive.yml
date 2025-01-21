@@ -59,8 +59,6 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r ./src/python/requirements.notifier.txt
-          pip uninstall undetected_chromedriver
-          pip install undetected_chromedriver
           sudo apt install x11-utils gnumeric
       - name: Pull Google Drive Content
         env:
