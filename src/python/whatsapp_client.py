@@ -1,6 +1,5 @@
 import base64
 import logging
-import os
 from datetime import time
 from enum import Enum
 from pathlib import Path
@@ -26,9 +25,8 @@ __doc__ = "WhatsApp Web custom client."
 log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
 logging.basicConfig(level=logging.DEBUG)
 
-if os.environ['FORCE_VIRTUALDISPLAY'] == 1:
-    display = Display(visible=False, size=(1920, 1080))
-    display.start()
+display = Display(visible=False, size=(1920, 1080))
+display.start()
 
 # class syntax
 class AppPage(Enum):

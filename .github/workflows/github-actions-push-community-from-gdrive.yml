@@ -66,10 +66,8 @@ jobs:
         run: |
           sudo apt-get install p7zip-full
           unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
-          tree -f .
       - name: Pull Google Drive Content
         env:
-          GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT}}
-          FORCE_VIRTUALDISPLAY: 1
+          GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}
         run: |
           python ./src/python/community_notifier.py --conf ./src/python/config.$DEPLOY_ENV.yml
