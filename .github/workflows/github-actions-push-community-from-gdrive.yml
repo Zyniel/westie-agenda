@@ -59,7 +59,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r ./src/python/requirements.notifier.txt
-          sudo apt install x11-utils gnumeric xvfb
+          sudo apt install x11-utils gnumeric xvfb xclip
       - name: Unpack Chrome Profile
         env:
           CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD}}
