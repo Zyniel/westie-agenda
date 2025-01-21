@@ -8,7 +8,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 
-from src.python.whatsapp_client import WhatsAppLoginHandler
+from whatsapp_client import WhatsAppLoginHandler
 
 class WhatsAppGmailLoginHandler(WhatsAppLoginHandler):
     def __init__(self, config):
