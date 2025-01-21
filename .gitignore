@@ -6,7 +6,7 @@ _site
 .env
 images/banners
 chrome/*
-!chrome/_profile
+!chrome/__profile/*
 venv/*
 src/powershell/*.log
 docs/assets/images/tiles/*
