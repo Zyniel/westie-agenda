@@ -190,6 +190,7 @@ class WhatsAppWebClient(object):
                         qr_button = self.browser.find_element(*self.by_qrcode_refresh_button)
                         log.info('QR Code needs refresh. Requesting new QR code.')
                         qr_button.click()
+                        time.sleep(0.20)
                         log.info('Waiting for refresh.')
                         # TODO: Identify the "In reload div ... but too fast ..."
                         time.sleep(5)
@@ -228,6 +229,7 @@ class WhatsAppWebClient(object):
         name_argument = f"//span[contains(@title,'{string}')]"
         title = self.wait.until(EC.presence_of_element_located((By.XPATH, name_argument)))
         title.click()
+        time.sleep(0.20)
 
     def display_user_agent(self):
         # Fetch the current user agent to verify
@@ -303,6 +305,7 @@ class WhatsAppPage(object):
         element = self.wait.until(EC.element_to_be_clickable(self.by_communities_button))
         element.click()
         log.debug('Clicked "Communities" in Sidebar')
+        time.sleep(0.20)
 
     def _click_chats_sidebar_button(self) -> None:
         """
@@ -313,6 +316,7 @@ class WhatsAppPage(object):
         element = self.wait.until(EC.element_to_be_clickable(self.by_chats_button))
         element.click()
         log.debug('Clicked "Chats" in Sidebar')
+        time.sleep(0.20)
 
     def _click_channels_sidebar_button(self) -> None:
         """
@@ -323,6 +327,7 @@ class WhatsAppPage(object):
         element = self.wait.until(EC.element_to_be_clickable(self.by_channels_button))
         element.click()
         log.debug('Clicked "Channel" in Sidebar')
+        time.sleep(0.20)
 
     def _click_status_sidebar_button(self) -> None:
         """
@@ -333,6 +338,7 @@ class WhatsAppPage(object):
         element = self.wait.until(EC.element_to_be_clickable(self.by_status_button))
         element.click()
         log.debug('Clicked "Status" in Sidebar')
+        time.sleep(0.20)
 
     def _click_settings_sidebar_button(self) -> None:
         """
@@ -343,6 +349,7 @@ class WhatsAppPage(object):
         element = self.wait.until(EC.element_to_be_clickable(self.by_settings_button))
         element.click()
         log.debug('Clicked "Settings" in Sidebar')
+        time.sleep(0.20)
 
     def _click_profile_sidebar_button(self) -> None:
         """
@@ -353,6 +360,7 @@ class WhatsAppPage(object):
         element = self.wait.until(EC.element_to_be_clickable(self.by_profile_button))
         element.click()
         log.debug('Clicked "Profile" in Sidebar')
+        time.sleep(0.20)
 
 
 class ChatsPage(WhatsAppPage):
@@ -445,8 +453,8 @@ class ChatsPage(WhatsAppPage):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_menu_button))
         element.click()
-        time.sleep(0.20)
         log.debug('--> Clicked "Menu" in Chat Panel')
+        time.sleep(0.20)
 
     def _click_new_chat_button(self) -> None:
         """
@@ -456,8 +464,8 @@ class ChatsPage(WhatsAppPage):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_new_chat_button))
         element.click()
-        time.sleep(0.20)
         log.debug('--> Clicked "New Chat" in Chat Panel')
+        time.sleep(0.20)
 
     def _click_new_poll_button(self) -> None:
         """
@@ -468,14 +476,14 @@ class ChatsPage(WhatsAppPage):
         # Open the submenu first as creating a new Poll is not a exposed action
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
         element.click()
-        time.sleep(0.20)
         log.debug('--> Clicked "Chat \'+\'" in Chat Panel')
+        time.sleep(0.20)
 
         # Select the new Poll entry
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_poll_button))
         element.click()
-        time.sleep(0.20)
         log.debug('--> Clicked "New Poll" in Chat Panel')
+        time.sleep(0.20)
 
     def _set_text(self, element: WebElement, text: str) -> None:
         """
@@ -485,10 +493,19 @@ class ChatsPage(WhatsAppPage):
         :param text: Text to copy/paste
         :return: None
         """
-
+        # NOTE: Selenium ChromeDriver does not handle send_keys containing Emoji as theyr are not BMP characters.
+        #       As a workaround, knowing this script will run heandless and clipboard might not be easy to use
+        #       from python, the best approach is to use Javascript, and simulate Copy / Paste.
+        #       Data with the emoji is passed to JS, Clipboard is populated with a DataTransfer.
+        #       A later ClipboardEvent is used to paste the information in the selected element.
+        #       To minimise tampering with the page, an '.' is typed and removed to trigger all page native
+        #       mechanisms to recognize input
         # Alternative to populate clipboard
+
+        # Get element focus
         element.click()
         time.sleep(0.20)
+        # Run Copy / Paste hack
         inline_script = f'''
         const text = `{text}`;
         const dataTransfer = new DataTransfer();
@@ -500,16 +517,18 @@ class ChatsPage(WhatsAppPage):
         arguments[0].dispatchEvent(event)
         '''
         self.driver.execute_script(inline_script,element)
+        # Used manual send_key to make sure the injected input gets taken into account
         element.send_keys('.')
         element.send_keys(Keys.BACKSPACE)
+        log.debug(f'--> Wrote "${text}" inside element')
         time.sleep(0.20)
 
     def _cancel_draft(self):
         # Select the new Poll entry
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_close_draft_button))
         element.click()
-        time.sleep(0.20)
         log.debug(f'--> Clicked "X" to close Draft')
+        time.sleep(0.20)
         log.info('Removed previous draft')
 
     def _fill_poll(self, title: str, entries: list[str], multi: bool) -> None:
@@ -627,6 +646,7 @@ class ChatsPage(WhatsAppPage):
         search_box.send_keys(Keys.CONTROL + 'a')
         search_box.send_keys(Keys.BACKSPACE)
         log.debug('Cleared "Search Bar" in Chat Panel')
+        time.sleep(0.20)
 
     def _find_by_name(self, name: str) -> bool:
         """
@@ -669,6 +689,7 @@ class ChatsPage(WhatsAppPage):
         input_box.click()
         input_box.send_keys(Keys.CONTROL + 'a')
         input_box.send_keys(Keys.BACKSPACE)
+        time.sleep(0.20)
 
     def _type_message(self, text: str, images: list[Path]) -> None:
         """
@@ -686,6 +707,7 @@ class ChatsPage(WhatsAppPage):
         input_box = self.wait.until(EC.presence_of_element_located(self.by_input_box))
         input_box.click()
         log.debug(f'--> Clicked inside "Message" input box.')
+        time.sleep(0.20)
         self._set_text(input_box, text)
         log.debug(f'--> Copy/Pasted text to "Message" input box.')
         # input_box.send_keys(text)
@@ -695,6 +717,7 @@ class ChatsPage(WhatsAppPage):
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
         element.click()
         log.debug('--> Clicked "Chat \'+\'" in Chat Panel')
+        time.sleep(0.20)
 
         # Get the input field
         input_images = self.wait.until(
@@ -703,6 +726,7 @@ class ChatsPage(WhatsAppPage):
         # Add images to the input field
         for image in images:
             input_images.send_keys(Path(image).as_posix())
+            time.sleep(0.20)
 
             # Wait until upload is finished
             self.wait.until(
@@ -721,6 +745,14 @@ class ChatsPage(WhatsAppPage):
         return self._find_by_name(to)
 
     def create_and_send_new_poll(self, to: str, title: str, entries: list[str], multi: bool) -> None:
+        """
+
+        :param to: Target group or username
+        :param title: Poll title
+        :param entries: Poll liste of entries
+        :param multi: True is multiple answers allowed, False otherwise.
+        :return:
+        """
         # Position on Chat Panel
         self._click_chats_sidebar_button()
         # Find recipient and proceed to message input
