@@ -1,14 +1,11 @@
 import base64
 import logging
 import os
-import shutil
 from datetime import time
 from enum import Enum
 from pathlib import Path
 import time
 from typing import Tuple
-import subprocess
-from sys import platform
 
 import undetected_chromedriver as uc
 from selenium.webdriver.chrome.webdriver import WebDriver
@@ -26,11 +23,12 @@ __doc__ = "WhatsApp Web custom client."
 log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
 logging.basicConfig(level=logging.DEBUG)
 
+# Run XFVB + pyvirtualdisplay to avoid --headless chromedriver
+# TODO: Ensure --headless with undetected_chromedriver is not safer than X11 redirect
 if [os.getenv('VIRTUAL_DISPLAY') is not None and os.getenv('VIRTUAL_DISPLAY') == 1]:
     from pyvirtualdisplay import Display
     display = Display(visible=False, size=(1920, 1080))
     display.start()
-
 
 # class syntax
 class AppPage(Enum):
@@ -539,7 +537,6 @@ class ChatsPage(WhatsAppPage):
         :param multi:
         :return:
         """
-
         if not title:
             raise ValueError("Poll title must not be empty.")
         elif len(entries) < 2 or len(entries) > 12:
