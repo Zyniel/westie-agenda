@@ -31,26 +31,6 @@ if [os.getenv('VIRTUAL_DISPLAY') is not None and os.getenv('VIRTUAL_DISPLAY') ==
     display = Display(visible=False, size=(1920, 1080))
     display.start()
 
-def copy2clip(text: str):
-    """Copy text to the clipboard."""
-    match os := platform.system():
-        case "Windows":
-            cmd = "clip"
-        case "Darwin":
-            cmd = "pbcopy"
-        case "Linux" | "FreeBSD":
-            for cmd in ("xclip", "xsel"):
-                if shutil.which(cmd):
-                    break
-            else:
-                raise NotImplementedError(
-                    f"If your {os} machine does not use xclip or xsel, please "
-                    "use 'pyperclip' PyPi to copy text to the clipboard."
-                )
-        case _:
-            raise NotImplementedError(f"Operating system {os} is not supported.")
-
-    subprocess.run(cmd, text=True, check=False, input=text)
 
 # class syntax
 class AppPage(Enum):
