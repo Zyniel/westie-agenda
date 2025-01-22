@@ -69,5 +69,6 @@ jobs:
       - name: Pull Google Drive Content
         env:
           GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}
+          VIRTUAL_DISPLAY: '1'
         run: |
           python ./src/python/community_notifier.py --conf ./src/python/config.$DEPLOY_ENV.yml

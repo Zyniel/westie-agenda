@@ -1,5 +1,6 @@
 import base64
 import logging
+import os
 import shutil
 from datetime import time
 from enum import Enum
@@ -9,9 +10,7 @@ from typing import Tuple
 import subprocess
 from sys import platform
 
-
 import undetected_chromedriver as uc
-#from pyvirtualdisplay import Display
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common import TimeoutException, NoSuchElementException
 from selenium.webdriver import Keys, ActionChains
@@ -27,8 +26,10 @@ __doc__ = "WhatsApp Web custom client."
 log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
 logging.basicConfig(level=logging.DEBUG)
 
-#display = Display(visible=False, size=(1920, 1080))
-#display.start()
+if [os.getenv(['VIRTUAL_DISPLAY']) is not None and os.getenv(['VIRTUAL_DISPLAY']) == 1]:
+    from pyvirtualdisplay import Display
+    display = Display(visible=False, size=(1920, 1080))
+    display.start()
 
 def copy2clip(text: str):
     """Copy text to the clipboard."""
@@ -464,6 +465,7 @@ class ChatsPage(WhatsAppPage):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_menu_button))
         element.click()
+        time.sleep(0.20)
         log.debug('--> Clicked "Menu" in Chat Panel')
 
     def _click_new_chat_button(self) -> None:
@@ -474,6 +476,7 @@ class ChatsPage(WhatsAppPage):
         """
         element = self.wait.until(EC.element_to_be_clickable(self.by_new_chat_button))
         element.click()
+        time.sleep(0.20)
         log.debug('--> Clicked "New Chat" in Chat Panel')
 
     def _click_new_poll_button(self) -> None:
@@ -485,11 +488,13 @@ class ChatsPage(WhatsAppPage):
         # Open the submenu first as creating a new Poll is not a exposed action
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
         element.click()
+        time.sleep(0.20)
         log.debug('--> Clicked "Chat \'+\'" in Chat Panel')
 
         # Select the new Poll entry
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_poll_button))
         element.click()
+        time.sleep(0.20)
         log.debug('--> Clicked "New Poll" in Chat Panel')
 
     def _set_text(self, element: WebElement, text: str) -> None:
@@ -500,18 +505,11 @@ class ChatsPage(WhatsAppPage):
         :param text: Text to copy/paste
         :return: None
         """
-        # Alternative to populate clipboard
-        # p = Popen(['xsel','-pi'], stdin=PIPE)
-        # p.communicate(input=text)
-        # element.click()
-        # act = ActionChains(self.driver)
-        # act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
 
         # Alternative to populate clipboard
         element.click()
-        # self.driver.execute_script("arguments[0].innerHTML = '{}'".format(text),element)
-        self.driver.execute_script(
-        f'''
+        time.sleep(0.20)
+        inline_script = f'''
         const text = `{text}`;
         const dataTransfer = new DataTransfer();
         dataTransfer.setData('text', text);
@@ -520,14 +518,17 @@ class ChatsPage(WhatsAppPage):
           bubbles: true
         }});
         arguments[0].dispatchEvent(event)
-        ''',element)
+        '''
+        self.driver.execute_script(inline_script,element)
         element.send_keys('.')
         element.send_keys(Keys.BACKSPACE)
+        time.sleep(0.20)
 
     def _cancel_draft(self):
         # Select the new Poll entry
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_close_draft_button))
         element.click()
+        time.sleep(0.20)
         log.debug(f'--> Clicked "X" to close Draft')
         log.info('Removed previous draft')
 
