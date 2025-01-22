@@ -26,7 +26,7 @@ __doc__ = "WhatsApp Web custom client."
 log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
 logging.basicConfig(level=logging.DEBUG)
 
-if [os.getenv(['VIRTUAL_DISPLAY']) is not None and os.getenv(['VIRTUAL_DISPLAY']) == 1]:
+if [os.getenv('VIRTUAL_DISPLAY') is not None and os.getenv('VIRTUAL_DISPLAY') == 1]:
     from pyvirtualdisplay import Display
     display = Display(visible=False, size=(1920, 1080))
     display.start()
