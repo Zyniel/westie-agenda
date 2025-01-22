@@ -7,12 +7,11 @@ from pathlib import Path
 import time
 from typing import Tuple
 import subprocess
-import os
 from sys import platform
 
 
 import undetected_chromedriver as uc
-from pyvirtualdisplay import Display
+#from pyvirtualdisplay import Display
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common import TimeoutException, NoSuchElementException
 from selenium.webdriver import Keys, ActionChains
@@ -28,8 +27,8 @@ __doc__ = "WhatsApp Web custom client."
 log = logging.getLogger('com.zyniel.dance.westie-agenda.whatsapp-client')
 logging.basicConfig(level=logging.DEBUG)
 
-display = Display(visible=False, size=(1920, 1080))
-display.start()
+#display = Display(visible=False, size=(1920, 1080))
+#display.start()
 
 def copy2clip(text: str):
     """Copy text to the clipboard."""
@@ -509,10 +508,21 @@ class ChatsPage(WhatsAppPage):
         # act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
 
         # Alternative to populate clipboard
-        copy2clip(text)
         element.click()
-        act = ActionChains(self.driver)
-        act.key_down(Keys.CONTROL).send_keys("v").key_up(Keys.CONTROL).perform()
+        # self.driver.execute_script("arguments[0].innerHTML = '{}'".format(text),element)
+        self.driver.execute_script(
+        f'''
+        const text = `{text}`;
+        const dataTransfer = new DataTransfer();
+        dataTransfer.setData('text', text);
+        const event = new ClipboardEvent('paste', {{
+          clipboardData: dataTransfer,
+          bubbles: true
+        }});
+        arguments[0].dispatchEvent(event)
+        ''',element)
+        element.send_keys('.')
+        element.send_keys(Keys.BACKSPACE)
 
     def _cancel_draft(self):
         # Select the new Poll entry
