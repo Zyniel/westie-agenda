@@ -4,6 +4,7 @@ import argparse
 import json
 import yaml
 import logging
+import dotenv
 
 from whatsapp_gmail_login_handler import WhatsAppGmailLoginHandler
 from whatsapp_client import WhatsAppWebClient, ChatsPage

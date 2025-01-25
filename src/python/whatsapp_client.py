@@ -8,6 +8,7 @@ import time
 from typing import Tuple
 
 import undetected_chromedriver as uc
+from undetected_chromedriver import WebElement
 from selenium.webdriver.chrome.webdriver import WebDriver
 from selenium.common import TimeoutException, NoSuchElementException
 from selenium.webdriver import Keys, ActionChains
@@ -15,7 +16,6 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.chrome.service import Service as ChromeService
-from undetected_chromedriver import WebElement
 from webdriver_manager.chrome import ChromeDriverManager
 
 __doc__ = "WhatsApp Web custom client."
@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 # Run XFVB + pyvirtualdisplay to avoid --headless chromedriver
 # TODO: Ensure --headless with undetected_chromedriver is not safer than X11 redirect
-if [os.getenv('VIRTUAL_DISPLAY') is not None and os.getenv('VIRTUAL_DISPLAY') == 1]:
+if os.getenv('VIRTUAL_DISPLAY') is not None and os.getenv('VIRTUAL_DISPLAY') == '1':
     from pyvirtualdisplay import Display
     display = Display(visible=False, size=(1920, 1080))
     display.start()
