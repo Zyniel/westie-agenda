@@ -11,6 +11,5 @@ jobs:
     with:
       deploy_env: test
     secrets:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       GS_SERVICE_ACCOUNT: ${{ secrets.GS_SERVICE_ACCOUNT }}
       IK_SERVICE_ACCOUNT: ${{ secrets.IK_SERVICE_ACCOUNT }}
