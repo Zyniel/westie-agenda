@@ -8,7 +8,6 @@ on:
         type: string
     secrets:
       required: true
-      GITHUB_TOKEN:
       GM_SERVICE_ACCOUNT:
       CHROME_PROFILE_PWD:
 

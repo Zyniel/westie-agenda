@@ -8,7 +8,6 @@ on:
         type: string
     secrets:
       required: true
-      GITHUB_TOKEN:
       GS_SERVICE_ACCOUNT:
       IK_SERVICE_ACCOUNT:
 
