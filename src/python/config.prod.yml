@@ -1,8 +1,6 @@
-# config.prod.yml
-excel_file: ./WCS.xlsx
-excel_worksheet: "Dernier"
-json_file: ./data/events.json
-
+# =============================================================================
+# PRODUCTION CONFIGURATION FILE
+# =============================================================================
 app:
   data_file: ./data/events.json
   png_folder: ./images/tiles
@@ -17,8 +15,8 @@ community:
   send_survey : true
   send_planning : true
 mail:
-  to: 'cabannes.francois.dancer@gmail.com'
-  sender: 'cabannes.francois.dancer@gmail.com'
+  to: 'cabannes.francois.dance@gmail.com'
+  sender: 'cabannes.francois.dance@gmail.com'
   subject: '[TW] Enter QR Code to login'
 drive:
   service_account_key: ./src/python/google_service_account_key.json
@@ -30,10 +28,6 @@ sheets:
   named_ranges:
     week_range: 'TblSemaine'
     config_range: 'TblConfig'
-    pre_survey_cell: 'RNG_PRESURVEY'
-    post_survey_cell: 'RNG_POSTSURVEY'
-    pre_links_cell: 'RNG_PRELINKS'
-    post_links_cell: 'RNG_POSTLINKS'
   data:
     worksheet_id: 'Semaine'
     columns:

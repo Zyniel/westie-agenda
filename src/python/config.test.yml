@@ -1,5 +1,5 @@
 # =============================================================================
-# DEVELOPPEMENT CONFIGURATION FILE
+# TEST CONFIGURATION FILE
 # =============================================================================
 app:
   data_file: ./data/events.json
@@ -10,7 +10,6 @@ community:
   name: 'Test Westies (2024)'
   survey_recipients:
     - 'Test Coast Swing (2024/2025)'
-    - "François CABANNES"
   planning_recipients:
     - 'Test Coast Swing (2024/2025)'
   send_survey : true
@@ -62,8 +61,8 @@ sheets:
       infos: 'Liens'
       survey: 'Choix'
 chrome:
-  user_dir_folder: 'I:\git\westie-agenda\chrome\'
-  virtual_display: false
+  user_dir_folder: './chrome'
+  virtual_display: true
 imagekit:
   public_key: 'public_qPe0Bz3r3v+RJi5u7+byZp/TcKQ='
   url_endpoint: 'https://ik.imagekit.io/templewesties'
