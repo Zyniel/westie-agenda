@@ -14,7 +14,6 @@ import json
 import pandas as pd
 import yaml
 import argparse
-import dotenv
 
 from typing import List
 from pathlib import Path
