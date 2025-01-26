@@ -1,0 +1,14 @@
+name: Push to WhatsApp (Test)
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  call-common:
+    uses: ./.github/workflows/github-actions-push-to-wa-common.yml
+    with:
+      deploy_env: test
+    secrets:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}
+      CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD }}

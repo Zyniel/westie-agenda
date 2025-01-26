@@ -1,0 +1,59 @@
+name: Push to WhatsApp - Common
+
+on:
+  workflow_call:
+    inputs:
+      deploy_env:
+        required: true
+        type: string
+    secrets:
+      required: true
+      GITHUB_TOKEN:
+      GM_SERVICE_ACCOUNT:
+      CHROME_PROFILE_PWD:
+
+jobs:
+
+  commit:
+    runs-on: ubuntu-latest
+    outputs:
+      commit_hash: ${{ steps.commit-and-push.outputs.commit_hash }}
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Identify - ${{github.event.client_payload.id}}
+        run: echo Run identifier ${{ github.event.client_payload.id }}
+
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+          cache: 'pip'
+          cache-dependency-path: '**/requirements.*.txt'
+
+      - name: Install dependencies
+        run: |
+          pip install -r ./src/python/requirements.notifier.txt
+          sudo apt install x11-utils gnumeric xvfb xclip
+
+      - name: Unpack Chrome Profile
+        env:
+          CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD}}
+        run: |
+          sudo apt-get install p7zip-full
+          unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
+
+      - name: Pull Google Drive Content
+        env:
+          GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}
+          VIRTUAL_DISPLAY: '1'
+        run: |
+          python ./src/python/community_notifier.py --conf ./src/python/config.${{ inputs.deploy_env }}.yml
