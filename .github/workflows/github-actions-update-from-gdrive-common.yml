@@ -1,4 +1,4 @@
-name: Sync GDrive and deploy GitHub Pages (Production)
+name: Sync GDrive and deploy GitHub Pages - Common
 
 on:
   workflow_call:

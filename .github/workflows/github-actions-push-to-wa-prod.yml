@@ -2,6 +2,9 @@ name: Push to WhatsApp (Production)
 
 on:
   workflow_dispatch: {}
+  repository_dispatch:
+    types: [Push to WhatsApp (Production)]
+
 
 jobs:
   call-common:

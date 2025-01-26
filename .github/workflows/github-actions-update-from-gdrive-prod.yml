@@ -2,6 +2,8 @@ name: Sync GDrive and deploy GitHub Pages (Production)
 
 on:
   workflow_dispatch: {}
+  repository_dispatch:
+    types: [Sync GDrive and deploy GitHub Pages (Production)]
 
 jobs:
   call-common:

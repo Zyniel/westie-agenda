@@ -2,6 +2,8 @@ name: Push to WhatsApp (Test)
 
 on:
   workflow_dispatch: {}
+  repository_dispatch:
+    types: [Push to WhatsApp (Test)]
 
 jobs:
   call-common:
