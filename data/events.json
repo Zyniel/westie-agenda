@@ -19,7 +19,7 @@
             "Lien Court": "https://tinyurl.com/6nypn52",
             "Lien": "https://www.facebook.com/events/1526664877948822/1526664981282145",
             "Image": "TDS-Mardi-2024-Tile.png",
-            "Sondage": "Mar. 🪩 After TDS",
+            "#REF!": "Mar. 🪩 After TDS",
             "Planning": "Mar. 28 - After TDS",
             "Infos": "Mar. 🪩 After TDS\r\n> https://tinyurl.com/6nypn52",
             "Ordre": "1126400"
@@ -42,7 +42,7 @@
             "Lien Court": "https://tinyurl.com/mu3z976v",
             "Lien": "https://www.facebook.com/events/527073879779927/527074003113248",
             "Image": "TDS-Jeudi-2024-Tile.png",
-            "Sondage": "Jeu. 🪩 After TDS",
+            "#REF!": "",
             "Planning": "Jeu. 30 - After TDS",
             "Infos": "Jeu. 🪩 After TDS\r\n> https://tinyurl.com/mu3z976v",
             "Ordre": "1126600"
@@ -65,7 +65,7 @@
             "Lien Court": "https://tinyurl.com/fx89k9xh",
             "Lien": "https://www.facebook.com/events/441708295575653",
             "Image": "FAC-Vendredi-Tile.png",
-            "Sondage": "Ven. 🪩 Factory Club (RWSB)",
+            "#REF!": "",
             "Planning": "Ven. 31 - Factory Club (RWSB)",
             "Infos": "Ven. 🪩 Factory Club (RWSB)\r\n> https://tinyurl.com/fx89k9xh",
             "Ordre": "1126700"
@@ -88,7 +88,7 @@
             "Lien Court": "https://tinyurl.com/ye29p5mj",
             "Lien": "http://station-danse.fr/",
             "Image": "LSD-Dimanche-Generic-Tile.png",
-            "Sondage": "Dim. 🪩 Station Danse",
+            "#REF!": "",
             "Planning": "Dim. 02 - Station Danse",
             "Infos": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
             "Ordre": "1126800"
@@ -111,7 +111,7 @@
             "Lien Court": "https://tinyurl.com/4u2vux9u",
             "Lien": "https://www.facebook.com/events/1182884432694337",
             "Image": "EVT-ParisSwingClassic-Tile.png",
-            "Sondage": "WE. 🎟️ Paris Swing Classic",
+            "#REF!": "",
             "Planning": "Jeu. 30 - Paris Swing Classic",
             "Infos": "WE. 🎟️ Paris Swing Classic\r\n> https://tinyurl.com/4u2vux9u",
             "Ordre": "1136500"
