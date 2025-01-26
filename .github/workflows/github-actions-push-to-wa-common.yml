@@ -7,9 +7,10 @@ on:
         required: true
         type: string
     secrets:
-      required: true
       GM_SERVICE_ACCOUNT:
+        required: true
       CHROME_PROFILE_PWD:
+        required: true
 
 jobs:
 

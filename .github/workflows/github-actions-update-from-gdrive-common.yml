@@ -7,9 +7,10 @@ on:
         required: true
         type: string
     secrets:
-      required: true
       GS_SERVICE_ACCOUNT:
+        required: true
       IK_SERVICE_ACCOUNT:
+        required: true
 
 jobs:
   commit:

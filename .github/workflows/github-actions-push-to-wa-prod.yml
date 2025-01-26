@@ -5,7 +5,6 @@ on:
   repository_dispatch:
     types: [Push to WhatsApp (Production)]
 
-
 jobs:
   call-common:
     uses: ./.github/workflows/github-actions-push-to-wa-common.yml
