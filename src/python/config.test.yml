@@ -3,6 +3,7 @@
 # =============================================================================
 app:
   data_file: ./data/events.json
+  misc_folder: ./images/misc
   png_folder: ./images/tiles
   svg_folder: ./images/tiles-svg
   export_folder: ./exports
@@ -68,3 +69,67 @@ imagekit:
   url_endpoint: 'https://ik.imagekit.io/templewesties'
   png_folder: '/westie-agenda/tiles'
   svg_folder: '/westie-agenda/tiles-svg'
+mosaic:
+  grid_layouts:
+    1: [ 1, 1 ]
+    2: [ 2, 1 ]
+    3: [ 2, 2 ]
+    4: [ 2, 2 ]
+    5: [ 2, 3 ]
+    6: [ 2, 3 ]
+    7: [ 2, 4 ]
+    8: [ 3, 3 ]
+    9: [ 3, 3 ]
+    10: [ 2, 5 ]
+    11: [ 4, 3 ]
+    12: [ 4, 3 ]
+  background_color: '#171717'
+  main_font_color: '#dcd7c9ff'
+  header_height: 130
+  footer_height: 0
+  padding:
+    top: 55
+    left: 55
+    right: 55
+    bottom: 55
+  logo:
+    file: 'logo-fcbs-150px.png'
+    size:
+      width: 31
+      height: 150
+  title:
+    font_color: '#dcd7c9ff'
+    font_file: 'luckiestguy.ttf'
+    font_size: 95
+    padding:
+      top: 55
+      left: 55
+      right: 55
+      bottom: 55
+  event:
+    title:
+      font_color: '#dcd7c9ff'
+      font_file: 'NotoSans-Bold.ttf'
+      font_size: 40
+      padding:
+        top: 0
+        left: 0
+        right: 0
+        bottom: 15
+    banner:
+      size:
+        width: 720
+        height: 419
+      padding:
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+      border:
+        top: 0
+        left: 0
+        right: 0
+        bottom: 0
+    spacing:
+      right: 36
+      bottom: 36
