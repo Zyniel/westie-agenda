@@ -1,36 +1,65 @@
 # =============================================================================
 # PRODUCTION CONFIGURATION FILE
 # =============================================================================
+
+# Core application configuration
 app:
+  # File path to store event data
   data_file: ./data/events.json
+  # Directory for extra graphical elements
   misc_folder: ./images/misc
+  # Directory for mandatory PNG event tiles
   png_folder: ./images/tiles
+  # Directory for optional SVG event tiles - Archived but unused in the mosaic generation process
   svg_folder: ./images/tiles-svg
+  # Directory for mosaic exports
   export_folder: ./exports
+
+# Community Notifier configuration
 community:
+  # Name of the broadcast community
   name: 'Test Westies (2024)'
+  # List of recipient contacts for the survey
   survey_recipients:
     - 'Test Coast Swing (2024/2025)'
+  # List of recipient contacts for the planning
   planning_recipients:
     - 'Test Coast Swing (2024/2025)'
+  # Switch to enable survey dispatch
   send_survey : true
+  # Switch to enable planning dispatch
   send_planning : true
+
+# Mail configuration for WhatsApp login
 mail:
+  # Recipient
   to: 'cabannes.francois.dance@gmail.com'
+  # Sender
   sender: 'cabannes.francois.dance@gmail.com'
+  # Subject
   subject: '[TW] Enter QR Code to login'
+
+# Data storage with Google Drive
 drive:
+  # Private key file path to access Google Services
   service_account_key: ./src/python/google_service_account_key.json
+  # PNG image folder Google Drive ID
   png_folder_id: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'
+  # SVG image folder Google Drive ID
   svg_folder_id: '1NjholefBcuA-yiGAb3IT_KIp2zHKC5qU'
+
+# Data worksheet with Google Sheets
 sheets:
+  # Private key file path to access Google Services
   service_account_key: ./src/python/google_service_account_key.json
+  # Data worksheet Google Sheets ID
   spreadsheet_id: '14li6xxH3nWr3S9GvBvR_vXDdYl0zdwOUFnOnrw0sees'
-  named_ranges:
-    week_range: 'TblSemaine'
-    config_range: 'TblConfig'
+
+  # Weekly events sheet
   data:
+    # Sheet name
     worksheet_id: 'Semaine'
+    # Columns mapping
     columns:
       start_time: 'Date Début'
       end_date: 'Heure Début'
@@ -51,25 +80,44 @@ sheets:
       planning_text: 'Planning'
       infos_text: 'Infos'
       order: 'Ordre'
+
+  # Configuration sheet
   config:
+    # Sheet name
     worksheet_id: 'Config'
+    # Columns mapping
     columns:
       parameter: 'Parametre'
       value: 'Valeur'
+
+  # WhatsApp sheet
   whatsapp:
+    # Sheet name
     worksheet_id: 'WhatsApp'
+    # Columns mapping
     columns:
       infos: 'Liens'
       survey: 'Choix'
+
+# Webdriver configuration for Selenium Scrapping
 chrome:
+  # Directory for the Browser User Dir (profiles etc.)
   user_dir_folder: './chrome'
-  virtual_display: true
+
+# CDN Configuration
 imagekit:
+  # Public key for API usage
   public_key: 'public_qPe0Bz3r3v+RJi5u7+byZp/TcKQ='
+  # URL of the image project
   url_endpoint: 'https://ik.imagekit.io/templewesties'
+  # Restful endpoints of PNG tiles
   png_folder: '/westie-agenda/tiles'
+  # Restful endpoints of SVG tiles
   svg_folder: '/westie-agenda/tiles-svg'
+
+# Mosaic generator Configuration
 mosaic:
+  # List of layouts per number of events
   layouts:
     1: [ 1, 1 ]
     2: [ 2, 1 ]
@@ -83,53 +131,77 @@ mosaic:
     10: [ 2, 5 ]
     11: [ 4, 3 ]
     12: [ 4, 3 ]
+  # Background color
   background_color: '#171717'
+  # Default font color
   main_font_color: '#dcd7c9ff'
+  # Header height - Helps determine where mosaic starts
   header_height: 130
+  # Footer height
   footer_height: 0
+  # Padding around the frame
   padding:
     top: 55
     left: 55
     right: 55
     bottom: 55
+  # Logo / Trademark information
   logo:
+    # Filename
     file: 'logo-fcbs-150px.png'
+    # Dimensions
     size:
       width: 31
       height: 150
+  # Header title
   title:
+    # Main title font color
     font_color: '#dcd7c9ff'
+    # Main title font file
     font_file: 'luckiestguy.ttf'
+    # Font size in pixels
     font_size: 95
+    # Padding around the title
     padding:
       top: 55
       left: 55
       right: 55
       bottom: 55
+  # Event tiles
   event:
+    # Event title configuration
     title:
+      # Event title font color
       font_color: '#dcd7c9ff'
+      # Event title font file
       font_file: 'NotoSans-Bold.ttf'
+      # Font size in pixels
       font_size: 40
+      # Padding around the title
       padding:
         top: 0
         left: 0
         right: 0
         bottom: 15
+    # Event banner(picture) configuration
     banner:
+      # Dimensions
       size:
         width: 720
         height: 419
+      # Padding around the picture
       padding:
         top: 0
         left: 0
         right: 0
         bottom: 0
+      # Event-type border
       border:
         top: 0
         left: 0
         right: 0
         bottom: 0
+    # Spacing between event tiles
     spacing:
       right: 36
       bottom: 36
