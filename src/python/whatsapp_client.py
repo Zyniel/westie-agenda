@@ -113,8 +113,8 @@ class WhatsAppWebClient(object):
         for option in options:
             self.chrome_options.add_argument(option)
 
-        if self.config['chrome']['user_dir_folder']:
-            user_dir = Path(self.config['chrome']['user_dir_folder']).absolute().as_posix()
+        if self.config['webdriver']['user_dir_folder']:
+            user_dir = Path(self.config['webdriver']['user_dir_folder']).absolute().as_posix()
             self.chrome_options.add_argument("--user-data-dir=" + user_dir)
 
     def startup(self):
