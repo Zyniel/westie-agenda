@@ -21,17 +21,14 @@ class CommunityHelper:
     whatsapp_client = None
     data = {}
 
-    def __init__(self, config):
+    def __init__(self, config, data):
         """
 
         :param config: A JSON structure of configuration elements
         """
         self.config = config
         self.whatsapp_client = WhatsAppWebClient(self.config)
-
-        # Load data file
-        with open(self.config['app']['data_file'], 'r', encoding='utf-8') as f:
-            self.data = json.load(f)
+        self.data = data
 
     def process(self) -> None:
         """
@@ -143,7 +140,7 @@ class CommunityHelper:
         :return: A text used as first line for the Survey communication
         """
         try:
-            return self.data['links-title']
+            return self.events['links-title']
         except Exception as e:
             return ""
 
@@ -154,7 +151,7 @@ class CommunityHelper:
         :return: A list of values to display as entries for the Survey
         """
         try:
-            return [event["Infos"] for event in self.data["events"]]
+            return [event["Infos"] for event in self.events["events"]]
         except Exception as e:
             return []
 
@@ -164,7 +161,7 @@ class CommunityHelper:
         :return: A text used as last line for the Survey communication
         """
         try:
-            return self.data['links-footer']
+            return self.events['links-footer']
         except Exception as e:
             return ""
 
@@ -174,7 +171,7 @@ class CommunityHelper:
         :return: A text used as first line for the Planning communication
         """
         try:
-            return self.data['survey-title']
+            return self.events['survey-title']
         except Exception as e:
             return ""
 
@@ -184,7 +181,7 @@ class CommunityHelper:
         :return: A list of values to display as entries for the Planning
         """
         try:
-            return [event["Sondage"] for event in self.data["events"]]
+            return [event["Sondage"] for event in self.events["events"]]
         except Exception as e:
             return []
 
@@ -193,7 +190,7 @@ class CommunityHelper:
         :return: A text used as last line for the Planning communication
         """
         try:
-            return self.data['survey-footer']
+            return self.events['survey-footer']
         except Exception as e:
             return ""
 
@@ -210,7 +207,11 @@ def main():
         with open(args.conf[0], 'r', encoding='utf-8') as file:
             config = yaml.safe_load(file)
 
-        ch = CommunityHelper(config=config)
+        # Load data file
+        with open(config['app']['data_file'], 'r', encoding='utf-8') as f:
+            data = json.load(f)
+
+        ch = CommunityHelper(config=config, data=data)
         ch.process()
 
 if __name__ == '__main__':
