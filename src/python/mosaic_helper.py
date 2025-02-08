@@ -5,6 +5,8 @@ import logging
 from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
+__doc__ = "Create an image mosaic of weekly events"
+
 class MosaicHelper:
     config = None     # Global Configuration JSON object
     data = None       # Event data
