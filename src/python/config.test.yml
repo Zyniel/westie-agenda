@@ -44,9 +44,9 @@ drive:
   # Private key file path to access Google Services
   service_account_key: ./src/python/google_service_account_key.json
   # PNG image folder Google Drive ID
-  png_folder_id: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'
+  folder_id_png: '1bmGBmOOWCJbDe7A3-b_WY_MzndMsCb2i'
   # SVG image folder Google Drive ID
-  svg_folder_id: '1NjholefBcuA-yiGAb3IT_KIp2zHKC5qU'
+  folder_id_svg: '1NjholefBcuA-yiGAb3IT_KIp2zHKC5qU'
 
 # Data worksheet with Google Sheets
 sheets:
@@ -100,7 +100,7 @@ sheets:
       survey: 'Choix'
 
 # Webdriver configuration for Selenium Scrapping
-chrome:
+webdriver:
   # Directory for the Browser User Dir (profiles etc.)
   user_dir_folder: './chrome'
 
@@ -111,9 +111,9 @@ imagekit:
   # URL of the image project
   url_endpoint: 'https://ik.imagekit.io/templewesties'
   # Restful endpoints of PNG tiles
-  png_folder: '/westie-agenda/tiles'
+  folder_png: '/westie-agenda/tiles'
   # Restful endpoints of SVG tiles
-  svg_folder: '/westie-agenda/tiles-svg'
+  folder_svg: '/westie-agenda/tiles-svg'
 
 # Mosaic generator Configuration
 mosaic:
