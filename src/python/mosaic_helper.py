@@ -1,5 +1,7 @@
 import argparse
 import json
+from datetime import datetime
+
 import yaml
 import logging
 from pathlib import Path
@@ -213,7 +215,7 @@ class MosaicHelper:
 
         return image
 
-    def create_as_png(self, path):
+    def create_as_png(self, path: str = None):
         """
         Generate a mosaic of events and save it as PNG.
 
@@ -222,9 +224,17 @@ class MosaicHelper:
         """
         # Save the final image in the highest quality
         image = self.__create()
-        image.save(path)
+        if path is None:
+            # TODO : Remove complexity by including year in "week"
+            ymd_dt = datetime.strptime(self.data['week'] + '/2025', '%d/%m/%Y').strftime('%Y%m%d')
+            path = Path(self.config['app']['export_folder'], f'{ymd_dt}.png')
+            image.save(path)
+            logging.info(f'Saving mosaic: {path}')
+        else:
+            image.save(path)
+            logging.info(f'Saving mosaic: {path}')
 
-    def create_as_jpg(self, path):
+    def create_as_jpg(self, path: str = None):
         """
         Generate a mosaic of events and save it as JPG (HQ).
 
@@ -233,7 +243,15 @@ class MosaicHelper:
         """
         # Save the final image in the highest quality
         image = self.__create()
-        image.save(path, quality=95)
+        if path is None:
+            # TODO : Remove complexity by including year in "week"
+            ymd_dt = datetime.strptime(self.data['week'] + '/2025', '%d/%m/%Y').strftime('%Y%m%d')
+            path = Path(self.config['app']['export_folder'], f'{ymd_dt}.jpg')
+            image.save(path, quality=95)
+            logging.info(f'Saving mosaic: {path}')
+        else:
+            image.save(path, quality=95)
+            logging.info(f'Saving mosaic: {path}')
 
 def main():
 

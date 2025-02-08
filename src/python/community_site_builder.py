@@ -28,6 +28,8 @@ from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 
 __doc__ = "Synchronize events between the remote Google Drive/Sheets and the Repo to build the GitHub Page"
 
+from src.python.mosaic_helper import MosaicHelper
+
 # A single auth scope is used for the zero-touch enrollment customer API.
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
 
@@ -66,6 +68,7 @@ def to_df(lst) -> pd.DataFrame:
 class GDriveAgendaHelper:
 
     def __init__(self, config):
+        self.week_dt = None
         self.pngs = []
         self.svgs = []
         self.data = []
@@ -154,7 +157,7 @@ class GDriveAgendaHelper:
             # Search tile files (PNG)
             mimetype = 'image/png'
             query = "'{folder_id}' in parents and mimeType='{mimetype}' and trashed=false".format(
-                folder_id=self.config['drive']['png_folder_id'],
+                folder_id=self.config['drive']['folder_id_png'],
                 mimetype=mimetype)
             file_list = self.gd_client.ListFile({'q': query}).GetList()
             if len(file_list) > 0:
@@ -164,7 +167,7 @@ class GDriveAgendaHelper:
             # Search tile files (SVG)
             mimetype = 'image/svg+xml'
             query = "'{folder_id}' in parents and mimeType='{mimetype}' and trashed=false".format(
-                folder_id=self.config['drive']['svg_folder_id'],
+                folder_id=self.config['drive']['folder_id_svg'],
                 mimetype=mimetype)
             file_list = self.gd_client.ListFile({'q': query}).GetList()
             if len(file_list) > 0:
@@ -216,7 +219,7 @@ class GDriveAgendaHelper:
                     file_name=basename,
                     options=UploadFileRequestOptions(
                         use_unique_file_name=False,
-                        folder=self.config['imagekit']['png_folder'],
+                        folder=self.config['imagekit']['folder_png'],
                         overwrite_file=True,
                     )
                 )
@@ -388,6 +391,16 @@ class GDriveAgendaHelper:
 
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
             f.writelines(links)
+
+    def data_as_json (self) -> object:
+        return {
+            "week": datetime.strftime(self.week_dt, '%d/%m'),
+            "events": to_dict(self.df),
+            "survey-title" : self.get_config('pre-survey-text').strip(),
+            "survey-footer" : self.get_config('post-survey-text').strip(),
+            "links-title" : self.get_config('pre-links-text').strip(),
+            "links-footer" : self.get_config('post-links-text').strip()
+        }
 
     def __get_column_values(self, name) -> List:
         """
@@ -607,6 +620,9 @@ def main():
         gash = GDriveAgendaHelper(config=config)
         gash.process()
 
+        json_data = gash.data_as_json()
+        mh = MosaicHelper(config=config, data=json_data)
+        mh.create_as_jpg()
 
 if __name__ == '__main__':
     main()
