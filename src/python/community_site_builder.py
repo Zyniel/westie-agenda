@@ -617,12 +617,16 @@ def main():
         with open(args.conf[0], 'r', encoding='utf-8') as file:
             config = yaml.safe_load(file)
 
+        # Pull events from Google Sheets and updated files from Google Drive
+        # to build the weekly plannings and surveys with fresh data
         gash = GDriveAgendaHelper(config=config)
         gash.process()
 
+        # Create event mosaic as PNG and JPG files
         json_data = gash.data_as_json()
         mh = MosaicHelper(config=config, data=json_data)
         mh.create_as_jpg()
+        mh.create_as_png()
 
 if __name__ == '__main__':
     main()
