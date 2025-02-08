@@ -6,11 +6,9 @@ from pathlib import Path
 from PIL import Image, ImageDraw, ImageFont
 
 class MosaicHelper:
-    """
-
-    """
-    config = None
-    data = None
+    config = None     # Global Configuration JSON object
+    data = None       # Event data
+    layouts = None    # Grid layout per number of events
 
     def __init__(self, config, data):
         """
@@ -21,18 +19,35 @@ class MosaicHelper:
         """
         self.config = config
         self.data = data
+        self.layouts = config['mosaic']['layouts']
 
-    def calculate_grid_size(self, size, grid_layouts) -> tuple[int,int]:
-        return grid_layouts.get(size, (1, 1))
+    def __calculate_grid_size(self, size) -> tuple[int,int]:
+        """
+        Return the
 
-    def get_grid_coordinates(self, idx: int, num_events: int, grid_layouts: dict) -> tuple[int,int]:
-        cols, rows = self.calculate_grid_size(num_events, grid_layouts)
+        :param size:
+        :return:
+        """
+        return self.layouts.get(size, (1, 1))
+
+    def __get_grid_coordinates(self, idx: int, num_events: int) -> tuple[int,int]:
+        """
+
+        :param idx:
+        :param num_events:
+        :return:
+        """
+        cols, rows = self.__calculate_grid_size(num_events)
         x_idx = idx % cols
         y_idx = idx // cols
         logging.debug(f'Item {idx % cols}: ({x_idx},{y_idx})')
         return x_idx, y_idx
 
-    def get_event_full_size(self) -> tuple[int,int]:
+    def __get_event_full_size(self) -> tuple[int,int]:
+        """
+        Return the dimensions of an event zone including title, banner, padding ...
+        :return: A tuple of width, height
+        """
         width = (
                 self.config['mosaic']['event']['banner']['padding']['left'] + self.config['mosaic']['event']['banner']['border']['left'] +
                 self.config['mosaic']['event']['banner']['size']['width'] + self.config['mosaic']['event']['banner']['padding']['right'] +
@@ -46,7 +61,11 @@ class MosaicHelper:
         )
         return width, height
 
-    def get_event_title_size(self) -> tuple[int,int]:
+    def __get_event_title_size(self) -> tuple[int,int]:
+        """
+        Return the dimensions of an event title
+        :return: A tuple of width, height
+        """
         width = (
                 self.config['mosaic']['event']['banner']['padding']['left'] + self.config['mosaic']['event']['banner']['border']['left'] +
                 self.config['mosaic']['event']['banner']['size']['width'] + self.config['mosaic']['event']['banner']['border']['right'] +
@@ -60,7 +79,7 @@ class MosaicHelper:
 
     ####################### Main Functions ####################
 
-    def draw_logo(self, draw: ImageDraw, picture_size: tuple[int,int], image : Image):
+    def __draw_logo(self, draw: ImageDraw, picture_size: tuple[int,int], image : Image):
         """
         Draw the logo/trademark.
 
@@ -79,7 +98,7 @@ class MosaicHelper:
         image.paste(event_image, (x_pos, y_pos), event_image)
         logging.info(f'Banner: ({x_pos},{y_pos})')
 
-    def draw_global_title(self, draw: ImageDraw, title: str, total_width: int, title_font: ImageFont):
+    def __draw_global_title(self, draw: ImageDraw, title: str, total_width: int, title_font: ImageFont):
         """
         Draw the top main title of the picture.
 
@@ -96,7 +115,7 @@ class MosaicHelper:
             font=title_font
         )
 
-    def draw_event(self, draw: ImageDraw, title: str, event_image_path: str, x_pos: int, y_pos: int, title_size: (int, int), event_title_font: ImageFont, image : Image):
+    def __draw_event(self, draw: ImageDraw, title: str, event_image_path: str, x_pos: int, y_pos: int, title_size: (int, int), event_title_font: ImageFont, image : Image):
         """
         Draw a new event tile.
 
@@ -142,10 +161,10 @@ class MosaicHelper:
         footer_height = self.config['mosaic']['footer_height']
         ####################### Header #######################
         header_height = self.config['mosaic']['header_height']
-        title_size = self.get_event_title_size()
+        title_size = self.__get_event_title_size()
         ####################### Body #########################
-        cols, rows = self.calculate_grid_size(num_events, self.config['mosaic']['grid_layouts'])
-        event_size = self.get_event_full_size()
+        cols, rows = self.__calculate_grid_size(num_events)
+        event_size = self.__get_event_full_size()
         body_width = cols * event_size[0] + self.config['mosaic']['event']['spacing']['right'] * (cols - 1)
         body_height = rows * event_size[1] + self.config['mosaic']['event']['spacing']['bottom'] * (rows - 1)
         ####################### Overall ######################
@@ -162,12 +181,12 @@ class MosaicHelper:
 
         # Draw the global title
         global_title = f"Planning - Semaine du {self.data['week']}"
-        self.draw_global_title(draw, global_title, total_width, title_font)
-        self.draw_logo(draw, (total_width, total_height), image)
+        self.__draw_global_title(draw, global_title, total_width, title_font)
+        self.__draw_logo(draw, (total_width, total_height), image)
 
         # Draw each event
         for idx, event in enumerate(self.data['events']):
-            x_idx, y_idx = self.get_grid_coordinates(idx, num_events, self.config['mosaic']['grid_layouts'])
+            x_idx, y_idx = self.__get_grid_coordinates(idx, num_events)
             event_title = event['Planning']
             event_image_path = Path(
                 self.config['app']['png_folder'],
@@ -188,7 +207,7 @@ class MosaicHelper:
             y_pos = self.config['mosaic']['padding']['top'] + header_height + y_idx * (self.config['mosaic']['event']['spacing']['bottom'] + event_size[1])
 
             # Draw the event on the ImageDraw layer
-            self.draw_event(draw, event_title, event_image_path, x_pos, y_pos, title_size, event_title_font, image)
+            self.__draw_event(draw, event_title, event_image_path, x_pos, y_pos, title_size, event_title_font, image)
 
         return image
 
