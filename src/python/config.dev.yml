@@ -71,7 +71,7 @@ imagekit:
   png_folder: '/westie-agenda/tiles'
   svg_folder: '/westie-agenda/tiles-svg'
 mosaic:
-  grid_layouts:
+  layouts:
     1: [ 1, 1 ]
     2: [ 2, 1 ]
     3: [ 2, 2 ]
