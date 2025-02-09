@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import argparse
 import json
+from pathlib import Path
+
 import yaml
 import logging
 
@@ -59,6 +61,9 @@ class CommunityHelper:
                     prepare_message.append('\r\n' + planning_footer)
                 # Join the non-empty strings with CRLF
                 planning_message = "\r\n".join(prepare_message)
+                for image in self.get_planning_images():
+                    planning_images.append(image)
+
                 log.debug('Done preparing Planning message and content.')
 
             if self.config['community']['send_survey']:
@@ -140,8 +145,9 @@ class CommunityHelper:
         :return: A text used as first line for the Survey communication
         """
         try:
-            return self.events['links-title']
+            return self.data['links-title']
         except Exception as e:
+            logging.exception(e)
             return ""
 
 
@@ -151,8 +157,9 @@ class CommunityHelper:
         :return: A list of values to display as entries for the Survey
         """
         try:
-            return [event["Infos"] for event in self.events["events"]]
+            return [event["Infos"] for event in self.data["events"]]
         except Exception as e:
+            logging.exception(e)
             return []
 
     def get_planning_footer(self):
@@ -161,9 +168,21 @@ class CommunityHelper:
         :return: A text used as last line for the Survey communication
         """
         try:
-            return self.events['links-footer']
+            return self.data['links-footer']
         except Exception as e:
+            logging.exception(e)
             return ""
+
+    def get_planning_images(self) -> list[Path]:
+        """
+
+        :return: A list of images to include as Image attachments
+        """
+        try:
+            return [Path('.', self.config['app']['export_folder'], f'{self.data["week_full"][0]}.jpg').absolute()]
+        except Exception as e:
+            logging.exception(e)
+            return []
 
     def get_survey_title(self):
         """
@@ -171,8 +190,9 @@ class CommunityHelper:
         :return: A text used as first line for the Planning communication
         """
         try:
-            return self.events['survey-title']
+            return self.data['survey-title']
         except Exception as e:
+            logging.exception(e)
             return ""
 
     def get_survey_data(self):
@@ -181,8 +201,9 @@ class CommunityHelper:
         :return: A list of values to display as entries for the Planning
         """
         try:
-            return [event["Sondage"] for event in self.events["events"]]
+            return [event["Sondage"] for event in self.data["events"]]
         except Exception as e:
+            logging.exception(e)
             return []
 
     def get_survey_footer(self):
@@ -190,8 +211,9 @@ class CommunityHelper:
         :return: A text used as last line for the Planning communication
         """
         try:
-            return self.events['survey-footer']
+            return self.data['survey-footer']
         except Exception as e:
+            logging.exception(e)
             return ""
 
 

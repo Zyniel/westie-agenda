@@ -437,6 +437,11 @@ class ChatsPage(WhatsAppPage):
         By.XPATH,
         '(//*[@id="app"]//div[@data-animate-modal-popup="true"]//div[./span[starts-with(@data-icon,"send")]])[1]'
     )
+    by_chat_hd_image_button = (
+        By.XPATH,
+        '(//*[@id="app"]//div[./span[starts-with(@data-icon,"ic-hd-settings")]])[1]'
+    )
+
 
     def __init__(self, driver: WebDriver):
         super().__init__(driver)
@@ -457,6 +462,17 @@ class ChatsPage(WhatsAppPage):
         time.sleep(0.20)
 
     def _click_new_chat_button(self) -> None:
+        """
+        Clicks the "New Conversation" panel button to start a new conversation workflow.
+
+        :return: None
+        """
+        element = self.wait.until(EC.element_to_be_clickable(self.by_new_chat_button))
+        element.click()
+        log.debug('--> Clicked "New Chat" in Chat Panel')
+        time.sleep(0.20)
+
+    def _click_hd_image_button(self) -> None:
         """
         Clicks the "New Conversation" panel button to start a new conversation workflow.
 
@@ -493,8 +509,8 @@ class ChatsPage(WhatsAppPage):
         :param text: Text to copy/paste
         :return: None
         """
-        # NOTE: Selenium ChromeDriver does not handle send_keys containing Emoji as theyr are not BMP characters.
-        #       As a workaround, knowing this script will run heandless and clipboard might not be easy to use
+        # NOTE: Selenium ChromeDriver does not handle send_keys containing Emoji as they are not BMP characters.
+        #       As a workaround, knowing this script will run headless and clipboard might not be easy to use
         #       from python, the best approach is to use Javascript, and simulate Copy / Paste.
         #       Data with the emoji is passed to JS, Clipboard is populated with a DataTransfer.
         #       A later ClipboardEvent is used to paste the information in the selected element.
@@ -716,7 +732,7 @@ class ChatsPage(WhatsAppPage):
         element = self.wait.until(EC.element_to_be_clickable(self.by_chat_submenu_button))
         element.click()
         log.debug('--> Clicked "Chat \'+\'" in Chat Panel')
-        time.sleep(0.20)
+        time.sleep(1)
 
         # Get the input field
         input_images = self.wait.until(
@@ -724,8 +740,8 @@ class ChatsPage(WhatsAppPage):
         )
         # Add images to the input field
         for image in images:
-            input_images.send_keys(Path(image).as_posix())
-            time.sleep(0.20)
+            input_images.send_keys(image.as_posix())
+            time.sleep(1)
 
             # Wait until upload is finished
             self.wait.until(

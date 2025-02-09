@@ -25,10 +25,11 @@ from oauth2client.service_account import ServiceAccountCredentials
 from pydrive2.files import GoogleDriveFile
 from imagekitio import ImageKit
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
+from mosaic_helper import MosaicHelper
 
 __doc__ = "Synchronize events between the remote Google Drive/Sheets and the Repo to build the GitHub Page"
 
-from src.python.mosaic_helper import MosaicHelper
+
 
 # A single auth scope is used for the zero-touch enrollment customer API.
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
@@ -343,14 +344,7 @@ class GDriveAgendaHelper:
 
         # Build JSON combined data and write it to file
         with open(path_file, 'w', encoding='utf-8') as f:
-            d = {
-                "week": datetime.strftime(self.week_dt, '%d/%m'),
-                "events": to_dict(self.df),
-                "survey-title" : self.get_config('pre-survey-text').strip(),
-                "survey-footer" : self.get_config('post-survey-text').strip(),
-                "links-title" : self.get_config('pre-links-text').strip(),
-                "links-footer" : self.get_config('post-links-text').strip()
-            }
+            d = self.data_as_dict()
             json.dump(d, f, ensure_ascii=False, indent=4)
 
     def download_links(self, path_file, replace: bool = False) -> None:
@@ -392,9 +386,10 @@ class GDriveAgendaHelper:
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
             f.writelines(links)
 
-    def data_as_json (self) -> object:
+    def data_as_dict (self) -> object:
         return {
             "week": datetime.strftime(self.week_dt, '%d/%m'),
+            "week_full": [ datetime.strftime(self.week_dt, '%Y%m%d') ],
             "events": to_dict(self.df),
             "survey-title" : self.get_config('pre-survey-text').strip(),
             "survey-footer" : self.get_config('post-survey-text').strip(),
@@ -623,7 +618,7 @@ def main():
         gash.process()
 
         # Create event mosaic as PNG and JPG files
-        json_data = gash.data_as_json()
+        json_data = gash.data_as_dict()
         mh = MosaicHelper(config=config, data=json_data)
         mh.create_as_jpg()
         mh.create_as_png()
