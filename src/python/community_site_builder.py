@@ -468,7 +468,7 @@ class GDriveAgendaHelper:
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
             f.writelines(links)
 
-    def data_as_dict (self) -> object:
+    def data_as_dict (self) -> dict:
         return {
             "week": datetime.strftime(self.week_dt, '%d/%m'),
             "week_full": [ datetime.strftime(self.week_dt, '%Y%m%d') ],
