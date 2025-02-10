@@ -7,6 +7,10 @@ from PIL import Image, ImageDraw, ImageFont
 
 __doc__ = "Create an image mosaic of weekly events"
 
+# Define logger
+log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
+logging.basicConfig(level=logging.DEBUG)
+
 class MosaicHelper:
     config = None     # Global Configuration JSON object
     data = None       # Event data
@@ -43,7 +47,7 @@ class MosaicHelper:
         cols, rows = self.__calculate_grid_size(num_events)
         x_idx = idx % cols
         y_idx = idx // cols
-        logging.debug(f'Item {idx % cols}: ({x_idx},{y_idx})')
+        log.debug(f'Item {idx % cols}: ({x_idx},{y_idx})')
         return x_idx, y_idx
 
     def __get_event_full_size(self) -> tuple[int,int]:
@@ -99,7 +103,7 @@ class MosaicHelper:
         x_pos = picture_size[0] - width - 10
         y_pos = 10
         image.paste(event_image, (x_pos, y_pos), event_image)
-        logging.debug(f'Banner: ({x_pos},{y_pos})')
+        log.debug(f'Banner: ({x_pos},{y_pos})')
 
     def __draw_global_title(self, draw: ImageDraw, title: str, total_width: int, title_font: ImageFont):
         """
@@ -142,14 +146,14 @@ class MosaicHelper:
             fill=self.config['mosaic']['event']['title']['font_color'],
             font=event_title_font
         )
-        logging.debug(f'Event Title: ({title_x_pos},{title_y_pos})')
+        log.debug(f'Event Title: ({title_x_pos},{title_y_pos})')
 
         event_image = Image.open(event_image_path).resize((self.config['mosaic']['event']['banner']['size']['width'], self.config['mosaic']['event']['banner']['size']['height']))
         event_image.convert("RGBA")
         banner_x_pos = x_pos + self.config['mosaic']['event']['banner']['border']['left']
         banner_y_pos = y_pos + title_size[1] + self.config['mosaic']['event']['banner']['border']['top']
         image.paste(event_image, (banner_x_pos, banner_y_pos), event_image)
-        logging.debug(f'Event Banner: ({banner_x_pos},{banner_y_pos})')
+        log.debug(f'Event Banner: ({banner_x_pos},{banner_y_pos})')
 
     def create(self) -> Image:
         """
@@ -224,7 +228,7 @@ class MosaicHelper:
         """
         # Save the final image in the highest quality
         self.image.save(path)
-        logging.info(f'Save as PNG: {path}')
+        log.info(f'Save as PNG: {path}')
 
     def save_as_jpg(self, path: str):
         """
@@ -235,7 +239,7 @@ class MosaicHelper:
         """
         # Save the final image in the highest quality
         self.image.save(path, quality=95)
-        logging.info(f'Save as JPG: {path}')
+        log.info(f'Save as JPG: {path}')
 
 def main():
 
@@ -244,7 +248,7 @@ def main():
     args = parser.parse_args()
 
     if args.conf is not None:
-        logging.basicConfig(level=logging.INFO)
+        log.basicConfig(level=logging.INFO)
 
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:
