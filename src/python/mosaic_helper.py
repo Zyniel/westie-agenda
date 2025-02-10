@@ -1,7 +1,5 @@
 import argparse
 import json
-from datetime import datetime
-
 import yaml
 import logging
 from pathlib import Path
