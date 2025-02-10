@@ -13,6 +13,7 @@ class MosaicHelper:
     config = None     # Global Configuration JSON object
     data = None       # Event data
     layouts = None    # Grid layout per number of events
+    image = None
 
     def __init__(self, config, data):
         """
@@ -152,7 +153,7 @@ class MosaicHelper:
         image.paste(event_image, (banner_x_pos, banner_y_pos), event_image)
         logging.info(f'Banner: ({banner_x_pos},{banner_y_pos})')
 
-    def __create(self) -> Image:
+    def create(self) -> Image:
         """
         Private function to instanciate a new Image and dra the mosaic from event data.
 
@@ -180,8 +181,8 @@ class MosaicHelper:
         event_title_font = ImageFont.truetype(f"./fonts/{self.config['mosaic']['event']['title']['font_file']}", self.config['mosaic']['event']['title']['font_size'])
 
         # Create the base image
-        image = Image.new("RGB", (total_width, total_height), self.config['mosaic']['background_color'])
-        draw = ImageDraw.Draw(image)
+        self.image = Image.new("RGB", (total_width, total_height), self.config['mosaic']['background_color'])
+        draw = ImageDraw.Draw(self.image)
 
         # Draw the global title
         global_title = f"Planning - Semaine du {self.data['week']}"
@@ -213,9 +214,7 @@ class MosaicHelper:
             # Draw the event on the ImageDraw layer
             self.__draw_event(draw, event_title, event_image_path, x_pos, y_pos, title_size, event_title_font, image)
 
-        return image
-
-    def create_as_png(self, path: str):
+    def save_as_png(self, path: str):
         """
         Generate a mosaic of events and save it as PNG.
 
@@ -223,11 +222,10 @@ class MosaicHelper:
         :return: None
         """
         # Save the final image in the highest quality
-        image = self.__create()
-        image.save(path)
+        self.image.save(path)
         logging.info(f'Saving mosaic: {path}')
 
-    def create_as_jpg(self, path: str):
+    def save_as_jpg(self, path: str):
         """
         Generate a mosaic of events and save it as JPG (HQ).
 
@@ -235,8 +233,7 @@ class MosaicHelper:
         :return: None
         """
         # Save the final image in the highest quality
-        image = self.__create()
-        image.save(path, quality=95)
+        self.image.save(path, quality=95)
         logging.info(f'Saving mosaic: {path}')
 
 def main():
@@ -256,9 +253,11 @@ def main():
         with open(config['app']['data_file'], 'r', encoding='utf-8') as f:
             data = json.load(f)
 
+        # Create image and save in both PNG and JPG
         helper = MosaicHelper(config=config, data=data)
-        helper.create_as_jpg(Path(config['app']['export_folder'], f'{data['week_full'][0]}.jpg'))
-        helper.create_as_png(Path(config['app']['export_folder'], f'{data['week_full'][0]}.png'))
+        helper.create()
+        helper.save_as_jpg(Path(config['app']['export_folder'], f'{data['week_full'][0]}.jpg'))
+        helper.save_as_png(Path(config['app']['export_folder'], f'{data['week_full'][0]}.png'))
 
 if __name__ == '__main__':
     main()
