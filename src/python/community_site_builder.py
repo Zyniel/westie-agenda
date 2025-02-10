@@ -187,8 +187,10 @@ class GDriveAgendaHelper:
         """
         cpus = cpu_count()
         results = ThreadPool(cpus - 1).imap_unordered(self.__download_gdrive_file_thread, args)
+        log.debug('----- Download Statistics ------------------')
         for result in results:
-            print('Download file:', result[0], 'time (s):', result[1])
+            log.debug(f'File:{result[0]}, time (s): {result[1]}')
+        log.debug('--------------------------------------------')
 
     def __download_gdrive_file_thread(self, args):
         """
@@ -237,8 +239,11 @@ class GDriveAgendaHelper:
         """
         cpus = cpu_count()
         results = ThreadPool(cpus - 1).imap_unordered(self.__upload_file_to_cdn_thread, args)
+        log.debug('----- Upload Statistics --------------------')
         for result in results:
-            print('Upload file:', result[0], 'time (s):', result[1])
+            log.debug(f'File:{result[0]}, time (s): {result[1]}')
+        log.debug('--------------------------------------------')
+
 
     def __upload_file_to_cdn_thread(self, args):
         """
