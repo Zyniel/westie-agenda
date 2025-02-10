@@ -56,7 +56,7 @@ jobs:
           IK_SERVICE_ACCOUNT: ${{ secrets.IK_SERVICE_ACCOUNT }}
         run: |
           python ./src/python/community_site_builder.py --conf ./src/python/config.${{ inputs.deploy_env }}.yml
-          tree -f ./
+          tree -s "$GITHUB_WORKSPACE"
 
       - name: Update CHANGELOG.md
         run: |
