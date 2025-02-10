@@ -101,7 +101,7 @@ class MosaicHelper:
         x_pos = picture_size[0] - width - 10
         y_pos = 10
         image.paste(event_image, (x_pos, y_pos), event_image)
-        logging.info(f'Banner: ({x_pos},{y_pos})')
+        logging.debug(f'Banner: ({x_pos},{y_pos})')
 
     def __draw_global_title(self, draw: ImageDraw, title: str, total_width: int, title_font: ImageFont):
         """
@@ -144,14 +144,14 @@ class MosaicHelper:
             fill=self.config['mosaic']['event']['title']['font_color'],
             font=event_title_font
         )
-        logging.info(f'Title: ({title_x_pos},{title_y_pos})')
+        logging.debug(f'Event Title: ({title_x_pos},{title_y_pos})')
 
         event_image = Image.open(event_image_path).resize((self.config['mosaic']['event']['banner']['size']['width'], self.config['mosaic']['event']['banner']['size']['height']))
         event_image.convert("RGBA")
         banner_x_pos = x_pos + self.config['mosaic']['event']['banner']['border']['left']
         banner_y_pos = y_pos + title_size[1] + self.config['mosaic']['event']['banner']['border']['top']
         image.paste(event_image, (banner_x_pos, banner_y_pos), event_image)
-        logging.info(f'Banner: ({banner_x_pos},{banner_y_pos})')
+        logging.debug(f'Event Banner: ({banner_x_pos},{banner_y_pos})')
 
     def create(self) -> Image:
         """
@@ -181,8 +181,8 @@ class MosaicHelper:
         event_title_font = ImageFont.truetype(f"./fonts/{self.config['mosaic']['event']['title']['font_file']}", self.config['mosaic']['event']['title']['font_size'])
 
         # Create the base image
-        self.image = Image.new("RGB", (total_width, total_height), self.config['mosaic']['background_color'])
-        draw = ImageDraw.Draw(self.image)
+        image = Image.new("RGB", (total_width, total_height), self.config['mosaic']['background_color'])
+        draw = ImageDraw.Draw(image)
 
         # Draw the global title
         global_title = f"Planning - Semaine du {self.data['week']}"
@@ -214,6 +214,9 @@ class MosaicHelper:
             # Draw the event on the ImageDraw layer
             self.__draw_event(draw, event_title, event_image_path, x_pos, y_pos, title_size, event_title_font, image)
 
+            # For later SaveAs
+            self.image = image
+
     def save_as_png(self, path: str):
         """
         Generate a mosaic of events and save it as PNG.
@@ -223,7 +226,7 @@ class MosaicHelper:
         """
         # Save the final image in the highest quality
         self.image.save(path)
-        logging.info(f'Saving mosaic: {path}')
+        logging.info(f'Save as PNG: {path}')
 
     def save_as_jpg(self, path: str):
         """
@@ -234,7 +237,7 @@ class MosaicHelper:
         """
         # Save the final image in the highest quality
         self.image.save(path, quality=95)
-        logging.info(f'Saving mosaic: {path}')
+        logging.info(f'Save as JPG: {path}')
 
 def main():
 
