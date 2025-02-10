@@ -585,6 +585,8 @@ class GDriveAgendaHelper:
         log.info("Creating JSON data file")
         data_file = Path('.', self.config['app']['data_file'])
         self.download_data(path_file=data_file.absolute().as_posix(), replace=True)
+        data_file = Path('.', self.config['app']['export_folder'], f'{self.week_dt.strftime('%Y%m%d')}.json')
+        self.download_data(path_file=data_file.absolute().as_posix(), replace=True)
 
         log.info("Creating URLS file")
         urls_files = Path('.', self.config['app']['export_folder'], datetime.strftime(self.week_dt, '%Y%m%d') + '.txt')
@@ -620,8 +622,8 @@ def main():
         # Create event mosaic as PNG and JPG files
         json_data = gash.data_as_dict()
         mh = MosaicHelper(config=config, data=json_data)
-        mh.create_as_jpg(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg'))
-        mh.create_as_png(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg'))
+        mh.create_as_jpg(str(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg')))
+        mh.create_as_png(str(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg')))
 
 if __name__ == '__main__':
     main()
