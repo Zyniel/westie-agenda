@@ -188,7 +188,7 @@ class GDriveAgendaHelper:
         cpus = cpu_count()
         results = ThreadPool(cpus - 1).imap_unordered(self.__download_gdrive_file_thread, args)
         for result in results:
-            print('file:', result[0], 'time (s):', result[1])
+            print('Download file:', result[0], 'time (s):', result[1])
 
     def __download_gdrive_file_thread(self, args):
         """
@@ -227,6 +227,33 @@ class GDriveAgendaHelper:
             file.GetContentFile(path, file['mimeType'])
         else:
             log.info("Skipping: '{path}' - File already exists.".format(path=path))
+
+    def __upload_file_to_cdn_parallel(self, args):
+        """
+        Single parameter function for parallel processing of downloads
+
+        :param args: Tuple containing a GoogleDriveFile, the file path as a string and a boolean switch to handle file overwrite
+        :return: The filepath and total download duration
+        """
+        cpus = cpu_count()
+        results = ThreadPool(cpus - 1).imap_unordered(self.__upload_file_to_cdn_thread, args)
+        for result in results:
+            print('Upload file:', result[0], 'time (s):', result[1])
+
+    def __upload_file_to_cdn_thread(self, args):
+        """
+        Single parameter wrapper function for parallel processing of downloads
+
+        :param args: Tuple containing a GoogleDriveFile, the file path as a string and a boolean switch to handle file overwrite
+        :return: The filepath and total download duration
+        """
+        # To track duration
+        t0 = time.time()
+        # Start download
+        path_file = args[0]
+        replace = args[1]
+        self.__upload_file_to_cdn(path_file, replace)
+        return path_file, time.time() - t0
 
     def __upload_file_to_cdn(self, path_file: str = '.', replace: bool = False) -> None:
         """
@@ -298,8 +325,8 @@ class GDriveAgendaHelper:
                     # log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
                 else:
                     log.info(f"Skipped file: {basename}")
-
             self.__download_gdrive_file_parallel(inputs)
+
 
     def download_svg_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
         """
@@ -337,7 +364,8 @@ class GDriveAgendaHelper:
                 else:
                     log.info(f"Skipped file: {basename}")
 
-            self.__download_gdrive_file_parallel(inputs)
+            if not inputs is None:
+                self.__download_gdrive_file_parallel(inputs)
 
 
     def upload_png_files_to_cdn(self, path_folder: str = '.', replace: bool = False, weekly: bool = False):
@@ -359,13 +387,23 @@ class GDriveAgendaHelper:
         directory = Path(path_folder)
 
         # Loop through files and upload
+        files = []
+        bools = []
+        inputs = None
         for path_image in directory.glob('*.png'):
             basename = path_image.name
             absolute_path = path_image.absolute().as_posix()
             if not weekly or basename in existing_files:
-                self.__upload_file_to_cdn(path_file=absolute_path, replace=replace)
+                files.append(absolute_path)
+                bools.append(replace)
+                inputs = zip(files, bools)
             else:
                 log.info(f"Skipped file: {basename}")
+
+        if not inputs is None:
+            self.__upload_file_to_cdn_parallel(inputs)
+
+
 
     def download_data(self, path_file, replace: bool = False) -> None:
         """
