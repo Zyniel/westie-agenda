@@ -620,8 +620,8 @@ def main():
         # Create event mosaic as PNG and JPG files
         json_data = gash.data_as_dict()
         mh = MosaicHelper(config=config, data=json_data)
-        mh.create_as_jpg()
-        mh.create_as_png()
+        mh.create_as_jpg(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg'))
+        mh.create_as_png(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg'))
 
 if __name__ == '__main__':
     main()
