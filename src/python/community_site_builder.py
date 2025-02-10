@@ -6,6 +6,7 @@ This script forms the quickstart introduction to the zero-touch enrollemnt
 customer API. To learn more, visit https://developer.google.com/zero-touch
 """
 import os
+import time
 from datetime import datetime, timedelta
 
 import gspread
@@ -15,7 +16,7 @@ import pandas as pd
 import yaml
 import argparse
 
-from typing import List
+from typing import List, Tuple
 from pathlib import Path
 
 from pandas import Series, DataFrame
@@ -26,6 +27,8 @@ from pydrive2.files import GoogleDriveFile
 from imagekitio import ImageKit
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
 from mosaic_helper import MosaicHelper
+from multiprocessing import cpu_count
+from multiprocessing.pool import ThreadPool
 
 __doc__ = "Synchronize events between the remote Google Drive/Sheets and the Repo to build the GitHub Page"
 
@@ -175,6 +178,35 @@ class GDriveAgendaHelper:
                 for file in file_list:
                     self.svgs.append(file)
 
+    def __download_gdrive_file_parallel(self, args):
+        """
+        Single parameter function for parallel processing of downloads
+
+        :param args: Tuple containing a GoogleDriveFile, the file path as a string and a boolean switch to handle file overwrite
+        :return: The filepath and total download duration
+        """
+        cpus = cpu_count()
+        results = ThreadPool(cpus - 1).imap_unordered(self.__download_gdrive_file_thread, args)
+        for result in results:
+            print('file:', result[0], 'time (s):', result[1])
+
+    def __download_gdrive_file_thread(self, args):
+        """
+        Single parameter wrapper function for parallel processing of downloads
+
+        :param args: Tuple containing a GoogleDriveFile, the file path as a string and a boolean switch to handle file overwrite
+        :return: The filepath and total download duration
+        """
+        # To track duration
+        t0 = time.time()
+        # Start download
+        file = args[0]
+        path_file = args[1]
+        replace = args[2]
+        self.__download_gdrive_file(file, path_file, replace)
+
+        return path_file, time.time() - t0
+
     def __download_gdrive_file(self, file: GoogleDriveFile, path_file: str, replace: bool = False) -> None:
         """
         This private function downloads a GoogleDrive file to the local system.
@@ -249,27 +281,25 @@ class GDriveAgendaHelper:
         log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
 
         if self.pngs:
+            paths = []
+            files = []
+            bools = []
+            inputs = None
             for file in self.pngs:
                 basename = file['title']
                 file_path = Path(path_folder, basename).as_posix()
                 if not weekly or basename in existing_files:
-                    self.__download_gdrive_file(file, path_file=file_path, replace=replace)
-                    log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
+                    files.append(file)
+                    paths.append(file_path)
+                    bools.append(replace)
+                    inputs = zip(files, paths, bools)
+                    # Updated to // downloading
+                    # self.__download_gdrive_file(file, path_file=file_path, replace=replace)
+                    # log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
+                else:
+                    log.info(f"Skipped file: {basename}")
 
-            path = Path(path_folder)
-            path.mkdir(parents=True, exist_ok=True)
-            log.info(f"Directory created: {path_folder}")
-
-            existing_files = self.get_files() if weekly else []
-            log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
-
-            if self.pngs:
-                for file in self.pngs:
-                    basename = file['title']
-                    file_path = Path(path_folder, basename).as_posix()
-                    if not weekly or basename in existing_files:
-                        self.__download_gdrive_file(file, path_file=file_path, replace=replace)
-
+            self.__download_gdrive_file_parallel(inputs)
 
     def download_svg_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
         """
@@ -289,13 +319,25 @@ class GDriveAgendaHelper:
         log.info(f"Weekly mode: {weekly}. Number of existing SVG files: {len(existing_svg)}")
 
         if self.svgs:
+            paths = []
+            files = []
+            bools = []
+            inputs = None
             for file in self.svgs:
                 basename = file['title']
                 file_path = Path(path_folder, basename).as_posix()
                 if not weekly or basename in existing_svg:
-                    self.__download_gdrive_file(file, path_file=file_path, replace=replace)
+                    files.append(file)
+                    paths.append(file_path)
+                    bools.append(replace)
+                    inputs = zip(files, paths, bools)
+                    # Updated to // downloading
+                    # self.__download_gdrive_file(file, path_file=file_path, replace=replace)
+                    # log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
                 else:
                     log.info(f"Skipped file: {basename}")
+
+            self.__download_gdrive_file_parallel(inputs)
 
 
     def upload_png_files_to_cdn(self, path_folder: str = '.', replace: bool = False, weekly: bool = False):
