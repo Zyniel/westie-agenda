@@ -14,3 +14,4 @@ _site
 /docs/assets/images/tiles/*
 /src/python/*service_account_key.json
 /test/
+/backup/
