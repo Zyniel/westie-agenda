@@ -271,9 +271,8 @@ def main():
             data = json.load(f)
 
         helper = MosaicHelper(config=config, data=data)
-        date_ymd = '2025' + data['week'].replace('/', '')
-        helper.create_as_jpg(f'{date_ymd}.jpg')
-        helper.create_as_png(f'{date_ymd}.png')
+        helper.create_as_jpg(Path(config['app']['export_folder'], f'{data['week_full'][0]}.jpg'))
+        helper.create_as_png(Path(config['app']['export_folder'], f'{data['week_full'][0]}.png'))
 
 if __name__ == '__main__':
     main()
