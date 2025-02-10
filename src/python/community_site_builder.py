@@ -325,11 +325,9 @@ class GDriveAgendaHelper:
                     paths.append(file_path)
                     bools.append(replace)
                     inputs = zip(files, paths, bools)
-                    # Updated to // downloading
-                    # self.__download_gdrive_file(file, path_file=file_path, replace=replace)
-                    # log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
-                else:
-                    log.info(f"Skipped file: {basename}")
+                # TODO : Reconsider use
+                # else:
+                #     log.debug(f"Skipped file: {basename}")
             self.__download_gdrive_file_parallel(inputs)
 
 
@@ -363,11 +361,9 @@ class GDriveAgendaHelper:
                     paths.append(file_path)
                     bools.append(replace)
                     inputs = zip(files, paths, bools)
-                    # Updated to // downloading
-                    # self.__download_gdrive_file(file, path_file=file_path, replace=replace)
-                    # log.info(f"Downloaded file: {basename} to {file_path}, Replace: {replace}")
-                else:
-                    log.info(f"Skipped file: {basename}")
+                # TODO : Reconsider use
+                # else:
+                #     log.debug(f"Skipped file: {basename}")
 
             if not inputs is None:
                 self.__download_gdrive_file_parallel(inputs)
@@ -402,8 +398,9 @@ class GDriveAgendaHelper:
                 files.append(absolute_path)
                 bools.append(replace)
                 inputs = zip(files, bools)
-            else:
-                log.info(f"Skipped file: {basename}")
+            # TODO : Reconsider use
+            # else:
+            #     log.debug(f"Skipped file: {basename}")
 
         if not inputs is None:
             self.__upload_file_to_cdn_parallel(inputs)
