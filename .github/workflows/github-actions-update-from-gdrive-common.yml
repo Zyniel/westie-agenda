@@ -56,6 +56,7 @@ jobs:
           IK_SERVICE_ACCOUNT: ${{ secrets.IK_SERVICE_ACCOUNT }}
         run: |
           python ./src/python/community_site_builder.py --conf ./src/python/config.${{ inputs.deploy_env }}.yml
+          tree -f ./
 
       - name: Update CHANGELOG.md
         run: |
@@ -66,6 +67,7 @@ jobs:
           printf -- "\r\n" >> CHANGELOG.md
           printf -- "- Updated pictures from Google Drive\r\n" >> CHANGELOG.md
           printf -- "- Updated events.json from Google Drive\r\n" >> CHANGELOG.md
+          printf -- "- Created export image\r\n" >> CHANGELOG.md
           printf -- "" >> CHANGELOG.md
 
       - uses: stefanzweifel/git-auto-commit-action@v5
