@@ -23,7 +23,8 @@ baseurl: "/westie-agenda" # the subpath of your site, e.g. /blog
 url: "https://zyniel.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 twitter_username: ""
 github_username:  zyniel
-google_analytics: G-978M7JY09Y
+google_analytics:
+  id: "G-978M7JY09Y"
 sass:
   style: expanded
   
