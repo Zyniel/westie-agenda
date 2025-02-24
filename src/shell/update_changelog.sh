@@ -18,6 +18,7 @@ if [ "$line_count" -eq 0 ]; then
   echo "No changes detected."
 else
   echo "Changes detected: $line_count"
+  echo "$changed_files"
   printf -- "\r\n" >> CHANGELOG.md
   printf -- "## $(date '+%Y%m%d-%H%M%S')\r\n" >> CHANGELOG.md
   printf -- "\r\n" >> CHANGELOG.md
