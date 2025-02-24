@@ -106,6 +106,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          ref: ${{ needs.commit.outputs.commit_hash }}
 
       - name: Move images to site assets
         run: |
