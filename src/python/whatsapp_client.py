@@ -119,7 +119,7 @@ class WhatsAppWebClient(object):
 
     def startup(self):
         # setup Edge Driver
-        self.browser = uc.Chrome(version_main= 131, options=self.chrome_options, service=ChromeService(ChromeDriverManager().install()))
+        self.browser = uc.Chrome(options=self.chrome_options, service=ChromeService(ChromeDriverManager().install()))
         self.wait = WebDriverWait(self.browser, 20)
         self.ChatMenu = ChatsPage(self.browser)
 
