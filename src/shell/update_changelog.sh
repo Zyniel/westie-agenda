@@ -59,15 +59,19 @@ else
     fi
   done
 
+  # Create 'Added' section
   if [ -n "$added_section" ]; then
     printf -- "### Added\r\n" >> CHANGELOG.md
     printf -- "\r\n" >> CHANGELOG.md
     printf -- "$added_section" >> CHANGELOG.md
   fi
 
+  # Create 'Changed' section
   if [ -n "$changed_section" ]; then
     printf -- "### Changed\r\n" >> CHANGELOG.md
     printf -- "\r\n" >> CHANGELOG.md
     printf -- "$changed_section" >> CHANGELOG.md
   fi
+
+  printf -- "" >> CHANGELOG.md
 fi
