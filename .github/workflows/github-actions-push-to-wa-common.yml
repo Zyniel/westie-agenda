@@ -49,6 +49,8 @@ jobs:
           pip install -r ./src/python/requirements.notifier.txt
           sudo apt-get update -y
           sudo apt install x11-utils gnumeric xvfb xclip p7zip-full
+          sudo apt-get remove google-chrome-stable
+          sudo apt-get install google-chrome-stable
 
       # Unzip private chrome profile.
       # NOTE: Secured by password
