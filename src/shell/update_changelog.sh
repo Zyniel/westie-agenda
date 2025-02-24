@@ -53,5 +53,5 @@ else
       fi
     fi
   done
+  printf -- ""  >> CHANGELOG.md
 fi
-printf -- ""  >> CHANGELOG.md
