@@ -58,9 +58,9 @@ jobs:
         run: |
           python ./src/python/community_site_builder.py --conf ./src/python/config.${{ inputs.deploy_env }}.yml
 
-      - name: Update CHANGELOG.md
+      - name: Add created files and Update CHANGELOG.md
         run: |
-          git diff --name-status
+          git add .
           printf -- "\r\n" >> CHANGELOG.md
           printf -- "## $(date '+%Y%m%d-%H%M%S')\r\n" >> CHANGELOG.md
           printf -- "\r\n" >> CHANGELOG.md
