@@ -31,7 +31,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           ref: ${{ github.head_ref }}
-          fetch-depth: 0
+          fetch-depth: '0'
 
       - name: Create Google Services JSON File
         env:
@@ -65,30 +65,32 @@ jobs:
           printf -- "\r\n" >> CHANGELOG.md
           printf -- "### Added\r\n" >> CHANGELOG.md
           printf -- "\r\n" >> CHANGELOG.md
-          git diff --name-status HEAD^..HEAD | while read status file; do
-          if [[ "$status" == "A" && "$file" == images/tiles/* ]]; then
-           echo "- Added new $(basename $file) from Google Drive" >> CHANGELOG.md
-          elif [[ "$status" == "A" && "$file" == images/tiles-svg/* ]]; then
-           echo "- Added new $(basename $file) from Google Drive" >> CHANGELOG.md
-          elif [[ "$status" == "M" && "$file" == images/tiles/* ]]; then
-           echo "- Updated $(basename $file) from Google Drive" >> CHANGELOG.md
-          elif [[ "$status" == "M" && "$file" == images/tiles-svg/* ]]; then
-           echo "- Updated $(basename $file) from Google Drive" >> CHANGELOG.md
-          elif [[ "$file" == data/*.json ]]; then
-           if [[ "$status" == "A" ]]; then
-             echo "- Created new data export $(basename $file)" >> CHANGELOG.md
-           else
-             echo "- Updated data export $(basename $file)" >> CHANGELOG.md
-           fi
-          fi
+          changed_files=$(git diff --name-status HEAD^..HEAD)
+          IFS=$'\n'
+          for line in $changed_files; do
+            status=$(echo "$line" | cut -f1)
+            file=$(echo "$line" | cut -f2)
+            if [[ "$file" == images/tiles/* ]]; then
+              if [[ "$status" == "A" ]]; then
+                echo "- Added new $(basename "$file") from Google Drive" >> CHANGELOG.md
+              else
+                echo "- Updated $(basename "$file") from Google Drive" >> CHANGELOG.md
+              fi
+            elif [[ "$file" == images/tiles-svg/* ]]; then
+              if [[ "$status" == "A" ]]; then
+                echo "- Added new $(basename "$file") from Google Drive" >> CHANGELOG.md
+              else
+                echo "- Updated $(basename "$file") from Google Drive" >> CHANGELOG.md
+              fi
+            elif [[ "$file" == data/*.json ]]; then
+              if [[ "$status" == "A" ]]; then
+                echo "- Created new data export $(basename "$file")" >> CHANGELOG.md
+              else
+                echo "- Updated data export $(basename "$file")" >> CHANGELOG.md
+              fi
+            fi
           done
-          printf -- "" >> CHANGELOG.md
-
-      - name: List current files
-        run: |
-          echo "========================================================================"
-          tree -a .
-          echo "========================================================================"        
+          printf -- "" >> CHANGELOG.md     
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: commit-and-push
