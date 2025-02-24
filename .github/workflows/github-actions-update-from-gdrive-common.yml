@@ -69,6 +69,12 @@ jobs:
           printf -- "- Created export image\r\n" >> CHANGELOG.md
           printf -- "" >> CHANGELOG.md
 
+      - name: List current files
+        run: |
+          echo "========================================================================"
+          tree -a .
+          echo "========================================================================"        
+
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: commit-and-push
         with:
@@ -88,7 +94,6 @@ jobs:
         run: |
           echo "Move event dataset to Assets"
           cp ./data/events.json ./docs/_data/events.json
-          tree -a ./docs/assets
 
       - name: Setup Pages
         uses: actions/configure-pages@v5
