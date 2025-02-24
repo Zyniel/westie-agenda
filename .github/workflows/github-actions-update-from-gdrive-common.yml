@@ -64,9 +64,23 @@ jobs:
           printf -- "\r\n" >> CHANGELOG.md
           printf -- "### Added\r\n" >> CHANGELOG.md
           printf -- "\r\n" >> CHANGELOG.md
-          printf -- "- Updated pictures from Google Drive\r\n" >> CHANGELOG.md
-          printf -- "- Updated events.json from Google Drive\r\n" >> CHANGELOG.md
-          printf -- "- Created export image\r\n" >> CHANGELOG.md
+          git diff --name-status HEAD^ HEAD | while read status file; do
+          if [[ "$status" == "A" && "$file" == images/tiles/* ]]; then
+           echo "- Added new $(basename $file) from Google Drive" >> CHANGELOG.md
+          elif [[ "$status" == "A" && "$file" == images/tiles-svg/* ]]; then
+           echo "- Added new $(basename $file) from Google Drive" >> CHANGELOG.md
+          elif [[ "$status" == "M" && "$file" == images/tiles/* ]]; then
+           echo "- Updated $(basename $file) from Google Drive" >> CHANGELOG.md
+          elif [[ "$status" == "M" && "$file" == images/tiles-svg/* ]]; then
+           echo "- Updated $(basename $file) from Google Drive" >> CHANGELOG.md
+          elif [[ "$file" == data/*.json ]]; then
+           if [[ "$status" == "A" ]]; then
+             echo "- Created new data export $(basename $file)" >> CHANGELOG.md
+           else
+             echo "- Updated data export $(basename $file)" >> CHANGELOG.md
+           fi
+          fi
+          done
           printf -- "" >> CHANGELOG.md
 
       - name: List current files
