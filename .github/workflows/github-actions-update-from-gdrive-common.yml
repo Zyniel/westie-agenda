@@ -66,6 +66,7 @@ jobs:
       # Track changes inside the dynamic CHANGELOG.md
       - name: Add created files and Update CHANGELOG.md
         run: |
+          chmod 755 ./src/shell/update_changelog.sh
           ./src/shell/update_changelog.sh
 
       # Commit all changes
