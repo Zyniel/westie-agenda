@@ -13,7 +13,7 @@ git add exports/\*
 # Restrict to folders withed with generated content
 changed_files=$(git diff --name-status HEAD ./data ./exports ./images)
 # Count the number of lines in the diff output
-line_count=$(echo "$diff_output" | sed '/^\s*$/d' | wc -l
+line_count=$(echo "$diff_output" | sed '/^\s*$/d' | wc -l)
 # Only generate CHANGELOG.md when Google content was pulled
 if [ "$line_count" -eq 0 ]; then
   echo "No changes detected."
