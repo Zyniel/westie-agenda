@@ -14,9 +14,15 @@ on:
 
 jobs:
 
+  # ===========================================================================
+  # Scenario to automate WhatsApp using Selenium to publish Temple Westies
+  # weekly Surveys and Plannings
+  # ===========================================================================
   commit:
     runs-on: ubuntu-latest
 
+    # Set proper permissions for GITHUB_TOKEN to create, push and write content.
+    # Needed to create content and checkout
     permissions:
       contents: write
       pull-requests: write
@@ -25,9 +31,11 @@ jobs:
       - name: Identify - ${{github.event.client_payload.id}}
         run: echo Run identifier ${{ github.event.client_payload.id }}
 
+      # Checkout "master"
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Setup python environment - reuse cache if possible
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -35,18 +43,23 @@ jobs:
           cache: 'pip'
           cache-dependency-path: '**/requirements.*.txt'
 
+      # Build python environment
       - name: Install dependencies
         run: |
           pip install -r ./src/python/requirements.notifier.txt
           sudo apt-get update -y
           sudo apt install x11-utils gnumeric xvfb xclip p7zip-full
 
+      # Unzip private chrome profile.
+      # NOTE: Secured by password
+      # TODO: Find a better solution with cache ??
       - name: Unpack Chrome Profile
         env:
           CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD}}
         run: |
           unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
 
+      # Main processing
       - name: Pull Google Drive Content
         env:
           GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}

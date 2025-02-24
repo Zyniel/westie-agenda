@@ -13,6 +13,11 @@ on:
         required: true
 
 jobs:
+
+  # ===========================================================================
+  # Pull Google Drive content, build and prepare material to build the GitHub
+  # Pages and WhatsApp broadcasts.
+  # ===========================================================================
   commit:
     runs-on: ubuntu-latest
     outputs:
@@ -29,6 +34,7 @@ jobs:
       - name: Identify - ${{github.event.client_payload.id}}
         run: echo Run identifier ${{ github.event.client_payload.id }}
 
+      # Checkout "master" with proper depth
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -79,11 +85,14 @@ jobs:
           push_options: '--force'
           add_options: '-u'
 
-  # Build the GitHub Pages bundle
+  # ===========================================================================
+  # Build the GitHub Pages bundle with mandatory event data files
+  # ===========================================================================
   build:
     runs-on: ubuntu-latest
     needs: commit
     steps:
+      # Checkout "master"
       - name: Checkout
         uses: actions/checkout@v4
         with:
@@ -107,7 +116,9 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
 
+  # ===========================================================================
   # Deploy the GitHub Pages bundle
+  # ===========================================================================
   deploy:
     environment:
       name: github-pages
