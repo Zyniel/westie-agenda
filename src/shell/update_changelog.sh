@@ -1,5 +1,12 @@
 #!/bin/bash
-git add images/\* data/\* exports/\*
+
+###################################################################
+#Script Name	: update_changelog.sh
+#Description	: Updates the CHANGELOG.md with lists of updated/added files in the commit
+#Args         : None
+###################################################################
+
+git add images/\*
 git add data/\*
 git add exports/\*
 printf -- "\r\n" >> CHANGELOG.md
