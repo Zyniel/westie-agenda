@@ -16,8 +16,6 @@ jobs:
 
   commit:
     runs-on: ubuntu-latest
-    outputs:
-      commit_hash: ${{ steps.commit-and-push.outputs.commit_hash }}
 
     permissions:
       contents: write
@@ -29,8 +27,6 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -42,13 +38,13 @@ jobs:
       - name: Install dependencies
         run: |
           pip install -r ./src/python/requirements.notifier.txt
-          sudo apt install x11-utils gnumeric xvfb xclip
+          sudo apt-get update -y
+          sudo apt install x11-utils gnumeric xvfb xclip p7zip-full
 
       - name: Unpack Chrome Profile
         env:
           CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD}}
         run: |
-          sudo apt-get install p7zip-full
           unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
 
       - name: Pull Google Drive Content
