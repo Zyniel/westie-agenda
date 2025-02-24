@@ -261,8 +261,8 @@ def main():
         # Create image and save in both PNG and JPG
         helper = MosaicHelper(config=config, data=data)
         helper.create()
-        helper.save_as_jpg(str(Path(config['app']['export_folder'], f'{data['week_full'][0]}.jpg')))
-        helper.save_as_png(str(Path(config['app']['export_folder'], f'{data['week_full'][0]}.png')))
+        helper.save_as_jpg(str(Path(config['app']['export_folder'], f'{data['week_full'][0]}.jpg').absolute()))
+        helper.save_as_png(str(Path(config['app']['export_folder'], f'{data['week_full'][0]}.png').absolute()))
 
 if __name__ == '__main__':
     main()

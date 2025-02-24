@@ -65,7 +65,7 @@ jobs:
           printf -- "\r\n" >> CHANGELOG.md
           printf -- "### Added\r\n" >> CHANGELOG.md
           printf -- "\r\n" >> CHANGELOG.md
-          changed_files=$(git diff --name-status HEAD^..HEAD)
+          changed_files=$(git diff --name-status)
           IFS=$'\n'
           for line in $changed_files; do
             status=$(echo "$line" | cut -f1)
