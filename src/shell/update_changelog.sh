@@ -10,7 +10,8 @@ git add images/\*
 git add data/\*
 git add exports/\*
 # Get the list of modifications
-changed_files=$(git diff --name-status HEAD)
+# Restrict to folders withed with generated content
+changed_files=$(git diff --name-status HEAD ./data ./exports ./images)
 # Count the number of lines in the diff output
 line_count=$(echo "$diff_output" | wc -l)
 # Only generate CHANGELOG.md when Google content was pulled
