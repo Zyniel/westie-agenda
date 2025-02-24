@@ -60,40 +60,7 @@ jobs:
 
       - name: Add created files and Update CHANGELOG.md
         run: |
-          git add images/\* data/\* exports/\*
-          git add data/\*
-          git add exports/\*
-          printf -- "\r\n" >> CHANGELOG.md
-          printf -- "## $(date '+%Y%m%d-%H%M%S')\r\n" >> CHANGELOG.md
-          printf -- "\r\n" >> CHANGELOG.md
-          printf -- "### Added\r\n" >> CHANGELOG.md
-          printf -- "\r\n" >> CHANGELOG.md
-          changed_files=$(git diff --name-status)
-          IFS=$'\n'
-          for line in $changed_files; do
-            status=$(echo "$line" | cut -f1)
-            file=$(echo "$line" | cut -f2)
-            if [[ "$file" == images/tiles/* ]]; then
-              if [[ "$status" == "A" ]]; then
-                echo "- Added new $(basename "$file") from Google Drive" >> CHANGELOG.md
-              else
-                echo "- Updated $(basename "$file") from Google Drive" >> CHANGELOG.md
-              fi
-            elif [[ "$file" == images/tiles-svg/* ]]; then
-              if [[ "$status" == "A" ]]; then
-                echo "- Added new $(basename "$file") from Google Drive" >> CHANGELOG.md
-              else
-                echo "- Updated $(basename "$file") from Google Drive" >> CHANGELOG.md
-              fi
-            elif [[ "$file" == data/*.json ]]; then
-              if [[ "$status" == "A" ]]; then
-                echo "- Created new data export $(basename "$file")" >> CHANGELOG.md
-              else
-                echo "- Updated data export $(basename "$file")" >> CHANGELOG.md
-              fi
-            fi
-          done
-          printf -- "" >> CHANGELOG.md     
+          ./src/shell/update_changelog.sh
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         id: commit-and-push
