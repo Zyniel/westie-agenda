@@ -60,6 +60,7 @@ jobs:
 
       - name: Update CHANGELOG.md
         run: |
+          git diff --name-status
           printf -- "\r\n" >> CHANGELOG.md
           printf -- "## $(date '+%Y%m%d-%H%M%S')\r\n" >> CHANGELOG.md
           printf -- "\r\n" >> CHANGELOG.md
