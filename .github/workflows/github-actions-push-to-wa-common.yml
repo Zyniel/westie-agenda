@@ -49,16 +49,20 @@ jobs:
           pip install -r ./src/python/requirements.notifier.txt
           sudo apt-get update -y
           sudo apt install x11-utils gnumeric xvfb xclip p7zip-full
-          sudo apt-get remove google-chrome-stable
+          sudo apt-get remove google-chrome
           sudo apt-get autoremove
-          sudo apt-get install google-chrome-stable
+
+      - uses: browser-actions/setup-chrome@v1
+        with:
+          chrome-version: ${{ env.CHROME_VERSION }}
+          install-dependencies: true
 
       # Unzip private chrome profile.
       # NOTE: Secured by password
       # TODO: Find a better solution with cache ??
       - name: Unpack Chrome Profile
         env:
-          CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD}}
+          CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD }}
         run: |
           unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
 

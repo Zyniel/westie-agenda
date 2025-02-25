@@ -103,6 +103,8 @@ sheets:
 webdriver:
   # Directory for the Browser User Dir (profiles etc.)
   user_dir_folder: './chrome'
+  # Version
+  version: '133.0.6943.126'
 
 # CDN Configuration
 imagekit:
