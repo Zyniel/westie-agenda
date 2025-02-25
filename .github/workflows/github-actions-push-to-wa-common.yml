@@ -49,6 +49,7 @@ jobs:
           pip install -r ./src/python/requirements.notifier.txt
           sudo apt-get update -y
           sudo apt install x11-utils gnumeric xvfb xclip p7zip-full
+          which google-chrome
           sudo apt-get remove google-chrome
           sudo apt-get autoremove
 
