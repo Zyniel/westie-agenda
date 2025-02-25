@@ -53,7 +53,7 @@ jobs:
       # Install chrome
       - uses: browser-actions/setup-chrome@v1
         with:
-          chrome-version: ${{ env.CHROME_VERSION }}
+          chrome-version: ${{ vars.CHROME_VERSION }}
           install-dependencies: true
           install-chromedriver: true
 
