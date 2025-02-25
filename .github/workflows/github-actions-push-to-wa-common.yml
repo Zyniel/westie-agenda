@@ -65,7 +65,8 @@ jobs:
         env:
           CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD }}
         run: |
-          echo "$CHROME_PROFILE_PWD"
+          echo "$CHROME_PROFILE_PWD" > ./myfile
+          cat ./myfile
           unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
 
       # Main processing
