@@ -55,6 +55,7 @@ jobs:
         with:
           chrome-version: ${{ env.CHROME_VERSION }}
           install-dependencies: true
+          install-chromedriver: true
 
       # Unzip private chrome profile.
       # NOTE: Secured by password
