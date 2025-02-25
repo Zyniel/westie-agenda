@@ -13,4 +13,3 @@ jobs:
     secrets:
       GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}
       CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD }}
-      CHROME_VERSION: ${{ vars.CHROME_VERSION }}
