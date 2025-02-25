@@ -48,7 +48,7 @@ jobs:
         run: |
           pip install -r ./src/python/requirements.notifier.txt
           sudo apt-get update -y
-          sudo apt install x11-utils gnumeric xvfb xclip p7zip-full
+          sudo apt install x11-utils gnumeric xvfb xclip p7zip-full -y
 
       # Install chrome
       - uses: browser-actions/setup-chrome@v1
@@ -65,6 +65,7 @@ jobs:
         env:
           CHROME_PROFILE_PWD: ${{ secrets.CHROME_PROFILE_PWD }}
         run: |
+          echo "$CHROME_PROFILE_PWD"
           unzip -P "$CHROME_PROFILE_PWD" ./chrome/__profile/chrome-profile.zip -d ./chrome/
 
       # Main processing

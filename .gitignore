@@ -16,3 +16,4 @@ src/python/__pycache__
 src/python/*service_account_key.json
 test/
 backup/
+/.github/workflows/.secrets
