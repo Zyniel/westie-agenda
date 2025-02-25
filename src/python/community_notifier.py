@@ -220,6 +220,9 @@ class CommunityHelper:
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--conf', action='append')
+    parser.add_argument('--browser-version', '--browser_version', action='store', help="Browser version")
+    parser.add_argument('--browser-bin-path', '--browser_bin_path', action='store', help="Browser binary path")
+    parser.add_argument('--driver-bin-path', '--driver_bin_path', action='store', help="Driver binary path")
     args = parser.parse_args()
 
     if args.conf is not None:
@@ -228,6 +231,14 @@ def main():
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:
             config = yaml.safe_load(file)
+
+        # Append extra configuration
+        if not args.browser_bin_path is None:
+            config['webdriver']['version'] = args.browser_version
+        if not args.browser_bin_path is None:
+            config['webdriver']['driver_binary_path'] = args.browser_bin_path
+        if not args.browser_bin_path is None:
+            config['webdriver']['browser_binary_folder'] = args.driver_bin_path
 
         # Load data file
         with open(config['app']['data_file'], 'r', encoding='utf-8') as f:

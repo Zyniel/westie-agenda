@@ -108,6 +108,10 @@ webdriver:
   user_dir_folder: 'I:\git\westie-agenda\chrome\'
   # Version
   version: '133.0.6943.126'
+  # Webdriver binary location
+  driver_binary_path: ''
+  # Browser binary location
+  browser_binary_path: ''
 
 # CDN Configuration
 imagekit:

@@ -52,6 +52,7 @@ jobs:
 
       # Install chrome
       - uses: browser-actions/setup-chrome@v1
+        id: browser-setup
         with:
           chrome-version: ${{ vars.CHROME_VERSION }}
           install-dependencies: true
@@ -72,4 +73,8 @@ jobs:
           GM_SERVICE_ACCOUNT: ${{ secrets.GM_SERVICE_ACCOUNT }}
           VIRTUAL_DISPLAY: '1'
         run: |
-          python ./src/python/community_notifier.py --conf ./src/python/config.${{ inputs.deploy_env }}.yml
+          python ./src/python/community_notifier.py \
+            --conf ./src/python/config.${{ inputs.deploy_env }}.yml \
+            --browser-version "${{ steps.browser-setup.outputs.chrome-version }}"
+            --browser-bin-path "${{ steps.browser-setup.outputs.chrome-path }}"
+            --driver-bin-path " ${{ steps.browser-setup.outputs.chromedriver-path }}"
