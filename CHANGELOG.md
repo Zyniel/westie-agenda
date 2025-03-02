@@ -409,3 +409,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated data export 'events.json'
 - Updated weekly exports '20250224.json'
 - Updated weekly exports '20250224.txt'
+
+## 20250302-224918
+
+### Added
+
+- Create weekly exports '20250303.jpg'
+- Create weekly exports '20250303.json'
+- Create weekly exports '20250303.png'
+- Create weekly exports '20250303.txt'
+- Added SVG from Google Drive 'CCC-Vendredi-20250307-Tile.svg'
+- Added SVG from Google Drive 'EVT-SwimAndSwing-2025-Tile.svg'
+- Added PNG from Google Drive 'CCC-Vendredi-20250307-Tile.png'
+- Added PNG from Google Drive 'EVT-SwimAndSwing-2025-Tile.png'
+### Changed
+
+- Updated data export 'events.json'
