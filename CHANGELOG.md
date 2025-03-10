@@ -448,3 +448,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated weekly exports '20250303.json'
 - Updated weekly exports '20250303.png'
 - Updated weekly exports '20250303.txt'
+
+## 20250310-191649
+
+### Added
+
+- Create weekly exports '20250310.jpg'
+- Create weekly exports '20250310.json'
+- Create weekly exports '20250310.png'
+- Create weekly exports '20250310.txt'
+- Added SVG from Google Drive 'EVT-WestInLyon-2025-Tile.svg'
+- Added PNG from Google Drive 'EVT-WestInLyon-2025-Tile.png'
+- Added PNG from Google Drive 'SQD-SQYDance-20250315.png'
+### Changed
+
+- Updated data export 'events.json'
