@@ -463,3 +463,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated data export 'events.json'
+
+## 20250318-215453
+
+### Added
+
+- Create weekly exports '20250317.jpg'
+- Create weekly exports '20250317.json'
+- Create weekly exports '20250317.png'
+- Create weekly exports '20250317.txt'
+- Added SVG from Google Drive 'BFD-FriendlyWesty-20250322-Tile.svg'
+- Added SVG from Google Drive 'EVT-SkiWest-2025-Tile.svg'
+- Added SVG from Google Drive 'LSD-Dimanche-StPatrick-Tile.svg'
+- Added SVG from Google Drive 'WOD-WildWest-Samedi-Tile.svg'
+- Added PNG from Google Drive 'BFD-FriendlyWesty-20250322-Tile.png'
+- Added PNG from Google Drive 'EVT-SkiWest-2025-Tile.png'
+- Added PNG from Google Drive 'LSD-Dimanche-StPatrick-Tile.png'
+- Added PNG from Google Drive 'WOD-WildWest-Samedi-Tile.png'
+### Changed
+
+- Updated data export 'events.json'
