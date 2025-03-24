@@ -483,3 +483,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated data export 'events.json'
+
+## 20250324-220427
+
+### Added
+
+- Create weekly exports '20250324.jpg'
+- Create weekly exports '20250324.json'
+- Create weekly exports '20250324.png'
+- Create weekly exports '20250324.txt'
+- Added SVG from Google Drive 'DKD-L_Etincelle-Tile.svg'
+- Added SVG from Google Drive 'EVT-Spring-WIN-2025-Tile.svg'
+- Added PNG from Google Drive 'DKD-L_Etincelle-Tile.png'
+- Added PNG from Google Drive 'EVT-Spring-WIN-2025-Tile.png'
+### Changed
+
+- Updated data export 'events.json'
