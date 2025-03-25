@@ -25,7 +25,7 @@
             "Sondage": "Mar. 🪩 After TDS",
             "Planning": "Mar. 25 - After TDS",
             "Infos": "Mar. 🪩 After TDS\r\n> https://tinyurl.com/2jnfryvd",
-            "Ordre": "18500"
+            "Ordre": "18400"
         },
         {
             "index": 1,
@@ -48,7 +48,7 @@
             "Sondage": "Jeu. 🪩 L'Etincelle",
             "Planning": "Jeu. 27 - L'Etincelle",
             "Infos": "Jeu. 🪩 L'Etincelle\r\n> https://tinyurl.com/bduyd54w",
-            "Ordre": "18600"
+            "Ordre": "18500"
         },
         {
             "index": 2,
@@ -71,7 +71,7 @@
             "Sondage": "Jeu. 🪩 After TDS",
             "Planning": "Jeu. 27 - After TDS",
             "Infos": "Jeu. 🪩 After TDS\r\n> https://tinyurl.com/4st7wbb5",
-            "Ordre": "18700"
+            "Ordre": "18600"
         },
         {
             "index": 3,
@@ -94,7 +94,7 @@
             "Sondage": "Ven. 🪩 Factory Club (RWSB)",
             "Planning": "Ven. 28 - Factory Club (RWSB)",
             "Infos": "Ven. 🪩 Factory Club (RWSB)\r\n> https://tinyurl.com/3s3sfes3",
-            "Ordre": "18800"
+            "Ordre": "18700"
         },
         {
             "index": 4,
@@ -117,7 +117,7 @@
             "Sondage": "Ven. 🪩 Olympiades",
             "Planning": "Ven. 28 - Olympiades",
             "Infos": "Ven. 🪩 Olympiades\r\n> https://tinyurl.com/5bacs9s5",
-            "Ordre": "18900"
+            "Ordre": "18800"
         },
         {
             "index": 5,
@@ -140,10 +140,33 @@
             "Sondage": "Sam. 🪩 La MAS",
             "Planning": "Sam. 29 - La MAS",
             "Infos": "Sam. 🪩 La MAS\r\n> https://tinyurl.com/5n7knpfz",
-            "Ordre": "19100"
+            "Ordre": "19000"
         },
         {
             "index": 6,
+            "Date Début": "29/03/2025",
+            "Heure Début": "21:00:00",
+            "Date Fin": "30/3/2025",
+            "Heure Fin": "02:00:00",
+            "Jour": "Sam.",
+            "Type": "Soirée",
+            "Organisateur": "Maïgy",
+            "Salle": "StudioDiabolo",
+            "Lieu": "",
+            "Ville": "Le Kremlin-Bicêtre",
+            "Adresse": "46 Av. de Fontainebleau",
+            "Nom": "Soirée Maïgy",
+            "Nom Court": "Soirée Maïgy",
+            "Lien Court": "https://tinyurl.com/5n88xpxw",
+            "Lien": "https://www.facebook.com/events/2085330451904619",
+            "Image": "MGY-Soirée-Maïgy-2025-Tile.png",
+            "Sondage": "Sam. 🪩 Soirée Maïgy",
+            "Planning": "Sam. 29 - Soirée Maïgy",
+            "Infos": "Sam. 🪩 Soirée Maïgy\r\n> https://tinyurl.com/5n88xpxw",
+            "Ordre": "19100"
+        },
+        {
+            "index": 7,
             "Date Début": "30/03/2025",
             "Heure Début": "13:30:00",
             "Date Fin": "30/3/2025",
@@ -166,7 +189,7 @@
             "Ordre": "19200"
         },
         {
-            "index": 7,
+            "index": 8,
             "Date Début": "30/03/2025",
             "Heure Début": "15:00:00",
             "Date Fin": "30/03/2025",
@@ -189,7 +212,7 @@
             "Ordre": "19300"
         },
         {
-            "index": 8,
+            "index": 9,
             "Date Début": "29/03/2025",
             "Heure Début": "",
             "Date Fin": "30/03/2025",
@@ -209,7 +232,7 @@
             "Sondage": "WE. 🎟️ Spring WIN",
             "Planning": "Sam. 29 - Spring WIN",
             "Infos": "WE. 🎟️ Spring WIN\r\n> https://tinyurl.com/4mndnkzt",
-            "Ordre": "29000"
+            "Ordre": "28900"
         }
     ],
     "survey-title": "*Planning - Semaine du 24/03*",
