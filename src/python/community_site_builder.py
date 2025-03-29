@@ -26,7 +26,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from pydrive2.files import GoogleDriveFile
 from imagekitio import ImageKit
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
-from mosaic_helper import PILMosaicHelper
+from pil_mosaic_helper import PILMosaicHelper
 from multiprocessing import cpu_count
 from multiprocessing.pool import ThreadPool
 
@@ -699,7 +699,7 @@ def main():
         # Pull events from Google Sheets and updated files from Google Drive
         # to build the weekly plannings and surveys with fresh data
         gash = GDriveAgendaHelper(config=config)
-        gash.process(weekly=False)
+        gash.process(weekly=True)
 
         # Create event mosaic as PNG and JPG files
         json_data = gash.data_as_dict()
