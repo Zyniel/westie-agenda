@@ -1,5 +1,8 @@
 import argparse
 import json
+from abc import abstractmethod, ABC
+from typing import Any
+
 import yaml
 import logging
 from pathlib import Path
@@ -11,7 +14,10 @@ __doc__ = "Create an image mosaic of weekly events"
 log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
 logging.basicConfig(level=logging.DEBUG)
 
-class MosaicHelper:
+class MosaicHelper(ABC):
+    """
+    Abstract class to create a new Event Mosaic based on configuration.
+    """
     config = None     # Global Configuration JSON object
     data = None       # Event data
     layouts = None    # Grid layout per number of events
@@ -85,79 +91,89 @@ class MosaicHelper:
         return width, height
 
     ####################### Main Functions ####################
+    @abstractmethod
+    def __draw_canvas(self, width, height, background_color):
+        """
+        Draw and prepare the main canvas
 
-    def __draw_logo(self, draw: ImageDraw, picture_size: tuple[int,int], image : Image):
+        :param width: Image total width
+        :param height: Image total height
+        :param background_color: Background color (#)
+        """
+        pass
+
+    @abstractmethod
+    def __draw_logo(self, picture_size: tuple[int,int]):
         """
         Draw the logo/trademark.
 
-        :param draw: Target canvas to write on
-        :param image: Target PIL Image
+        :param picture_size: Canvas width/height as Tuple
         :return:
         """
-        width = self.config['mosaic']['logo']['size']['width']
-        height = self.config['mosaic']['logo']['size']['height']
-        file = Path(self.config['app']['misc_folder'], self.config['mosaic']['logo']['file']).absolute().as_posix()
+        pass
 
-        event_image = Image.open(file).resize((width, height))
-        event_image.convert("RGBA")
-        x_pos = picture_size[0] - width - 10
-        y_pos = 10
-        image.paste(event_image, (x_pos, y_pos), event_image)
-        log.debug(f'Banner: ({x_pos},{y_pos})')
-
-    def __draw_global_title(self, draw: ImageDraw, title: str, total_width: int, title_font: ImageFont):
+    @abstractmethod
+    def __draw_global_title(self, title: str, total_width: int, title_font):
         """
         Draw the top main title of the picture.
 
-        :param draw: Target canvas to write on
         :param title: Text to use as a title
         :param total_width: Computed text width
         :param title_font: ImageFont to use
         """
-        title_width = draw.textlength(title, font=title_font)
-        draw.text(
-            xy=((total_width - title_width) / 2, self.config['mosaic']['padding']['top']),
-            text=title,
-            fill=self.config['mosaic']['title']['font_color'],
-            font=title_font
-        )
+        pass
 
-    def __draw_event(self, draw: ImageDraw, title: str, event_image_path: str, x_pos: int, y_pos: int, title_size: (int, int), event_title_font: ImageFont, image : Image):
+    @abstractmethod
+    def __draw_event(self, title: str, event_image_path: str, x_pos: int, y_pos: int, title_size: (int, int), event_title_font):
         """
         Draw a new event tile.
 
-        :param draw: Target canvas to write on
         :param title: Title of the event
         :param event_image_path: Image filepath to open and paste
         :param x_pos: X axis of the initial TL corner of the event zone
         :param y_pos: Y axis of the initial TL corner of the event zone
         :param title_size: Size of the event title zone
         :param event_title_font: Font size of the event title
-        :param image: Target PIL Image
 
         :return: None
         """
-        event_title_width = draw.textlength(title, font=event_title_font)
-        title_x_pos = x_pos + (title_size[0] - event_title_width) // 2
-        title_y_pos = y_pos + self.config['mosaic']['event']['title']['padding']['top']
-        draw.text(
-            xy=(title_x_pos, title_y_pos),
-            text=title,
-            fill=self.config['mosaic']['event']['title']['font_color'],
-            font=event_title_font
-        )
-        log.debug(f'Event Title: ({title_x_pos},{title_y_pos})')
+        pass
 
-        event_image = Image.open(event_image_path).resize((self.config['mosaic']['event']['banner']['size']['width'], self.config['mosaic']['event']['banner']['size']['height']))
-        event_image.convert("RGBA")
-        banner_x_pos = x_pos + self.config['mosaic']['event']['banner']['border']['left']
-        banner_y_pos = y_pos + title_size[1] + self.config['mosaic']['event']['banner']['border']['top']
-        image.paste(event_image, (banner_x_pos, banner_y_pos), event_image)
-        log.debug(f'Event Banner: ({banner_x_pos},{banner_y_pos})')
+    @abstractmethod
+    def __build_title_font(self) -> Any:
+        pass
 
-    def create(self) -> Image:
+    @abstractmethod
+    def __build_event_title_font(self) -> Any:
+        pass
+
+    @abstractmethod
+    def __build_event_image_path(self, file_name) -> Any:
+        pass
+
+    @abstractmethod
+    def save_as_png(self, path: str):
         """
-        Private function to instanciate a new Image and dra the mosaic from event data.
+        Generate a mosaic of events and save it as PNG.
+
+        :param path: Target PNG file path
+        :return: None
+        """
+        pass
+
+    @abstractmethod
+    def save_as_jpg(self, path: str):
+        """
+        Generate a mosaic of events and save it as JPG (HQ).
+
+        :param path: Target PNG file path
+        :return: None
+        """
+        pass
+
+    def create(self):
+        """
+        Private function to instance a new Image and dra the mosaic from event data.
 
         :return: The newly created Image
         """
@@ -179,26 +195,22 @@ class MosaicHelper:
         total_height = self.config['mosaic']['padding']['top'] + header_height + body_height + footer_height + self.config['mosaic']['padding']['bottom']
         ######################################################
         # Font settings (make sure to have a suitable .ttf font file)
-        title_font = ImageFont.truetype(f"./fonts/{self.config['mosaic']['title']['font_file']}", self.config['mosaic']['title']['font_size'])
-        event_title_font = ImageFont.truetype(f"./fonts/{self.config['mosaic']['event']['title']['font_file']}", self.config['mosaic']['event']['title']['font_size'])
+        title_font = self.__build_title_font()
+        event_title_font = self.__build_event_title_font()
 
         # Create the base image
-        image = Image.new("RGB", (total_width, total_height), self.config['mosaic']['background_color'])
-        draw = ImageDraw.Draw(image)
+        self.__draw_canvas(total_width, total_height, self.config['mosaic']['background_color'])
 
         # Draw the global title
         global_title = f"Planning - Semaine du {self.data['week']}"
-        self.__draw_global_title(draw, global_title, total_width, title_font)
-        self.__draw_logo(draw, (total_width, total_height), image)
+        self.__draw_global_title(global_title, total_width, title_font)
+        self.__draw_logo((total_width, total_height))
 
         # Draw each event
         for idx, event in enumerate(self.data['events']):
             x_idx, y_idx = self.__get_grid_coordinates(idx, num_events)
             event_title = event['Planning']
-            event_image_path = Path(
-                self.config['app']['png_folder'],
-                event['Image']
-            ).absolute().as_posix()
+            event_image_path = self.__build_event_image_path(file_name=event['Image'])
 
             # Calculate position and horizontal adjustment for partial rows
             if y_idx == num_events // cols:  # Only adjust for the last line
@@ -214,10 +226,102 @@ class MosaicHelper:
             y_pos = self.config['mosaic']['padding']['top'] + header_height + y_idx * (self.config['mosaic']['event']['spacing']['bottom'] + event_size[1])
 
             # Draw the event on the ImageDraw layer
-            self.__draw_event(draw, event_title, event_image_path, x_pos, y_pos, title_size, event_title_font, image)
+            self.__draw_event(event_title, event_image_path, x_pos, y_pos, title_size, event_title_font)
 
-            # For later SaveAs
-            self.image = image
+
+class PILMosaicHelper(MosaicHelper):
+    """
+    PIL implementation of the MosaicHelper.
+    Now uses 1200px images
+    """
+
+    def __init__(self, config, data):
+        super().__init__(config, data)
+        self.image = None
+        self.draw = None
+
+    def _MosaicHelper__draw_canvas(self, width, height, background_color) -> Any:
+        self.image = Image.new("RGB", (width, height), self.config['mosaic']['background_color'])
+        self.draw = ImageDraw.Draw(self.image)
+
+    def _MosaicHelper__draw_logo(self, picture_size: tuple[int,int]):
+        """
+        Draw the logo/trademark.
+
+        :return:
+        """
+        width = self.config['mosaic']['logo']['size']['width']
+        height = self.config['mosaic']['logo']['size']['height']
+        file = Path(self.config['app']['misc_folder'], self.config['mosaic']['logo']['file']).absolute().as_posix()
+
+        event_image = Image.open(file).resize((width, height))
+        event_image.convert("RGBA")
+        x_pos = picture_size[0] - width - 10
+        y_pos = 10
+        self.image.paste(event_image, (x_pos, y_pos), event_image)
+        log.debug(f'Banner: ({x_pos},{y_pos})')
+
+    def _MosaicHelper__draw_event(self, title: str, event_image_path: str, x_pos: int, y_pos: int, title_size: (int, int), event_title_font):
+        """
+        Draw a new event tile.
+
+        :param title: Title of the event
+        :param event_image_path: Image filepath to open and paste
+        :param x_pos: X axis of the initial TL corner of the event zone
+        :param y_pos: Y axis of the initial TL corner of the event zone
+        :param title_size: Size of the event title zone
+        :param event_title_font: Font size of the event title
+
+        :return: None
+        """
+        event_title_width = self.draw.textlength(title, font=event_title_font)
+        title_x_pos = x_pos + (title_size[0] - event_title_width) // 2
+        title_y_pos = y_pos + self.config['mosaic']['event']['title']['padding']['top']
+        self.draw.text(
+            xy=(title_x_pos, title_y_pos),
+            text=title,
+            fill=self.config['mosaic']['event']['title']['font_color'],
+            font=event_title_font
+        )
+        log.debug(f'Event Title: ({title_x_pos},{title_y_pos})')
+
+        event_image = Image.open(event_image_path).resize((self.config['mosaic']['event']['banner']['size']['width'], self.config['mosaic']['event']['banner']['size']['height']))
+        event_image.convert("RGBA")
+        banner_x_pos = x_pos + self.config['mosaic']['event']['banner']['border']['left']
+        banner_y_pos = y_pos + title_size[1] + self.config['mosaic']['event']['banner']['border']['top']
+        self.image.paste(event_image, (banner_x_pos, banner_y_pos), event_image)
+        log.debug(f'Event Banner: ({banner_x_pos},{banner_y_pos})')
+
+    def _MosaicHelper__draw_global_title(self, title: str, total_width: int, title_font):
+        """
+        Draw the top main title of the picture.
+
+        :param draw: Target canvas to write on
+        :param title: Text to use as a title
+        :param total_width: Computed text width
+        :param title_font: ImageFont to use
+        """
+        title_width = self.draw.textlength(title, font=title_font)
+        self.draw.text(
+            xy=((total_width - title_width) / 2, self.config['mosaic']['padding']['top']),
+            text=title,
+            fill=self.config['mosaic']['title']['font_color'],
+            font=title_font
+        )
+
+    def _MosaicHelper__build_title_font(self) -> Any:
+        title_font = ImageFont.truetype(f"./fonts/{self.config['mosaic']['title']['font_file']}", self.config['mosaic']['title']['font_size'])
+        return title_font
+
+    def _MosaicHelper__build_event_title_font(self) -> Any:
+        event_title_font = ImageFont.truetype(f"./fonts/{self.config['mosaic']['event']['title']['font_file']}", self.config['mosaic']['event']['title']['font_size'])
+        return event_title_font
+
+    def _MosaicHelper__build_event_image_path(self, file_name) -> Any:
+        path = Path(file_name)
+        path = path.with_name(path.stem + '-1200px' + path.suffix)
+        full_path = Path(self.config['app']['png_folder'], path).absolute().as_posix()
+        return full_path
 
     def save_as_png(self, path: str):
         """
@@ -241,6 +345,7 @@ class MosaicHelper:
         self.image.save(path, quality=95)
         log.info(f'Save as JPG: {path}')
 
+
 def main():
 
     parser = argparse.ArgumentParser(description=__doc__)
@@ -248,7 +353,7 @@ def main():
     args = parser.parse_args()
 
     if args.conf is not None:
-        log.basicConfig(level=logging.INFO)
+        log.setLevel(level=logging.INFO)
 
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:
@@ -259,7 +364,7 @@ def main():
             data = json.load(f)
 
         # Create image and save in both PNG and JPG
-        helper = MosaicHelper(config=config, data=data)
+        helper = PILMosaicHelper(config=config, data=data)
         helper.create()
         helper.save_as_jpg(str(Path(config['app']['export_folder'], f'{data['week_full'][0]}.jpg').absolute()))
         helper.save_as_png(str(Path(config['app']['export_folder'], f'{data['week_full'][0]}.png').absolute()))
