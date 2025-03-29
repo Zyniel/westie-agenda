@@ -422,6 +422,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added SVG from Google Drive 'EVT-SwimAndSwing-2025-Tile.svg'
 - Added PNG from Google Drive 'CCC-Vendredi-20250307-Tile.png'
 - Added PNG from Google Drive 'EVT-SwimAndSwing-2025-Tile.png'
+
 ### Changed
 
 - Updated data export 'events.json'
@@ -441,6 +442,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Added SVG from Google Drive 'SD-LevelUp-20250303-Tile.svg'
 - Added PNG from Google Drive 'SD-LevelUp-20250303-Tile.png'
+
 ### Changed
 
 - Updated data export 'events.json'
@@ -460,6 +462,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added SVG from Google Drive 'EVT-WestInLyon-2025-Tile.svg'
 - Added PNG from Google Drive 'EVT-WestInLyon-2025-Tile.png'
 - Added PNG from Google Drive 'SQD-SQYDance-20250315.png'
+
 ### Changed
 
 - Updated data export 'events.json'
@@ -480,6 +483,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Added PNG from Google Drive 'EVT-SkiWest-2025-Tile.png'
 - Added PNG from Google Drive 'LSD-Dimanche-StPatrick-Tile.png'
 - Added PNG from Google Drive 'WOD-WildWest-Samedi-Tile.png'
+
 ### Changed
 
 - Updated data export 'events.json'

@@ -22,7 +22,6 @@ else
   echo "$changed_files"
   printf -- "\r\n" >> CHANGELOG.md
   printf -- "## $(date '+%Y%m%d-%H%M%S')\r\n" >> CHANGELOG.md
-  printf -- "\r\n" >> CHANGELOG.md
 
   added_section=""
   changed_section=""
@@ -61,6 +60,7 @@ else
 
   # Create 'Added' section
   if [ -n "$added_section" ]; then
+    printf -- "\r\n" >> CHANGELOG.md
     printf -- "### Added\r\n" >> CHANGELOG.md
     printf -- "\r\n" >> CHANGELOG.md
     printf -- "$added_section" >> CHANGELOG.md
@@ -68,6 +68,7 @@ else
 
   # Create 'Changed' section
   if [ -n "$changed_section" ]; then
+    printf -- "\r\n" >> CHANGELOG.md
     printf -- "### Changed\r\n" >> CHANGELOG.md
     printf -- "\r\n" >> CHANGELOG.md
     printf -- "$changed_section" >> CHANGELOG.md
