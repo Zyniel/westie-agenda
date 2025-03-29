@@ -520,3 +520,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated data export 'events.json'
 - Updated weekly exports '20250324.json'
+
+## 20250329-202550
+
+### Changed
+
+- Updated data export 'events.json'
+- Updated weekly exports '20250324.jpg'
+- Updated weekly exports '20250324.json'
+- Updated weekly exports '20250324.png'
