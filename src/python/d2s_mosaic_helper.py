@@ -7,7 +7,7 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 from PIL import Image
 import drawsvg as dr
-from src.python.mosaic_helper import MosaicHelper
+from mosaic_helper import MosaicHelper
 
 __doc__ = "Create an image mosaic of weekly events"
 

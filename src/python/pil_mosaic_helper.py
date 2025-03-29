@@ -8,7 +8,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 __doc__ = "Create an image mosaic of weekly events"
 
-from src.python.mosaic_helper import MosaicHelper
+from mosaic_helper import MosaicHelper
 
 # Define logger
 log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
