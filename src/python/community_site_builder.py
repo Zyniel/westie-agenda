@@ -650,7 +650,7 @@ class GDriveAgendaHelper:
             value = ""
         return value
 
-    def process(self) -> None:
+    def process(self, weekly: bool = True) -> None:
         # Connect to Google Drive and Google Sheet and store both Clients
         log.info("Connecting to Goggle Services")
         self.connect()
@@ -675,13 +675,13 @@ class GDriveAgendaHelper:
         self.download_links(path_file=urls_files.absolute().as_posix(), replace=True)
 
         log.info("Downloading PNG files")
-        self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=True)
+        self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
         log.info("Downloading SVG files")
-        self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=True)
+        self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=weekly)
 
         log.info("Uploading PNG files to CDN")
-        self.upload_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=True)
+        self.upload_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
 
 def main():
@@ -699,11 +699,11 @@ def main():
         # Pull events from Google Sheets and updated files from Google Drive
         # to build the weekly plannings and surveys with fresh data
         gash = GDriveAgendaHelper(config=config)
-        gash.process()
+        gash.process(weekly=False)
 
         # Create event mosaic as PNG and JPG files
         json_data = gash.data_as_dict()
-        mh = MosaicHelper(config=config, data=json_data)
+        mh = PILMosaicHelper(config=config, data=json_data)
         mh.create()
         mh.save_as_jpg(str(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg')))
         mh.save_as_png(str(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.png')))
