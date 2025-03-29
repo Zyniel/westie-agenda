@@ -26,7 +26,7 @@ from oauth2client.service_account import ServiceAccountCredentials
 from pydrive2.files import GoogleDriveFile
 from imagekitio import ImageKit
 from imagekitio.models.UploadFileRequestOptions import UploadFileRequestOptions
-from mosaic_helper import MosaicHelper
+from mosaic_helper import PILMosaicHelper
 from multiprocessing import cpu_count
 from multiprocessing.pool import ThreadPool
 
