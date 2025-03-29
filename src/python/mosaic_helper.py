@@ -5,9 +5,6 @@ import logging
 from typing import Any
 from pathlib import Path
 from abc import abstractmethod, ABC
-from tempfile import NamedTemporaryFile
-from PIL import Image, ImageDraw, ImageFont
-import drawsvg as dr
 
 __doc__ = "Create an image mosaic of weekly events"
 
