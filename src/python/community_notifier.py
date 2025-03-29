@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 import argparse
 import json
+import os
+import sys
 from pathlib import Path
 
 import yaml
@@ -224,6 +226,12 @@ def main():
     parser.add_argument('--browser-bin-path', '--browser_bin_path', action='store', help="Browser binary path")
     parser.add_argument('--driver-bin-path', '--driver_bin_path', action='store', help="Driver binary path")
     args = parser.parse_args()
+
+    PROJECT_ROOT = os.path.abspath(os.path.join(
+        os.path.dirname(__file__),
+        os.pardir)
+    )
+    sys.path.append(PROJECT_ROOT)
 
     if args.conf is not None:
         logging.basicConfig(level=logging.INFO)

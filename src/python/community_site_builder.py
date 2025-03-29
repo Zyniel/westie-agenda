@@ -6,6 +6,7 @@ This script forms the quickstart introduction to the zero-touch enrollemnt
 customer API. To learn more, visit https://developer.google.com/zero-touch
 """
 import os
+import sys
 import time
 from datetime import datetime, timedelta
 
@@ -688,6 +689,12 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--conf', action='append')
     args = parser.parse_args()
+
+    PROJECT_ROOT = os.path.abspath(os.path.join(
+        os.path.dirname(__file__),
+        os.pardir)
+    )
+    sys.path.append(PROJECT_ROOT)
 
     if args.conf is not None:
         logging.basicConfig(level=logging.INFO)
