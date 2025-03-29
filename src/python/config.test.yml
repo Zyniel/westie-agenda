@@ -143,37 +143,39 @@ mosaic:
   # Default font color
   main_font_color: '#dcd7c9ff'
   # Header height - Helps determine where mosaic starts
-  header_height: 130
+  header_height: 216
   # Footer height
   footer_height: 0
   # Padding around the frame
   padding:
-    top: 55
-    left: 55
-    right: 55
-    bottom: 55
+    top: 92
+    left: 92
+    right: 92
+    bottom: 92
   # Logo / Trademark information
   logo:
     # Filename
-    file: 'logo-fcbs-150px.png'
+    file: 'logo-fcbs-250px.png'
     # Dimensions
     size:
-      width: 31
-      height: 150
+      width: 32
+      height: 250
   # Header title
   title:
     # Main title font color
     font_color: '#dcd7c9ff'
     # Main title font file
     font_file: 'luckiestguy.ttf'
+    # Font Family
+    font_family: 'Luckiest Guy'
     # Font size in pixels
-    font_size: 95
+    font_size: 158
     # Padding around the title
     padding:
-      top: 55
-      left: 55
-      right: 55
-      bottom: 55
+      top: 92
+      left: 92
+      right: 92
+      bottom: 92
   # Event tiles
   event:
     # Event title configuration
@@ -182,20 +184,22 @@ mosaic:
       font_color: '#dcd7c9ff'
       # Event title font file
       font_file: 'NotoSans-Bold.ttf'
+      # Font Family
+      font_family: 'Noto Sans Bold'
       # Font size in pixels
-      font_size: 40
+      font_size: 66
       # Padding around the title
       padding:
         top: 0
         left: 0
         right: 0
-        bottom: 15
+        bottom: 25
     # Event banner(picture) configuration
     banner:
       # Dimensions
       size:
-        width: 720
-        height: 419
+        width: 1200
+        height: 698
       # Padding around the picture
       padding:
         top: 0
@@ -210,5 +214,5 @@ mosaic:
         bottom: 0
     # Spacing between event tiles
     spacing:
-      right: 36
-      bottom: 36
+      right: 60
+      bottom: 60
