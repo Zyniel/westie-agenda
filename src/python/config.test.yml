@@ -158,7 +158,7 @@ mosaic:
     file: 'logo-fcbs-250px.png'
     # Dimensions
     size:
-      width: 32
+      width: 51
       height: 250
   # Header title
   title:
