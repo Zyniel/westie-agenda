@@ -549,3 +549,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Updated data export 'events.json'
+
+## 20250331-002327
+
+### Changed
+
+- Updated weekly exports '20250331.jpg'
+- Updated weekly exports '20250331.png'
+- Updated SVG from Google Drive 'EVT-WestyNantes-2025-Tile.svg'
