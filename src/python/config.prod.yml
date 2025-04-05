@@ -14,6 +14,8 @@ app:
   svg_folder: ./images/tiles-svg
   # Directory for mosaic exports
   export_folder: ./exports
+  # HD image suffix
+  image_hd_suffix: '-1200px'
 
 # Community Notifier configuration
 community:

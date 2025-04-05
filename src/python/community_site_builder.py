@@ -33,14 +33,13 @@ from multiprocessing.pool import ThreadPool
 
 __doc__ = "Synchronize events between the remote Google Drive/Sheets and the Repo to build the GitHub Page"
 
-
-
 # A single auth scope is used for the zero-touch enrollment customer API.
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
 
 # Define logger
 log = logging.getLogger('com.zyniel.dance.westie-agenda.site-builder')
 logging.basicConfig(level=logging.DEBUG)
+
 
 def to_dict(dataframe: DataFrame | Series) -> dict:
     """
@@ -49,7 +48,7 @@ def to_dict(dataframe: DataFrame | Series) -> dict:
     :param dataframe: The DataFrame to be converted to a Dictionary
     :return: Dictionnary object of data from the DataFrame
     """
-    if isinstance(dataframe,DataFrame):
+    if isinstance(dataframe, DataFrame):
         d = dataframe.to_dict(orient='records')
     else:
         d = dataframe.to_dict()
@@ -73,6 +72,7 @@ def to_df(lst) -> pd.DataFrame:
 class GDriveAgendaHelper:
 
     def __init__(self, config):
+        self.pngs_hd = None
         self.week_dt = None
         self.pngs = []
         self.svgs = []
@@ -120,7 +120,7 @@ class GDriveAgendaHelper:
         imagekit = ImageKit(
             private_key=os.environ['IK_SERVICE_ACCOUNT'],
             public_key=self.config['imagekit']['public_key'],
-            url_endpoint = self.config['imagekit']['url_endpoint']
+            url_endpoint=self.config['imagekit']['url_endpoint']
         )
         self.ik_client = imagekit
 
@@ -157,6 +157,7 @@ class GDriveAgendaHelper:
         This function connects to Google Drive and returns arrays of file pointers to PNG and SVG files stored remotly
         """
         self.pngs = []
+        self.pngs_hd = []
         self.svgs = []
         if self.gd_client is not None:
             # Search tile files (PNG)
@@ -167,7 +168,11 @@ class GDriveAgendaHelper:
             file_list = self.gd_client.ListFile({'q': query}).GetList()
             if len(file_list) > 0:
                 for file in file_list:
-                    self.pngs.append(file)
+
+                    if file['title'].endswith(self.config['app']['image_hd_suffix'] + '.png'):
+                        self.pngs_hd.append(file)
+                    else:
+                        self.pngs.append(file)
 
             # Search tile files (SVG)
             mimetype = 'image/svg+xml'
@@ -245,7 +250,6 @@ class GDriveAgendaHelper:
             log.debug(f'File:{result[0]}, time (s): {result[1]}')
         log.debug('--------------------------------------------')
 
-
     def __upload_file_to_cdn_thread(self, args):
         """
         Single parameter wrapper function for parallel processing of downloads
@@ -290,10 +294,12 @@ class GDriveAgendaHelper:
                     )
                 )
                 # TODO: Add upload validation
-                log.debug("Uploaded to CDN: {basename} (id: {id})".format(basename=basename,id=upload.file_id))
+                log.debug("Uploaded to CDN: {basename} (id: {id})".format(basename=basename, id=upload.file_id))
         else:
             log.info("Skipping: '{path}' - File already exists.".format(path=path))
 
+    def __is_hd_image(self, basename: str) -> bool:
+        return self.config['app']['image_hd_suffix'] in basename
 
     def download_png_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
         """
@@ -310,27 +316,66 @@ class GDriveAgendaHelper:
         path.mkdir(parents=True, exist_ok=True)
         log.info(f"Directory created: {path_folder}")
 
-        existing_files = self.get_files() if weekly else []
-        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+        images = self.get_files() if weekly else []
+        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(images)}")
 
         if self.pngs:
             paths = []
             files = []
             bools = []
             inputs = None
+
+            # Download standard pictures
             for file in self.pngs:
                 basename = file['title']
-                file_path = Path(path_folder, basename).as_posix()
-                if not weekly or basename in existing_files:
+                if not weekly or basename in images:
+                    file_path = Path(path_folder, basename).as_posix()
                     files.append(file)
                     paths.append(file_path)
                     bools.append(replace)
                     inputs = zip(files, paths, bools)
-                # TODO : Reconsider use
-                # else:
-                #     log.debug(f"Skipped file: {basename}")
             self.__download_gdrive_file_parallel(inputs)
 
+    def download_hd_png_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
+        """
+        Download PNG files to disk.
+
+        :param path_folder: The system folder path where PNG files will be downloaded. Default is the current directory.
+        :param replace: If True, existing files will be overwritten. Default is False.
+        :param weekly: If True, only download PNG files referenced weekly. Default is False.
+        :return: None
+        """
+        log.info("Starting download of PNG files.")
+
+        path = Path(path_folder)
+        path.mkdir(parents=True, exist_ok=True)
+        log.info(f"Directory created: {path_folder}")
+
+        images = self.get_files() if weekly else []
+        images = [Path(basename).with_name(Path(basename).stem + self.config['app']['image_hd_suffix'] + Path(basename).suffix).name for basename in images]
+        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(images)}")
+
+        if self.pngs_hd:
+            paths = []
+            files = []
+            bools = []
+            inputs = None
+
+            # Download standard pictures
+            for file in self.pngs_hd:
+                basename = str(file['title'])
+                if not weekly or basename in images:
+                    file_path = Path(path_folder, basename).as_posix()
+                    files.append(file)
+                    paths.append(file_path)
+                    bools.append(replace)
+                    inputs = zip(files, paths, bools)
+
+            # TODO : Reconsider use
+            # else:
+            #     log.debug(f"Skipped file: {basename}")
+            if not inputs is None:
+                self.__download_gdrive_file_parallel(inputs)
 
     def download_svg_files(self, path_folder: str = '.', replace: bool = False, weekly: bool = False) -> None:
         """
@@ -345,9 +390,9 @@ class GDriveAgendaHelper:
         path.mkdir(parents=True, exist_ok=True)
         log.info(f"Directory created: {path_folder}")
 
-        existing_files = self.get_files() if weekly else []
-        existing_svg = [Path(basename).with_suffix('.svg').name for basename in existing_files]
-        log.info(f"Weekly mode: {weekly}. Number of existing SVG files: {len(existing_svg)}")
+        images = self.get_files() if weekly else []
+        images = [Path(basename).with_suffix('.svg').name for basename in images]
+        log.info(f"Weekly mode: {weekly}. Number of existing SVG files: {len(images)}")
 
         if self.svgs:
             paths = []
@@ -356,19 +401,18 @@ class GDriveAgendaHelper:
             inputs = None
             for file in self.svgs:
                 basename = file['title']
-                file_path = Path(path_folder, basename).as_posix()
-                if not weekly or basename in existing_svg:
+                if not weekly or basename in images:
+                    file_path = Path(path_folder, basename).as_posix()
                     files.append(file)
                     paths.append(file_path)
                     bools.append(replace)
                     inputs = zip(files, paths, bools)
-                # TODO : Reconsider use
-                # else:
-                #     log.debug(f"Skipped file: {basename}")
+            # TODO : Reconsider use
+            # else:
+            #     log.debug(f"Skipped file: {basename}")
 
             if not inputs is None:
                 self.__download_gdrive_file_parallel(inputs)
-
 
     def upload_png_files_to_cdn(self, path_folder: str = '.', replace: bool = False, weekly: bool = False):
         """
@@ -382,8 +426,8 @@ class GDriveAgendaHelper:
         log.info("Starting upload of PNG files to CDN.")
 
         # Get Weekly files from Sheet
-        existing_files = self.get_files() if weekly else []
-        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(existing_files)}")
+        images = self.get_files() if weekly else []
+        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(images)}")
 
         # Directory containing images
         directory = Path(path_folder)
@@ -394,8 +438,46 @@ class GDriveAgendaHelper:
         inputs = None
         for path_image in directory.glob('*.png'):
             basename = path_image.name
+            if not self.__is_hd_image(basename):
+                absolute_path = path_image.absolute().as_posix()
+                if not weekly or basename in images:
+                    files.append(absolute_path)
+                    bools.append(replace)
+                    inputs = zip(files, bools)
+                # TODO : Reconsider use
+                # else:
+                #     log.debug(f"Skipped file: {basename}")
+
+        if not inputs is None:
+            self.__upload_file_to_cdn_parallel(inputs)
+
+    def upload_hd_png_files_to_cdn(self, path_folder: str = '.', replace: bool = False, weekly: bool = False):
+        """
+        This function uploads PNG tiles to CDN.
+
+        :param path_folder: Source folder for content.
+        :param replace: Switch to overwrite any existing remote reference.
+        :param weekly: Switch to only consider weekly files instead of whole scope.
+        :return: None
+        """
+        log.info("Starting upload of PNG files to CDN.")
+
+        # Get Weekly files from Sheet
+        images = self.get_files() if weekly else []
+        images = [Path(basename).with_name(Path(basename).stem + self.config['app']['image_hd_suffix'] + Path(basename).suffix).name for basename in images]
+        log.info(f"Weekly mode: {weekly}. Number of existing files: {len(images)}")
+
+        # Directory containing images
+        directory = Path(path_folder)
+
+        # Loop through files and upload
+        files = []
+        bools = []
+        inputs = None
+        for path_image in directory.glob('*' + self.config['app']['image_hd_suffix'] + '.png'):
+            basename = path_image.name
             absolute_path = path_image.absolute().as_posix()
-            if not weekly or basename in existing_files:
+            if not weekly or basename in images:
                 files.append(absolute_path)
                 bools.append(replace)
                 inputs = zip(files, bools)
@@ -405,8 +487,6 @@ class GDriveAgendaHelper:
 
         if not inputs is None:
             self.__upload_file_to_cdn_parallel(inputs)
-
-
 
     def download_data(self, path_file, replace: bool = False) -> None:
         """
@@ -469,15 +549,15 @@ class GDriveAgendaHelper:
         with open(path_file, 'w', encoding='utf-8', newline='') as f:
             f.writelines(links)
 
-    def data_as_dict (self) -> dict:
+    def data_as_dict(self) -> dict:
         return {
             "week": datetime.strftime(self.week_dt, '%d/%m'),
-            "week_full": [ datetime.strftime(self.week_dt, '%Y%m%d') ],
+            "week_full": [datetime.strftime(self.week_dt, '%Y%m%d')],
             "events": to_dict(self.df),
-            "survey-title" : self.get_config('pre-survey-text').strip(),
-            "survey-footer" : self.get_config('post-survey-text').strip(),
-            "links-title" : self.get_config('pre-links-text').strip(),
-            "links-footer" : self.get_config('post-links-text').strip()
+            "survey-title": self.get_config('pre-survey-text').strip(),
+            "survey-footer": self.get_config('post-survey-text').strip(),
+            "links-title": self.get_config('pre-links-text').strip(),
+            "links-footer": self.get_config('post-links-text').strip()
         }
 
     def __get_column_values(self, name) -> List:
@@ -678,12 +758,17 @@ class GDriveAgendaHelper:
         log.info("Downloading PNG files")
         self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
+        log.info("Downloading HD PNG files")
+        self.download_hd_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
+
         log.info("Downloading SVG files")
         self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=weekly)
 
         log.info("Uploading PNG files to CDN")
         self.upload_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
+        log.info("Uploading HD PNG files to CDN")
+        self.upload_hd_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -714,6 +799,7 @@ def main():
         mh.create()
         mh.save_as_jpg(str(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.jpg')))
         mh.save_as_png(str(Path(config['app']['export_folder'], f'{json_data['week_full'][0]}.png')))
+
 
 if __name__ == '__main__':
     main()
