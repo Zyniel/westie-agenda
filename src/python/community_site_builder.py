@@ -37,9 +37,8 @@ __doc__ = "Synchronize events between the remote Google Drive/Sheets and the Rep
 SCOPES = ['https://www.googleapis.com/auth/drive', 'https://www.googleapis.com/auth/spreadsheets']
 
 # Define logger
-log = logging.getLogger('com.zyniel.dance.westie-agenda.site-builder')
-logging.basicConfig(level=logging.DEBUG)
-
+__logger_builder__ = 'com.zyniel.dance.westie-agenda.site-builder'
+log = logging.getLogger(__logger_builder__)
 
 def to_dict(dataframe: DataFrame | Series) -> dict:
     """
@@ -228,10 +227,10 @@ class GDriveAgendaHelper:
         # Check if file exists - Skip if found unless replace is forced
         path = Path(path_file).as_posix()
         if not Path(path_file).is_file():
-            log.debug("Downloading: '{path}'".format(path=path))
+            log.info("Downloading: '{path}'".format(path=path))
             file.GetContentFile(path, file['mimeType'])
         elif Path(path).is_file() and replace:
-            log.debug("Downloading and overwriting: '{path}'".format(path=path))
+            log.info("Downloading and overwriting: '{path}'".format(path=path))
             file.GetContentFile(path, file['mimeType'])
         else:
             log.info("Skipping: '{path}' - File already exists.".format(path=path))
@@ -294,7 +293,7 @@ class GDriveAgendaHelper:
                     )
                 )
                 # TODO: Add upload validation
-                log.debug("Uploaded to CDN: {basename} (id: {id})".format(basename=basename, id=upload.file_id))
+                log.info("Uploaded to CDN: {basename} (id: {id})".format(basename=basename, id=upload.file_id))
         else:
             log.info("Skipping: '{path}' - File already exists.".format(path=path))
 
@@ -783,6 +782,11 @@ def main():
 
     if args.conf is not None:
         logging.basicConfig(level=logging.INFO)
+        logging.getLogger("google.auth").setLevel(logging.WARNING)
+        logging.getLogger("requests").setLevel(logging.WARNING)
+        logging.getLogger("googleapiclient.discovery").setLevel(logging.WARNING)
+        logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
+
 
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:

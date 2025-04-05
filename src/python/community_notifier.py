@@ -15,10 +15,8 @@ from whatsapp_client import WhatsAppWebClient, ChatsPage
 __doc__ = "Publish Plannings and Surveys to groups using WhatsApp Web automation."
 
 # Define logger
-log = logging.getLogger('com.zyniel.dance.westie-agenda.community-helper')
-logging.basicConfig(level=logging.DEBUG)
-logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
-logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.DEBUG)
+__logger_builder__ = 'com.zyniel.dance.westie-agenda.site-notifier'
+log = logging.getLogger(__logger_builder__)
 
 class CommunityHelper:
     config = None
@@ -235,6 +233,9 @@ def main():
 
     if args.conf is not None:
         logging.basicConfig(level=logging.INFO)
+        logging.getLogger("requests").setLevel(logging.WARNING)
+        logging.getLogger('urllib3.connectionpool').setLevel(logging.ERROR)
+        logging.getLogger('selenium.webdriver.remote.remote_connection').setLevel(logging.DEBUG)
 
         # Load configuration file
         with open(args.conf[0], 'r', encoding='utf-8') as file:
