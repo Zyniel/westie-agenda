@@ -1,10 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-"""Zero-touch enrollment quickstart sample.
-
-This script forms the quickstart introduction to the zero-touch enrollemnt
-customer API. To learn more, visit https://developer.google.com/zero-touch
-"""
 import os
 import sys
 import time
