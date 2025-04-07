@@ -25,7 +25,7 @@
             "Sondage": "Mar. 🪩 After TDS",
             "Planning": "Mar. 08 - After TDS",
             "Infos": "Mar. 🪩 After TDS\r\n> https://tinyurl.com/5n6e3dnu",
-            "Ordre": "17900"
+            "Ordre": "17800"
         },
         {
             "index": 1,
@@ -48,7 +48,7 @@
             "Sondage": "Jeu. 🪩 After TDS",
             "Planning": "Jeu. 10 - After TDS",
             "Infos": "Jeu. 🪩 After TDS\r\n> https://tinyurl.com/s92mmsmv",
-            "Ordre": "18000"
+            "Ordre": "17900"
         },
         {
             "index": 2,
@@ -71,7 +71,7 @@
             "Sondage": "Ven. 🪩 Factory Club (RWSB)",
             "Planning": "Ven. 11 - Factory Club (RWSB)",
             "Infos": "Ven. 🪩 Factory Club (RWSB)\r\n> https://tinyurl.com/3s3sfes3",
-            "Ordre": "18200"
+            "Ordre": "18100"
         },
         {
             "index": 3,
@@ -94,7 +94,7 @@
             "Sondage": "Sam. 🪩 SDC Mensuelle",
             "Planning": "Sam. 12 - SDC Mensuelle",
             "Infos": "Sam. 🪩 SDC Mensuelle\r\n> https://tinyurl.com/bddukmbx",
-            "Ordre": "18300"
+            "Ordre": "18200"
         },
         {
             "index": 4,
@@ -117,30 +117,30 @@
             "Sondage": "Sam. 🪩 BFD Soirée Chocolat",
             "Planning": "Sam. 12 - BFD Soirée Chocolat",
             "Infos": "Sam. 🪩 BFD Soirée Chocolat\r\n> https://tinyurl.com/3rk264f9",
-            "Ordre": "18300"
+            "Ordre": "18200"
         },
         {
             "index": 5,
-            "Date Début": "13/04/2025",
-            "Heure Début": "15:00:00",
+            "Date Début": "12/04/2025",
+            "Heure Début": "21:00:00",
             "Date Fin": "13/04/2025",
-            "Heure Fin": "21:00:00",
-            "Jour": "Dim.",
+            "Heure Fin": "00:15:00",
+            "Jour": "Sam.",
             "Type": "Soirée",
-            "Organisateur": "La Station",
-            "Salle": "La Station Danse",
+            "Organisateur": "TDS",
+            "Salle": "Temple du Swing",
             "Lieu": "",
-            "Ville": "Vitry-sur-Seine",
-            "Adresse": "13 Rue Pierre Sémard",
-            "Nom": "Happy Sunday",
-            "Nom Court": "Station Danse",
-            "Lien Court": "https://tinyurl.com/ye29p5mj",
-            "Lien": "http://station-danse.fr/",
-            "Image": "LSD-Dimanche-Generic-Tile.png",
-            "Sondage": "Dim. 🪩 Station Danse",
-            "Planning": "Dim. 13 - Station Danse",
-            "Infos": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
-            "Ordre": "18500"
+            "Ville": "Paris",
+            "Adresse": "32 Bd. de Vaugirard",
+            "Nom": "Soirée 100% WCS",
+            "Nom Court": "Soirée 100% WCS",
+            "Lien Court": "https://tinyurl.com/37wfcjwc",
+            "Lien": "https://www.facebook.com/events/2067565467023129",
+            "Image": "TDS-Soiree-20250412-Tile.png",
+            "Sondage": "Sam. 🪩 Soirée 100% WCS",
+            "Planning": "Sam. 12 - Soirée 100% WCS",
+            "Infos": "Sam. 🪩 Soirée 100% WCS\r\n> https://tinyurl.com/37wfcjwc",
+            "Ordre": "18400"
         },
         {
             "index": 6,
@@ -163,7 +163,7 @@
             "Sondage": "WE. 🎟️ West Cognac Swing #2",
             "Planning": "Ven. 11 - West Cognac Swing #2",
             "Infos": "WE. 🎟️ West Cognac Swing #2\r\n> https://tinyurl.com/4nyfwytx",
-            "Ordre": "28100"
+            "Ordre": "28000"
         }
     ],
     "survey-title": "*Planning - Semaine du 07/04*",
