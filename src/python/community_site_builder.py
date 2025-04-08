@@ -482,6 +482,153 @@ class GDriveAgendaHelper:
         if not inputs is None:
             self.__upload_file_to_cdn_parallel(inputs)
 
+    def process_images(self, replace: bool = False, weekly: bool = False):
+
+        # Get Weekly files from Sheet
+        planning_names = self.get_files() if weekly else []
+
+        vector_images = []
+        raster_sd_images = []
+        raster_hd_images = []
+        vector_files = []
+        raster_sd_files = []
+        raster_hd_files = []
+        bools = []
+
+        # Weekly: Process only images from the weekly planning
+        if weekly:
+            planning_stems = [ Path(name).stem for name in planning_names ]
+
+            for stem in planning_stems:
+                vector_basename = stem + '.svg'
+                raster_sd_basename = stem + '.png'
+                raster_hd_basename = stem + self.config['app']['image_hd_suffix'] + '.png'
+                vector_path = Path(self.config['app']['svg_folder'], vector_basename).as_posix()
+                raster_sd_path = Path(self.config['app']['png_folder'], raster_sd_basename).as_posix()
+                raster_hd_path = Path(self.config['app']['png_folder'], raster_hd_basename).as_posix()
+
+                # Check if vector file exists
+                vector_exists = False
+                vector_file = None
+                for file in self.svgs:
+                    vector_exists = (file['title'] == vector_basename)
+                    if vector_exists:
+                        vector_file = file
+                        break
+
+                # Check if low definition file exists
+                raster_sd_exists = False
+                raster_sd_file = None
+                for file in self.pngs:
+                    raster_sd_exists = (file['title'] == raster_sd_basename)
+                    if raster_sd_exists:
+                        raster_sd_file = file
+                        break
+
+                # Check if high definition file exists
+                raster_hd_exists = False
+                raster_hd_file = None
+                for file in self.pngs_hd:
+                    raster_hd_exists = (file['title'] == raster_hd_basename)
+                    if raster_hd_exists:
+                        raster_hd_file = file
+                        break
+
+                if vector_exists and raster_sd_exists and raster_hd_exists:
+                    vector_images.append(vector_path)
+                    vector_files.append(vector_file)
+                    raster_sd_images.append(raster_sd_path)
+                    raster_sd_files.append(raster_sd_file)
+                    raster_hd_images.append(raster_hd_path)
+                    raster_hd_files.append(raster_hd_file)
+                    bools.append(replace)
+                    log.debug(f'Image "{stem}" is fully uploaded. SVG:{vector_exists} - SD:{raster_sd_exists} - HD:{raster_hd_exists}')
+                else:
+                    log.warning(f'Image "{stem}" is not fully uploaded. SVG:{vector_exists} - SD:{raster_sd_exists} - HD:{raster_hd_exists}')
+
+        # Full: Process all available images from the repo
+        else:
+            images = dict()
+
+            # Build a dictionary to hold, per file unified key, a reference to the relevant raster/raster_hd and vector file.
+            # A unified key is built to keep the stem and remove any suffix.
+            # Vector   : EVT-MyEventIsGreat-2025-Tile.svg (Remove extension)
+            # Rast. SD : EVT-MyEventIsGreat-2025-Tile.png (Remove extension)
+            # Rast. HD : EVT-MyEventIsGreat-2025-Tile-1200px.png (Remove suffix + extension)
+            # Unified  : EVT-MyEventIsGreat-2025-Tile
+
+            # Add all vector files to a dictionary.
+            for file in self.svgs:
+                filename_base = Path(file['title']).stem
+                if not filename_base in images:
+                    images[filename_base] = {
+                        'vector': file,
+                        # 'raster' : None,
+                        # 'raster_hd': None
+                    }
+
+            # Complete dictionary with raster files.
+            for file in self.pngs:
+                filename_base = Path(file['title']).stem
+                if filename_base in images:
+                    images[filename_base]['raster'] = file
+                else:
+                    images[filename_base] = {
+                        # 'vector': None,
+                        'raster' : file,
+                        # 'raster_hd': None
+                    }
+
+            # Complete dictionary with raster hd files.
+            for file in self.pngs_hd:
+                filename_base = Path(file['title']).stem.removesuffix(self.config['app']['image_hd_suffix'])
+                if filename_base in images:
+                    images[filename_base]['raster_hd'] = file
+                else:
+                    images[filename_base] = {
+                        # 'vector': None,
+                        # 'raster' : None,
+                        'raster_hd': file
+                    }
+
+            # Sort dictionary
+            images = dict(sorted(images.items()))
+            for stem, files in images.items():
+                vector_exists = ('vector' in files)
+                raster_sd_exists = ('raster' in files)
+                raster_hd_exists = ('raster_hd' in files)
+                if len(files.values()) == 3:
+                    vector_basename = stem + '.svg'
+                    raster_sd_basename = stem + '.png'
+                    raster_hd_basename = stem + self.config['app']['image_hd_suffix'] + '.png'
+                    vector_path = Path(self.config['app']['svg_folder'], vector_basename).as_posix()
+                    raster_sd_path = Path(self.config['app']['png_folder'], raster_sd_basename).as_posix()
+                    raster_hd_path = Path(self.config['app']['png_folder'], raster_hd_basename).as_posix()
+                    vector_images.append(vector_path)
+                    vector_files.append(files['vector'])
+                    raster_sd_images.append(raster_sd_path)
+                    raster_sd_files.append(files['raster'])
+                    raster_hd_images.append(raster_hd_path)
+                    raster_hd_files.append(files['raster_hd'])
+                    bools.append(replace)
+                    log.debug(f'Image "{stem}" is fully uploaded. SVG:{vector_exists} - SD:{raster_sd_exists} - HD:{raster_hd_exists}')
+                else:
+                    log.warning(f'Image "{stem}" is not fully uploaded. SVG:{vector_exists} - SD:{raster_sd_exists} - HD:{raster_hd_exists}')
+
+
+        # Proceed to download - download if content to proceed
+        # TODO : Redesign the "all images are necessary" paradigm.
+        # TODO : Download all at once ? Readability vs Speed
+        if vector_images or raster_sd_images or raster_hd_images:
+            vector_input = zip(vector_files, vector_images, bools)
+            self.__download_gdrive_file_parallel(vector_input)
+
+            raster_sd_input = zip(raster_sd_files, raster_sd_images, bools)
+            self.__download_gdrive_file_parallel(raster_sd_input)
+
+            raster_hd_input = zip(raster_hd_files, raster_hd_images, bools)
+            self.__download_gdrive_file_parallel(raster_hd_input)
+
     def download_data(self, path_file, replace: bool = False) -> None:
         """
         This function create a JSON file from imported Event Data
@@ -749,14 +896,16 @@ class GDriveAgendaHelper:
         urls_files = Path('.', self.config['app']['export_folder'], datetime.strftime(self.week_dt, '%Y%m%d') + '.txt')
         self.download_links(path_file=urls_files.absolute().as_posix(), replace=True)
 
-        log.info("Downloading PNG files")
-        self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
+        # log.info("Downloading PNG files")
+        # self.download_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
-        log.info("Downloading HD PNG files")
-        self.download_hd_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
+        # log.info("Downloading HD PNG files")
+        # self.download_hd_png_files(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
 
-        log.info("Downloading SVG files")
-        self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=weekly)
+        # log.info("Downloading SVG files")
+        # self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=weekly)
+
+        self.process_images(replace=True, weekly=weekly)
 
         log.info("Uploading PNG files to CDN")
         self.upload_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
@@ -776,7 +925,8 @@ def main():
     sys.path.append(PROJECT_ROOT)
 
     if args.conf is not None:
-        logging.basicConfig(level=logging.INFO)
+        logging.basicConfig(level=logging.WARNING)
+        logging.getLogger('com.zyniel.dance').setLevel(logging.INFO)
         logging.getLogger("google.auth").setLevel(logging.WARNING)
         logging.getLogger("requests").setLevel(logging.WARNING)
         logging.getLogger("googleapiclient.discovery").setLevel(logging.WARNING)
