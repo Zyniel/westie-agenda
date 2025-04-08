@@ -482,7 +482,7 @@ class GDriveAgendaHelper:
         if not inputs is None:
             self.__upload_file_to_cdn_parallel(inputs)
 
-    def process_images(self, replace: bool = False, weekly: bool = False):
+    def download_images(self, replace: bool = False, weekly: bool = False):
 
         # Get Weekly files from Sheet
         planning_names = self.get_files() if weekly else []
@@ -905,7 +905,8 @@ class GDriveAgendaHelper:
         # log.info("Downloading SVG files")
         # self.download_svg_files(path_folder=self.config['app']['svg_folder'], replace=True, weekly=weekly)
 
-        self.process_images(replace=True, weekly=weekly)
+        log.info("Downloading all images")
+        self.download_images(replace=True, weekly=weekly)
 
         log.info("Uploading PNG files to CDN")
         self.upload_png_files_to_cdn(path_folder=self.config['app']['png_folder'], replace=True, weekly=weekly)
