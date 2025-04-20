@@ -625,3 +625,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated weekly exports '20250414.jpg'
 - Updated weekly exports '20250414.json'
 - Updated weekly exports '20250414.png'
+
+## 20250420-210212
+
+### Added
+
+- Create weekly exports '20250421.jpg'
+- Create weekly exports '20250421.json'
+- Create weekly exports '20250421.png'
+- Create weekly exports '20250421.txt'
+- Added SVG from Google Drive 'CCC-Vendredi-20250425-Tile.svg'
+- Added SVG from Google Drive 'LSD-Dimanche-Paques-Tile.svg'
+- Added SVG from Google Drive 'LSD-Stage-ArnaudHelene-2025-Tile.svg'
+- Added SVG from Google Drive 'TDS-Stages-StylingFollower-20250426-Tile.svg'
+- Added PNG from Google Drive 'CCC-Vendredi-20250425-Tile-1200px.png'
+- Added PNG from Google Drive 'CCC-Vendredi-20250425-Tile.png'
+- Added PNG from Google Drive 'LSD-Dimanche-Paques-Tile-1200px.png'
+- Added PNG from Google Drive 'LSD-Dimanche-Paques-Tile.png'
+- Added PNG from Google Drive 'LSD-Stage-ArnaudHelene-2025-Tile-1200px.png'
+- Added PNG from Google Drive 'LSD-Stage-ArnaudHelene-2025-Tile.png'
+- Added PNG from Google Drive 'TDS-Stages-StylingFollower-20250426-Tile-1200px.png'
+- Added PNG from Google Drive 'TDS-Stages-StylingFollower-20250426-Tile.png'
+
+### Changed
+
+- Updated data export 'events.json'
