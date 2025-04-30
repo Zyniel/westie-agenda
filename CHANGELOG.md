@@ -666,3 +666,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated weekly exports '20250421.json'
 - Updated weekly exports '20250421.png'
 - Updated weekly exports '20250421.txt'
+
+## 20250430-020041
+
+### Added
+
+- Create weekly exports '20250428.jpg'
+- Create weekly exports '20250428.json'
+- Create weekly exports '20250428.png'
+- Create weekly exports '20250428.txt'
+- Added SVG from Google Drive 'EVT-WestInGrenobles-2025-Tile.svg'
+- Added SVG from Google Drive 'SDC-Mensuelle-20250503-Tile.svg'
+- Added SVG from Google Drive 'TDS-Evaluations-20250501-Tile.svg'
+- Added SVG from Google Drive 'TDS-Soiree-20250502-Tile.svg'
+- Added SVG from Google Drive 'TDS-Stages-Inter-20250501-Tile.svg'
+- Added PNG from Google Drive 'EVT-WestInGrenobles-2025-Tile-1200px.png'
+- Added PNG from Google Drive 'EVT-WestInGrenobles-2025-Tile.png'
+- Added PNG from Google Drive 'SDC-Mensuelle-20250503-Tile-1200px.png'
+- Added PNG from Google Drive 'SDC-Mensuelle-20250503-Tile.png'
+- Added PNG from Google Drive 'TDS-Evaluations-20250501-Tile-1200px.png'
+- Added PNG from Google Drive 'TDS-Evaluations-20250501-Tile.png'
+- Added PNG from Google Drive 'TDS-Soiree-20250502-Tile-1200px.png'
+- Added PNG from Google Drive 'TDS-Soiree-20250502-Tile.png'
+- Added PNG from Google Drive 'TDS-Stages-Inter-20250501-Tile-1200px.png'
+- Added PNG from Google Drive 'TDS-Stages-Inter-20250501-Tile.png'
+
+### Changed
+
+- Updated data export 'events.json'
