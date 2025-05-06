@@ -723,3 +723,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated data export 'events.json'
 - Updated SVG from Google Drive 'EXT-Jussieu2-Tile.svg'
+
+## 20250506-063901
+
+### Changed
+
+- Updated weekly exports '20250505.jpg'
+- Updated weekly exports '20250505.png'
+- Updated SVG from Google Drive 'DKD-L_Etincelle-Tile.svg'
+- Updated PNG from Google Drive 'DKD-L_Etincelle-Tile-1200px.png'
+- Updated PNG from Google Drive 'DKD-L_Etincelle-Tile.png'
