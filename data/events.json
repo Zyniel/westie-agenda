@@ -121,6 +121,29 @@
         },
         {
             "index": 5,
+            "Date Début": "09/05/2025",
+            "Heure Début": "20:00:00",
+            "Date Fin": "10/05/2025",
+            "Heure Fin": "01:00:00",
+            "Jour": "Ven.",
+            "Type": "Soirée",
+            "Organisateur": "TDS",
+            "Salle": "Temple du Swing",
+            "Lieu": "",
+            "Ville": "Paris",
+            "Adresse": "32 Bd. de Vaugirard",
+            "Nom": "Soirée 100% TDS",
+            "Nom Court": "Soirée 100% TDS",
+            "Lien Court": "https://tinyurl.com/2bbccjz7",
+            "Lien": "https://www.facebook.com/events/8922382134530312",
+            "Image": "TDS-Soiree-20250509-Tile.png",
+            "Sondage": "Ven. 🪩 Soirée 100% TDS",
+            "Planning": "Ven. 09 - Soirée 100% TDS",
+            "Infos": "Ven. 🪩 Soirée 100% TDS\r\n> https://tinyurl.com/2bbccjz7",
+            "Ordre": "19000"
+        },
+        {
+            "index": 6,
             "Date Début": "10/05/2025",
             "Heure Début": "15:00:00",
             "Date Fin": "10/05/2025",
@@ -140,10 +163,10 @@
             "Sondage": "Sam. 🪩 La BOUM WCS",
             "Planning": "Sam. 10 - La BOUM WCS",
             "Infos": "Sam. 🪩 La BOUM WCS\r\n> https://tinyurl.com/48jc9tbm",
-            "Ordre": "19000"
+            "Ordre": "19100"
         },
         {
-            "index": 6,
+            "index": 7,
             "Date Début": "10/05/2025",
             "Heure Début": "15:00:00",
             "Date Fin": "10/05/2025",
@@ -163,10 +186,10 @@
             "Sondage": "Sam. 📚 Stage Déb + Inter TDS",
             "Planning": "Sam. 10 - Stage Déb + Inter TDS",
             "Infos": "Sam. 📚 Stage Déb + Inter TDS\r\n> https://tinyurl.com/3m2a63hr",
-            "Ordre": "19001"
+            "Ordre": "19101"
         },
         {
-            "index": 7,
+            "index": 8,
             "Date Début": "10/05/2025",
             "Heure Début": "18:30:00",
             "Date Fin": "10/05/2025",
@@ -186,10 +209,10 @@
             "Sondage": "Sam. 🔍 Evaluations",
             "Planning": "Sam. 10 - Evaluations",
             "Infos": "Sam. 🔍 Evaluations\r\n> https://tinyurl.com/4fyyjben",
-            "Ordre": "19202"
+            "Ordre": "19302"
         },
         {
-            "index": 8,
+            "index": 9,
             "Date Début": "11/05/2025",
             "Heure Début": "13:30:00",
             "Date Fin": "11/05/2025",
@@ -209,10 +232,10 @@
             "Sondage": "Dim. 🪩 Art du Mouvement",
             "Planning": "Dim. 11 - Art du Mouvement",
             "Infos": "Dim. 🪩 Art du Mouvement\r\n> https://tinyurl.com/msu4yvsx",
-            "Ordre": "19300"
+            "Ordre": "19400"
         },
         {
-            "index": 9,
+            "index": 10,
             "Date Début": "11/05/2025",
             "Heure Début": "15:00:00",
             "Date Fin": "11/05/2025",
@@ -232,10 +255,10 @@
             "Sondage": "Dim. 🪩 Station Danse",
             "Planning": "Dim. 11 - Station Danse",
             "Infos": "Dim. 🪩 Station Danse\r\n> https://tinyurl.com/ye29p5mj",
-            "Ordre": "19400"
+            "Ordre": "19500"
         },
         {
-            "index": 10,
+            "index": 11,
             "Date Début": "11/05/2025",
             "Heure Début": "18:00:00",
             "Date Fin": "11/05/2025",
@@ -255,10 +278,10 @@
             "Sondage": "Dim. 🪩 Dimanche WCS",
             "Planning": "Dim. 11 - Dimanche WCS",
             "Infos": "Dim. 🪩 Dimanche WCS\r\n> https://tinyurl.com/5n7m524c",
-            "Ordre": "19500"
+            "Ordre": "19600"
         },
         {
-            "index": 11,
+            "index": 12,
             "Date Début": "08/05/2025",
             "Heure Début": "",
             "Date Fin": "11/05/2025",
