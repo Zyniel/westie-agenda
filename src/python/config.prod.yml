@@ -140,6 +140,8 @@ mosaic:
     10: [ 2, 5 ]
     11: [ 4, 3 ]
     12: [ 4, 3 ]
+    13: [ 5, 3 ]
+    14: [ 5, 3 ]
   # Background color
   background_color: '#171717'
   # Default font color
