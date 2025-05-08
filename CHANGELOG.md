@@ -759,3 +759,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Updated weekly exports '20250505.json'
 - Updated weekly exports '20250505.png'
 - Updated weekly exports '20250505.txt'
+
+## 20250508-071313
+
+### Changed
+
+- Updated weekly exports '20250505.jpg'
+- Updated weekly exports '20250505.png'
