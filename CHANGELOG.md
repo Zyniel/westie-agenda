@@ -766,3 +766,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Updated weekly exports '20250505.jpg'
 - Updated weekly exports '20250505.png'
+
+## 20250512-055136
+
+### Added
+
+- Create weekly exports '20250512.jpg'
+- Create weekly exports '20250512.json'
+- Create weekly exports '20250512.png'
+- Create weekly exports '20250512.txt'
+- Added SVG from Google Drive 'TDS-Evaluations-20250517-Tile.svg'
+- Added SVG from Google Drive 'TDS-Soiree-20250517-Tile.svg'
+- Added PNG from Google Drive 'TDS-Evaluations-20250517-Tile-1200px.png'
+- Added PNG from Google Drive 'TDS-Evaluations-20250517-Tile.png'
+- Added PNG from Google Drive 'TDS-Soiree-20250517-Tile-1200px.png'
+- Added PNG from Google Drive 'TDS-Soiree-20250517-Tile.png'
+
+### Changed
+
+- Updated data export 'events.json'
